@@ -184,7 +184,7 @@ const LandingPage = () => {
           </p>
           <div className="max-w-6xl mx-auto">
             <img 
-              src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/arc2qkzs_AJL-WKMO-IPC-WORLDWIDE-NETWORK-2048x1120.jpg"
+              src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/2hjhk0ei_Generated%20Image%20December%2014%2C%202025%20-%209_12PM.jpeg"
               alt="Réseau mondial de l'Académie Jacques Levinet"
               className="w-full rounded-lg border border-white/10"
             />
