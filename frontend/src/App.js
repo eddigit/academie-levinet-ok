@@ -3,11 +3,13 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
+import OnboardingPage from './pages/OnboardingPage';
 import Dashboard from './pages/Dashboard';
 import MembersPage from './pages/MembersPage';
 import MemberDetailPage from './pages/MemberDetailPage';
 import TechnicalDirectorsPage from './pages/TechnicalDirectorsPage';
 import SubscriptionsPage from './pages/SubscriptionsPage';
+import LeadsPage from './pages/LeadsPage';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 const ProtectedRoute = ({ children }) => {
