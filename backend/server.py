@@ -156,6 +156,29 @@ class SubscriptionCreate(BaseModel):
     payment_method: str
     status: str
 
+class Lead(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    person_type: LeadPersonType
+    motivations: List[str]
+    full_name: str
+    email: EmailStr
+    phone: str
+    city: str
+    country: str
+    status: LeadStatus = LeadStatus.NEW
+    notes: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class LeadCreate(BaseModel):
+    person_type: LeadPersonType
+    motivations: List[str]
+    full_name: str
+    email: EmailStr
+    phone: str
+    city: str
+    country: str
+
 class DashboardStats(BaseModel):
     total_members: int
     total_revenue: float
