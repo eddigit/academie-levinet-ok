@@ -89,9 +89,7 @@ const LandingPage = () => {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <div className="stat-card text-center" data-testid="feature-card-legitimite">
-              <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Award className="w-8 h-8 text-primary" />
-              </div>
+              <Award className="w-12 h-12 text-primary mx-auto mb-4" strokeWidth={1} />
               <h4 className="font-oswald text-xl font-bold text-text-primary uppercase mb-3">Légitimité & Expertise</h4>
               <p className="text-text-secondary font-manrope leading-relaxed mb-3">
                 Héritage du Capitaine Jacques Levinet, Champion du Monde de Karaté
@@ -102,9 +100,7 @@ const LandingPage = () => {
             </div>
 
             <div className="stat-card text-center" data-testid="feature-card-securite">
-              <div className="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Shield className="w-8 h-8 text-secondary" />
-              </div>
+              <Shield className="w-12 h-12 text-secondary mx-auto mb-4" strokeWidth={1} />
               <h4 className="font-oswald text-xl font-bold text-text-primary uppercase mb-3">Sécurité & Éthique</h4>
               <p className="text-text-secondary font-manrope leading-relaxed mb-3">
                 Évolution responsable du Krav Maga avec des "garde-fous" éthiques
@@ -115,9 +111,7 @@ const LandingPage = () => {
             </div>
 
             <div className="stat-card text-center" data-testid="feature-card-accessibilite">
-              <div className="w-16 h-16 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-8 h-8 text-accent" />
-              </div>
+              <Users className="w-12 h-12 text-accent mx-auto mb-4" strokeWidth={1} />
               <h4 className="font-oswald text-xl font-bold text-text-primary uppercase mb-3">Accessibilité & Communauté</h4>
               <p className="text-text-secondary font-manrope leading-relaxed mb-3">
                 Conçue pour tous : hommes, femmes, enfants
