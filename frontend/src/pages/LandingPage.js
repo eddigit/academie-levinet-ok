@@ -35,18 +35,32 @@ const LandingPage = () => {
       {/* Hero Section */}
       <section 
         className="pt-32 pb-20 px-6 relative overflow-hidden" 
-        style={{
-          backgroundImage: `linear-gradient(rgba(11, 17, 32, 0.9), rgba(11, 17, 32, 0.95)), url('https://images.unsplash.com/photo-1740895307943-7878df384db1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODF8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBneW0lMjBpbnRlcmlvciUyMGRhcmt8ZW58MHx8fHwxNzY1NzM2Njg3fDA&ixlib=rb-4.1.0&q=85')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
         data-testid="hero-section"
       >
-        <div className="container mx-auto text-center max-w-4xl">
-          <h2 className="font-oswald text-5xl md:text-6xl lg:text-7xl font-bold text-text-primary uppercase mb-6 tracking-wide">
+        {/* YouTube Video Background */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden">
+          <iframe
+            className="absolute top-1/2 left-1/2 w-[100vw] h-[56.25vw] min-h-[100vh] min-w-[177.77vh]"
+            style={{
+              transform: 'translate(-50%, -50%)',
+              pointerEvents: 'none',
+            }}
+            src="https://www.youtube.com/embed/mX3cGUHUgKo?autoplay=1&mute=1&loop=1&playlist=mX3cGUHUgKo&controls=0&showinfo=0&modestbranding=1&rel=0&enablejsapi=1&playsinline=1"
+            title="Académie Jacques Levinet Video"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+          {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80"></div>
+        </div>
+
+        {/* Content */}
+        <div className="container mx-auto text-center max-w-4xl relative z-10">
+          <h2 className="font-oswald text-5xl md:text-6xl lg:text-7xl font-bold text-text-primary uppercase mb-6 tracking-wide drop-shadow-2xl">
             Excellence en Self-Défense
           </h2>
-          <p className="text-xl md:text-2xl text-text-secondary font-manrope mb-12 leading-relaxed">
+          <p className="text-xl md:text-2xl text-text-secondary font-manrope mb-12 leading-relaxed drop-shadow-lg">
             La première plateforme mondiale de gestion pour l'Académie Jacques Levinet SPK.
             Formez-vous avec les meilleurs directeurs techniques internationaux.
           </p>
