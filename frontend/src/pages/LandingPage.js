@@ -340,28 +340,28 @@ const LandingPage = () => {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex gap-4 p-6 bg-background/50 rounded-lg border border-white/5">
-              <div className="text-primary text-3xl">✓</div>
+              <CheckCircle className="w-8 h-8 text-primary flex-shrink-0" strokeWidth={1.5} />
               <div>
                 <h5 className="font-oswald text-lg font-bold text-text-primary uppercase mb-2">Méthode Brevetée</h5>
                 <p className="text-text-secondary font-manrope text-sm">SPK - Self Pro Krav, validé et reconnu internationalement</p>
               </div>
             </div>
             <div className="flex gap-4 p-6 bg-background/50 rounded-lg border border-white/5">
-              <div className="text-primary text-3xl">✓</div>
+              <CheckCircle className="w-8 h-8 text-primary flex-shrink-0" strokeWidth={1.5} />
               <div>
                 <h5 className="font-oswald text-lg font-bold text-text-primary uppercase mb-2">Efficacité Réaliste</h5>
                 <p className="text-text-secondary font-manrope text-sm">Basé sur l'instinct de survie et les réflexes innés</p>
               </div>
             </div>
             <div className="flex gap-4 p-6 bg-background/50 rounded-lg border border-white/5">
-              <div className="text-primary text-3xl">✓</div>
+              <CheckCircle className="w-8 h-8 text-primary flex-shrink-0" strokeWidth={1.5} />
               <div>
                 <h5 className="font-oswald text-lg font-bold text-text-primary uppercase mb-2">Pratique Sécurisée</h5>
                 <p className="text-text-secondary font-manrope text-sm">Garde-fous éthiques pour une formation responsable</p>
               </div>
             </div>
             <div className="flex gap-4 p-6 bg-background/50 rounded-lg border border-white/5">
-              <div className="text-primary text-3xl">✓</div>
+              <CheckCircle className="w-8 h-8 text-primary flex-shrink-0" strokeWidth={1.5} />
               <div>
                 <h5 className="font-oswald text-lg font-bold text-text-primary uppercase mb-2">Communauté Mondiale</h5>
                 <p className="text-text-secondary font-manrope text-sm">Réseau international de directeurs techniques</p>
