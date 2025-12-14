@@ -1,0 +1,148 @@
+{
+  "identity": {
+    "persona": "E1",
+    "mission": "Create a top 1% martial arts CRM that feels like a high-tech control room for a global defense academy.",
+    "principles": [
+      "Fusion: Military Precision x Swiss Design",
+      "Emotion: Discipline, Strength, Global Reach",
+      "Content: Data is the weapon; display it with lethal clarity",
+      "Contrast: Deep shadows vs. Electric signals"
+    ]
+  },
+  "typography": {
+    "fonts": {
+      "heading": {
+        "family": "Oswald",
+        "url": "https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap",
+        "usage": "Headings, Stats, Navigation, Buttons",
+        "weights": ["400", "500", "700"]
+      },
+      "body": {
+        "family": "Manrope",
+        "url": "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap",
+        "usage": "Body text, Tables, Inputs, Tooltips",
+        "weights": ["400", "500", "600", "700"]
+      }
+    },
+    "rules": [
+      "Headings (Oswald) must be uppercase for H1 and H2 to convey authority.",
+      "Use tracking-wide for all small caps labels.",
+      "Body text (Manrope) should have relaxed line-height (1.6) for readability in dense tables."
+    ]
+  },
+  "colors": {
+    "palette": {
+      "background": {
+        "default": "#0B1120",
+        "paper": "#111827",
+        "subtle": "#1F2937"
+      },
+      "primary": {
+        "main": "#3B82F6",
+        "light": "#60A5FA",
+        "dark": "#2563EB",
+        "contrast": "#FFFFFF"
+      },
+      "secondary": {
+        "main": "#EF4444",
+        "light": "#F87171",
+        "dark": "#DC2626",
+        "contrast": "#FFFFFF"
+      },
+      "accent": {
+        "main": "#F97316",
+        "glow": "rgba(249, 115, 22, 0.5)"
+      },
+      "text": {
+        "primary": "#F3F4F6",
+        "secondary": "#9CA3AF",
+        "muted": "#6B7280"
+      },
+      "border": {
+        "default": "#374151",
+        "active": "#3B82F6"
+      }
+    },
+    "gradients": {
+      "hero": "linear-gradient(135deg, #0B1120 0%, #111827 100%)",
+      "card": "linear-gradient(180deg, rgba(31, 41, 55, 0.6) 0%, rgba(17, 24, 39, 0.8) 100%)",
+      "glow": "radial-gradient(circle at center, rgba(59, 130, 246, 0.15) 0%, transparent 70%)"
+    }
+  },
+  "visual_enhancers": {
+    "glassmorphism": {
+      "sidebar": "backdrop-filter: blur(12px); background: rgba(11, 17, 32, 0.85); border-right: 1px solid rgba(255,255,255,0.05);",
+      "card": "backdrop-filter: blur(8px); background: rgba(31, 41, 55, 0.4); border: 1px solid rgba(255,255,255,0.05);"
+    },
+    "shadows": {
+      "card": "0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3)",
+      "glow": "0 0 15px rgba(59, 130, 246, 0.3)"
+    },
+    "borders": {
+      "default": "1px solid rgba(75, 85, 99, 0.4)",
+      "active": "1px solid #3B82F6"
+    }
+  },
+  "layout": {
+    "grid_system": {
+      "dashboard": "grid grid-cols-1 md:grid-cols-12 gap-6",
+      "card_spans": {
+        "stats": "col-span-12 md:col-span-6 lg:col-span-3",
+        "main_chart": "col-span-12 lg:col-span-8",
+        "side_list": "col-span-12 lg:col-span-4"
+      }
+    },
+    "spacing": {
+      "container_padding": "p-6 md:p-8 lg:p-10",
+      "section_gap": "gap-8"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-primary hover:bg-primary-dark text-white font-oswald uppercase tracking-wider rounded-sm shadow-glow transition-all duration-300",
+      "secondary": "bg-transparent border border-primary text-primary hover:bg-primary/10 font-oswald uppercase tracking-wider rounded-sm transition-all duration-300",
+      "danger": "bg-secondary/10 border border-secondary/50 text-secondary hover:bg-secondary/20 font-oswald uppercase tracking-wider rounded-sm"
+    },
+    "cards": {
+      "base": "bg-card/40 backdrop-blur-md border border-white/5 rounded-lg p-6 shadow-card hover:border-primary/30 transition-colors duration-300",
+      "interactive": "cursor-pointer hover:-translate-y-1 transition-transform duration-300"
+    },
+    "inputs": {
+      "style": "bg-background/50 border-border focus:border-primary focus:ring-1 focus:ring-primary rounded-md text-white placeholder:text-muted-foreground"
+    }
+  },
+  "images": {
+    "hero_bg": {
+      "url": "https://images.unsplash.com/photo-1740895307943-7878df384db1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODF8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBneW0lMjBpbnRlcmlvciUyMGRhcmt8ZW58MHx8fHwxNzY1NzM2Njg3fDA&ixlib=rb-4.1.0&q=85",
+      "alt": "Dark modern gym interior",
+      "usage": "Landing page hero background with heavy overlay"
+    },
+    "action_shot": {
+      "url": "https://images.unsplash.com/photo-1644594570589-ef85bd03169f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njd8MHwxfHNlYXJjaHwyfHxrcmF2JTIwbWFnYSUyMHRyYWluaW5nJTIwY2xhc3N8ZW58MHx8fHwxNzY1NzM2Njg0fDA&ixlib=rb-4.1.0&q=85",
+      "alt": "Sparring session",
+      "usage": "About section or Login page side image"
+    },
+    "logo": {
+      "url": "https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/e712cc50_LOGO-WORLD-KRAV-MAGA-ORGANIZATION-150x150.png",
+      "alt": "Academie Jacques Levinet Logo",
+      "usage": "Sidebar top, Login header"
+    }
+  },
+  "instructions_to_main_agent": [
+    "1. SETUP: Install 'Oswald' and 'Manrope' fonts immediately in index.css.",
+    "2. THEME: Override tailwind.config.js colors with the specific hex codes provided in 'colors' section. Do not rely on default slate/zinc.",
+    "3. LAYOUT: Implement the 'Control Room' grid for the dashboard. Avoid simple single-column layouts.",
+    "4. COMPONENTS: Customize Shadcn components. Remove rounded-xl, use rounded-md or rounded-sm for a sharper, more military feel.",
+    "5. GLASSMORPHISM: Apply the glassmorphism styles to the Sidebar and Sticky Headers.",
+    "6. IMAGES: Use the provided image URLs. Do not use placeholders.",
+    "7. TESTID: Add data-testid to all interactive elements."
+  ],
+  "universal_guidelines": [
+    "Do not use gradients for text.",
+    "Avoid 'Inter' font.",
+    "Use 2-3x more spacing than typical.",
+    "Always add hover states with text color changes.",
+    "Never use pure black (#000000). Use the provided #0B1120.",
+    "Ensure all text has sufficient contrast (WCAG AA)."
+  ]
+}
