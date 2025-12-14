@@ -752,6 +752,145 @@ async def delete_news(news_id: str, current_user: dict = Depends(get_current_use
         raise HTTPException(status_code=404, detail="News not found")
     return {"message": "News deleted successfully"}
 
+# Events Routes
+@api_router.post("/events", response_model=Event)
+async def create_event(event_data: EventCreate, current_user: dict = Depends(get_current_user)):
+    event_dict = event_data.model_dump()
+    event_dict['created_by'] = current_user['id']
+    event_dict['current_participants'] = 0
+    
+    event = Event(**event_dict)
+    doc = event.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    doc['updated_at'] = doc['updated_at'].isoformat()
+    
+    await db.events.insert_one(doc)
+    return event
+
+@api_router.get("/events", response_model=List[Event])
+async def get_events(
+    event_type: Optional[str] = None,
+    status: Optional[str] = None,
+    city: Optional[str] = None,
+    limit: int = 100
+):
+    query = {}
+    if event_type:
+        query['event_type'] = event_type
+    if status:
+        query['status'] = status
+    if city:
+        query['city'] = city
+    
+    events = await db.events.find(query, {"_id": 0}).sort("start_date", 1).limit(limit).to_list(limit)
+    for event in events:
+        if isinstance(event.get('created_at'), str):
+            event['created_at'] = datetime.fromisoformat(event['created_at'])
+        if isinstance(event.get('updated_at'), str):
+            event['updated_at'] = datetime.fromisoformat(event['updated_at'])
+    return events
+
+@api_router.get("/events/{event_id}", response_model=Event)
+async def get_event(event_id: str):
+    event = await db.events.find_one({"id": event_id}, {"_id": 0})
+    if not event:
+        raise HTTPException(status_code=404, detail="Event not found")
+    if isinstance(event.get('created_at'), str):
+        event['created_at'] = datetime.fromisoformat(event['created_at'])
+    if isinstance(event.get('updated_at'), str):
+        event['updated_at'] = datetime.fromisoformat(event['updated_at'])
+    return event
+
+@api_router.put("/events/{event_id}", response_model=Event)
+async def update_event(event_id: str, event_data: EventUpdate, current_user: dict = Depends(get_current_user)):
+    update_data = {k: v for k, v in event_data.model_dump().items() if v is not None}
+    update_data['updated_at'] = datetime.now(timezone.utc).isoformat()
+    
+    result = await db.events.update_one({"id": event_id}, {"$set": update_data})
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Event not found")
+    
+    updated = await db.events.find_one({"id": event_id}, {"_id": 0})
+    if isinstance(updated.get('created_at'), str):
+        updated['created_at'] = datetime.fromisoformat(updated['created_at'])
+    if isinstance(updated.get('updated_at'), str):
+        updated['updated_at'] = datetime.fromisoformat(updated['updated_at'])
+    return updated
+
+@api_router.delete("/events/{event_id}")
+async def delete_event(event_id: str, current_user: dict = Depends(get_current_user)):
+    result = await db.events.delete_one({"id": event_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Event not found")
+    return {"message": "Event deleted successfully"}
+
+# Event Registrations
+@api_router.post("/events/{event_id}/register")
+async def register_for_event(event_id: str, current_user: dict = Depends(get_current_user)):
+    # Check if event exists
+    event = await db.events.find_one({"id": event_id}, {"_id": 0})
+    if not event:
+        raise HTTPException(status_code=404, detail="Event not found")
+    
+    # Check if already registered
+    existing = await db.event_registrations.find_one({
+        "event_id": event_id,
+        "member_id": current_user['id']
+    }, {"_id": 0})
+    if existing:
+        raise HTTPException(status_code=400, detail="Already registered for this event")
+    
+    # Check max participants
+    if event.get('max_participants') and event['current_participants'] >= event['max_participants']:
+        raise HTTPException(status_code=400, detail="Event is full")
+    
+    # Create registration
+    registration = EventRegistration(
+        event_id=event_id,
+        member_id=current_user['id'],
+        member_name=current_user['full_name'],
+        member_email=current_user['email']
+    )
+    doc = registration.model_dump()
+    doc['registration_date'] = doc['registration_date'].isoformat()
+    
+    await db.event_registrations.insert_one(doc)
+    
+    # Update event participants count
+    await db.events.update_one({"id": event_id}, {"$inc": {"current_participants": 1}})
+    
+    return registration
+
+@api_router.get("/events/{event_id}/registrations", response_model=List[EventRegistration])
+async def get_event_registrations(event_id: str, current_user: dict = Depends(get_current_user)):
+    registrations = await db.event_registrations.find({"event_id": event_id}, {"_id": 0}).to_list(1000)
+    for reg in registrations:
+        if isinstance(reg.get('registration_date'), str):
+            reg['registration_date'] = datetime.fromisoformat(reg['registration_date'])
+    return registrations
+
+@api_router.get("/my-registrations", response_model=List[EventRegistration])
+async def get_my_registrations(current_user: dict = Depends(get_current_user)):
+    registrations = await db.event_registrations.find({"member_id": current_user['id']}, {"_id": 0}).to_list(1000)
+    for reg in registrations:
+        if isinstance(reg.get('registration_date'), str):
+            reg['registration_date'] = datetime.fromisoformat(reg['registration_date'])
+    return registrations
+
+@api_router.delete("/events/{event_id}/register")
+async def unregister_from_event(event_id: str, current_user: dict = Depends(get_current_user)):
+    result = await db.event_registrations.delete_one({
+        "event_id": event_id,
+        "member_id": current_user['id']
+    })
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Registration not found")
+    
+    # Update event participants count
+    await db.events.update_one({"id": event_id}, {"$inc": {"current_participants": -1}})
+    
+    return {"message": "Unregistered successfully"}
+
 app.include_router(api_router)
 
 app.add_middleware(
