@@ -281,6 +281,14 @@ async def register(user_data: UserCreate):
     insert_doc = {k: v for k, v in doc.items()}
     await db.users.insert_one(insert_doc)
     
+    # Send welcome email (non-blocking)
+    asyncio.create_task(send_email(
+        to_email=user.email,
+        subject=f"Bienvenue à l'Académie Jacques Levinet, {user.full_name} !",
+        html_content=get_welcome_email_html(user.full_name, user.email),
+        text_content=f"Bienvenue {user.full_name}! Votre compte a été créé avec succès."
+    ))
+    
     token = create_token(user.id, user.email)
     user_response = {k: v for k, v in doc.items() if k != 'password_hash' and k != '_id'}
     
