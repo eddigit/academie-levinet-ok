@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
 import axios from 'axios';
-import { Users, Filter, Mail, Phone, MapPin } from 'lucide-react';
+import { Users, Filter, Mail, Phone, MapPin, User, UserCircle, Shield, Sparkles, Phone as PhoneIcon, CheckCircle } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { toast } from 'sonner';
 
