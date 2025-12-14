@@ -212,7 +212,7 @@ async def login(credentials: UserLogin):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     
     token = create_token(user['id'], user['email'])
-    user_response = {k: v for k, v in user.items() if k != 'password_hash'}
+    user_response = {k: v for k, v in user.items() if k != 'password_hash' and k != '_id'}
     
     return {"token": token, "user": user_response}
 
