@@ -439,6 +439,70 @@ async def get_dashboard_stats(current_user: dict = Depends(get_current_user)):
         "recent_members": recent_members_list
     }
 
+# Leads Routes
+@api_router.post("/leads", response_model=Lead)
+async def create_lead(lead_data: LeadCreate):
+    lead = Lead(**lead_data.model_dump())
+    doc = lead.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    
+    await db.leads.insert_one(doc)
+    return lead
+
+@api_router.get("/leads", response_model=List[Lead])
+async def get_leads(
+    status: Optional[str] = None,
+    person_type: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    query = {}
+    if status:
+        query['status'] = status
+    if person_type:
+        query['person_type'] = person_type
+    
+    leads = await db.leads.find(query, {"_id": 0}).to_list(1000)
+    for lead in leads:
+        if isinstance(lead.get('created_at'), str):
+            lead['created_at'] = datetime.fromisoformat(lead['created_at'])
+    return leads
+
+@api_router.get("/leads/{lead_id}", response_model=Lead)
+async def get_lead(lead_id: str, current_user: dict = Depends(get_current_user)):
+    lead = await db.leads.find_one({"id": lead_id}, {"_id": 0})
+    if not lead:
+        raise HTTPException(status_code=404, detail="Lead not found")
+    if isinstance(lead.get('created_at'), str):
+        lead['created_at'] = datetime.fromisoformat(lead['created_at'])
+    return lead
+
+@api_router.put("/leads/{lead_id}/status")
+async def update_lead_status(
+    lead_id: str,
+    status: LeadStatus,
+    notes: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    update_data = {"status": status}
+    if notes:
+        update_data["notes"] = notes
+    
+    result = await db.leads.update_one({"id": lead_id}, {"$set": update_data})
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Lead not found")
+    
+    updated = await db.leads.find_one({"id": lead_id}, {"_id": 0})
+    if isinstance(updated.get('created_at'), str):
+        updated['created_at'] = datetime.fromisoformat(updated['created_at'])
+    return updated
+
+@api_router.delete("/leads/{lead_id}")
+async def delete_lead(lead_id: str, current_user: dict = Depends(get_current_user)):
+    result = await db.leads.delete_one({"id": lead_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Lead not found")
+    return {"message": "Lead deleted successfully"}
+
 app.include_router(api_router)
 
 app.add_middleware(
