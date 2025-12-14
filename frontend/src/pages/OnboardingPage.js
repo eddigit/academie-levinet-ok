@@ -24,19 +24,19 @@ const OnboardingPage = () => {
   });
 
   const personTypes = [
-    { value: 'Femme', label: 'Femme', icon: '👩', description: 'Self-défense féminine SFJL' },
-    { value: 'Homme', label: 'Homme', icon: '👨', description: 'Autodéfense efficace' },
-    { value: 'Enfant', label: 'Enfant', icon: '👶', description: 'Discipline et respect' },
-    { value: 'Professionnel', label: 'Professionnel', icon: '🛡️', description: 'Formation IPC/ROS' }
+    { value: 'Femme', label: 'Femme', icon: 'User', description: 'Self-défense féminine SFJL' },
+    { value: 'Homme', label: 'Homme', icon: 'UserCircle', description: 'Autodéfense efficace' },
+    { value: 'Enfant', label: 'Enfant', icon: 'Baby', description: 'Discipline et respect' },
+    { value: 'Professionnel', label: 'Professionnel', icon: 'Shield', description: 'Formation IPC/ROS' }
   ];
 
   const motivationOptions = [
-    { value: 'Sécurité personnelle', label: 'Sécurité personnelle', icon: '🛡️' },
-    { value: 'Confiance en soi', label: 'Confiance en soi', icon: '💪' },
-    { value: 'Condition physique', label: 'Condition physique', icon: '🏃' },
-    { value: 'Carrière professionnelle', label: 'Carrière professionnelle', icon: '👮' },
-    { value: 'Protection familiale', label: 'Protection familiale', icon: '👨‍👩‍👧' },
-    { value: 'Développement personnel', label: 'Développement personnel', icon: '🎯' }
+    { value: 'Sécurité personnelle', label: 'Sécurité personnelle', icon: 'ShieldCheck' },
+    { value: 'Confiance en soi', label: 'Confiance en soi', icon: 'Sparkles' },
+    { value: 'Condition physique', label: 'Condition physique', icon: 'Activity' },
+    { value: 'Carrière professionnelle', label: 'Carrière professionnelle', icon: 'Briefcase' },
+    { value: 'Protection familiale', label: 'Protection familiale', icon: 'Home' },
+    { value: 'Développement personnel', label: 'Développement personnel', icon: 'Target' }
   ];
 
   const handlePersonTypeSelect = (type) => {
