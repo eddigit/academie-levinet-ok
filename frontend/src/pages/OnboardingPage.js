@@ -153,23 +153,26 @@ const OnboardingPage = () => {
                 Sélectionnez une ou plusieurs options (minimum 1)
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {motivationOptions.map((motivation) => (
-                  <button
-                    key={motivation.value}
-                    data-testid={`motivation-${motivation.value.toLowerCase().replace(/\s+/g, '-')}`}
-                    onClick={() => handleMotivationToggle(motivation.value)}
-                    className={`p-6 rounded-lg border-2 transition-all duration-300 text-center ${
-                      formData.motivations.includes(motivation.value)
-                        ? 'border-primary bg-primary/10'
-                        : 'border-border hover:border-primary/50'
-                    }`}
-                  >
-                    <div className="text-4xl mb-3">{motivation.icon}</div>
-                    <h3 className="font-oswald text-sm font-bold text-text-primary uppercase">
-                      {motivation.label}
-                    </h3>
-                  </button>
-                ))}
+                {motivationOptions.map((motivation) => {
+                  const IconComponent = iconComponents[motivation.icon];
+                  return (
+                    <button
+                      key={motivation.value}
+                      data-testid={`motivation-${motivation.value.toLowerCase().replace(/\s+/g, '-')}`}
+                      onClick={() => handleMotivationToggle(motivation.value)}
+                      className={`p-6 rounded-lg border-2 transition-all duration-300 text-center ${
+                        formData.motivations.includes(motivation.value)
+                          ? 'border-primary bg-primary/10'
+                          : 'border-border hover:border-primary/50'
+                      }`}
+                    >
+                      <IconComponent className="w-10 h-10 mb-3 mx-auto text-primary" strokeWidth={1} />
+                      <h3 className="font-oswald text-sm font-bold text-text-primary uppercase">
+                        {motivation.label}
+                      </h3>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
