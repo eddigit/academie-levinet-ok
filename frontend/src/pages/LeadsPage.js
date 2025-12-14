@@ -107,7 +107,7 @@ const LeadsPage = () => {
           <div className="stat-card">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
-                <span className="text-2xl">✨</span>
+                <Sparkles className="w-6 h-6 text-primary" strokeWidth={1.5} />
               </div>
               <div>
                 <p className="text-sm text-text-secondary font-manrope">Nouveaux</p>
@@ -118,7 +118,7 @@ const LeadsPage = () => {
           <div className="stat-card">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center">
-                <span className="text-2xl">📞</span>
+                <PhoneIcon className="w-6 h-6 text-accent" strokeWidth={1.5} />
               </div>
               <div>
                 <p className="text-sm text-text-secondary font-manrope">Contactés</p>
@@ -129,7 +129,7 @@ const LeadsPage = () => {
           <div className="stat-card">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
-                <span className="text-2xl">✅</span>
+                <CheckCircle className="w-6 h-6 text-green-500" strokeWidth={1.5} />
               </div>
               <div>
                 <p className="text-sm text-text-secondary font-manrope">Convertis</p>
