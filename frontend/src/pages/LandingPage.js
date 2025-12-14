@@ -147,20 +147,20 @@ const LandingPage = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-90" />
               
               <div className="absolute inset-0 flex flex-col justify-end p-8">
-                <div className="relative translate-y-4 transform overflow-hidden rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-md transition-all duration-500 group-hover:translate-y-0 group-hover:bg-white/10">
+                <div className="relative overflow-hidden rounded-xl border border-white/10 bg-white/10 p-6 backdrop-blur-md transition-all duration-500 group-hover:bg-white/15">
                   <div className="absolute left-0 top-0 h-full w-1 bg-accent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                   
                   <h4 className="font-oswald text-3xl font-bold uppercase tracking-tight text-white">
                     Grand Public
                   </h4>
                   
-                  <p className="mt-3 font-manrope text-base text-gray-300 opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:delay-100">
+                  <p className="mt-3 font-manrope text-base text-gray-300 transition-all duration-300">
                     Hommes, femmes, enfants : développez votre confiance, forme physique et sécurité personnelle
                   </p>
 
-                  <div className="mt-6 flex items-center gap-2 opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:delay-200">
+                  <div className="mt-6 flex items-center gap-2 transition-all duration-300">
                     <span className="font-oswald text-sm font-bold uppercase tracking-wider text-accent">Découvrir</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-accent"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-accent transition-transform duration-300 group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                   </div>
                 </div>
               </div>
