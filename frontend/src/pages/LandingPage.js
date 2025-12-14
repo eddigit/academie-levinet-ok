@@ -68,7 +68,7 @@ const LandingPage = () => {
           </p>
           <div className="flex gap-6 justify-center flex-wrap">
             <Link 
-              to="/login" 
+              to="/onboarding" 
               data-testid="hero-cta-button"
               className="px-8 py-4 bg-primary hover:bg-primary-dark text-white font-oswald uppercase text-lg tracking-wider rounded-sm transition-smooth glow-effect"
             >
