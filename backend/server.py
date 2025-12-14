@@ -61,6 +61,18 @@ class LeadStatus(str, Enum):
     CONVERTED = "Converti"
     NOT_INTERESTED = "Non intéressé"
 
+class NewsCategory(str, Enum):
+    EVENT = "Événement"
+    RESULT = "Résultat"
+    TRAINING = "Formation"
+    ANNOUNCEMENT = "Annonce"
+    ACHIEVEMENT = "Réussite"
+    TECHNIQUE = "Technique"
+
+class NewsStatus(str, Enum):
+    DRAFT = "Brouillon"
+    PUBLISHED = "Publié"
+
 # Models
 class User(BaseModel):
     model_config = ConfigDict(extra="ignore")
