@@ -501,6 +501,25 @@ async def create_lead(lead_data: LeadCreate):
     doc['created_at'] = doc['created_at'].isoformat()
     
     await db.leads.insert_one(doc)
+    
+    # Send confirmation email to lead (non-blocking)
+    asyncio.create_task(send_email(
+        to_email=lead.email,
+        subject="Votre demande a bien été reçue - Académie Jacques Levinet",
+        html_content=get_lead_confirmation_html(lead.full_name),
+        text_content=f"Bonjour {lead.full_name}, nous avons bien reçu votre demande et nous vous contacterons sous 48h."
+    ))
+    
+    # Send notification to admin (non-blocking)
+    admin_email = os.environ.get('SMTP_FROM_EMAIL')
+    if admin_email:
+        asyncio.create_task(send_email(
+            to_email=admin_email,
+            subject=f"🎯 Nouveau Lead : {lead.full_name} ({lead.person_type})",
+            html_content=get_lead_notification_html(doc),
+            text_content=f"Nouveau lead reçu : {lead.full_name} - {lead.email}"
+        ))
+    
     return lead
 
 @api_router.get("/leads", response_model=List[Lead])
