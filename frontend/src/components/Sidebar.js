@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, UserCog, CreditCard, LogOut, UserPlus, Newspaper } from 'lucide-react';
+import { LayoutDashboard, Users, UserCog, CreditCard, LogOut, UserPlus, Newspaper, Calendar } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const Sidebar = () => {
@@ -10,6 +10,7 @@ const Sidebar = () => {
   const menuItems = [
     { path: '/dashboard', icon: LayoutDashboard, label: 'Tableau de Bord', testId: 'nav-dashboard' },
     { path: '/news', icon: Newspaper, label: 'News', testId: 'nav-news' },
+    { path: '/events', icon: Calendar, label: 'Événements', testId: 'nav-events' },
     { path: '/leads', icon: UserPlus, label: 'Leads', testId: 'nav-leads' },
     { path: '/members', icon: Users, label: 'Membres', testId: 'nav-members' },
     { path: '/technical-directors', icon: UserCog, label: 'Directeurs Techniques', testId: 'nav-directors' },
