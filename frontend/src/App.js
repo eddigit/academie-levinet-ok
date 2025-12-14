@@ -87,6 +87,14 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/news"
+            element={
+              <ProtectedRoute>
+                <NewsPage />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
