@@ -1,0 +1,154 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Shield, Users, Award, Globe } from 'lucide-react';
+
+const LandingPage = () => {
+  return (
+    <div className="min-h-screen bg-background" data-testid="landing-page">
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 glassmorphism border-b border-white/5">
+        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <img 
+              src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/e712cc50_LOGO-WORLD-KRAV-MAGA-ORGANIZATION-150x150.png" 
+              alt="Logo" 
+              className="w-12 h-12"
+              data-testid="header-logo"
+            />
+            <div>
+              <h1 className="font-oswald text-xl font-bold text-text-primary uppercase tracking-wide">
+                Académie Jacques Levinet
+              </h1>
+              <p className="text-xs text-text-secondary font-manrope">Self-Pro Krav</p>
+            </div>
+          </div>
+          <Link 
+            to="/login" 
+            data-testid="header-login-button"
+            className="px-6 py-2 bg-primary hover:bg-primary-dark text-white font-oswald uppercase tracking-wider rounded-sm transition-smooth glow-effect"
+          >
+            Connexion
+          </Link>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section 
+        className="pt-32 pb-20 px-6 relative overflow-hidden" 
+        style={{
+          backgroundImage: `linear-gradient(rgba(11, 17, 32, 0.9), rgba(11, 17, 32, 0.95)), url('https://images.unsplash.com/photo-1740895307943-7878df384db1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODF8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBneW0lMjBpbnRlcmlvciUyMGRhcmt8ZW58MHx8fHwxNzY1NzM2Njg3fDA&ixlib=rb-4.1.0&q=85')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+        data-testid="hero-section"
+      >
+        <div className="container mx-auto text-center max-w-4xl">
+          <h2 className="font-oswald text-5xl md:text-6xl lg:text-7xl font-bold text-text-primary uppercase mb-6 tracking-wide">
+            Excellence en Self-Défense
+          </h2>
+          <p className="text-xl md:text-2xl text-text-secondary font-manrope mb-12 leading-relaxed">
+            La première plateforme mondiale de gestion pour l'Académie Jacques Levinet SPK.
+            Formez-vous avec les meilleurs directeurs techniques internationaux.
+          </p>
+          <div className="flex gap-6 justify-center flex-wrap">
+            <Link 
+              to="/login" 
+              data-testid="hero-cta-button"
+              className="px-8 py-4 bg-primary hover:bg-primary-dark text-white font-oswald uppercase text-lg tracking-wider rounded-sm transition-smooth glow-effect"
+            >
+              Accéder à la Plateforme
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20 px-6 bg-paper" data-testid="features-section">
+        <div className="container mx-auto">
+          <h3 className="font-oswald text-4xl font-bold text-center text-text-primary uppercase mb-16 tracking-wide">
+            Fonctionnalités Principales
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="stat-card text-center" data-testid="feature-card-members">
+              <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="w-8 h-8 text-primary" />
+              </div>
+              <h4 className="font-oswald text-xl font-bold text-text-primary uppercase mb-3">Gestion des Membres</h4>
+              <p className="text-text-secondary font-manrope leading-relaxed">
+                Suivez tous vos adhérents par pays, ville et directeur technique
+              </p>
+            </div>
+
+            <div className="stat-card text-center" data-testid="feature-card-directors">
+              <div className="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Globe className="w-8 h-8 text-secondary" />
+              </div>
+              <h4 className="font-oswald text-xl font-bold text-text-primary uppercase mb-3">Réseau International</h4>
+              <p className="text-text-secondary font-manrope leading-relaxed">
+                Directeurs techniques dans le monde entier avec leurs salles
+              </p>
+            </div>
+
+            <div className="stat-card text-center" data-testid="feature-card-grades">
+              <div className="w-16 h-16 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Award className="w-8 h-8 text-accent" />
+              </div>
+              <h4 className="font-oswald text-xl font-bold text-text-primary uppercase mb-3">Grades & Performances</h4>
+              <p className="text-text-secondary font-manrope leading-relaxed">
+                Suivi des grades, ceintures et performances de chaque membre
+              </p>
+            </div>
+
+            <div className="stat-card text-center" data-testid="feature-card-security">
+              <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Shield className="w-8 h-8 text-primary" />
+              </div>
+              <h4 className="font-oswald text-xl font-bold text-text-primary uppercase mb-3">Plateforme Sécurisée</h4>
+              <p className="text-text-secondary font-manrope leading-relaxed">
+                Accès sécurisé avec gestion des droits et permissions
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section 
+        className="py-20 px-6 relative" 
+        style={{
+          backgroundImage: `linear-gradient(rgba(11, 17, 32, 0.85), rgba(11, 17, 32, 0.9)), url('https://images.unsplash.com/photo-1644594570589-ef85bd03169f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njd8MHwxfHNlYXJjaHwyfHxrcmF2JTIwbWFnYSUyMHRyYWluaW5nJTIwY2xhc3N8ZW58MHx8fHwxNzY1NzM2Njg0fDA&ixlib=rb-4.1.0&q=85')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+        data-testid="cta-section"
+      >
+        <div className="container mx-auto text-center max-w-3xl">
+          <h3 className="font-oswald text-4xl md:text-5xl font-bold text-text-primary uppercase mb-6 tracking-wide">
+            Rejoignez le Mouvement SPK
+          </h3>
+          <p className="text-lg text-text-secondary font-manrope mb-10 leading-relaxed">
+            Académie Jacques Levinet - L'excellence en Self-Pro Krav partout dans le monde
+          </p>
+          <Link 
+            to="/login" 
+            data-testid="cta-button"
+            className="inline-block px-8 py-4 bg-primary hover:bg-primary-dark text-white font-oswald uppercase text-lg tracking-wider rounded-sm transition-smooth glow-effect"
+          >
+            Commencer Maintenant
+          </Link>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-paper py-8 px-6 border-t border-white/5" data-testid="footer">
+        <div className="container mx-auto text-center">
+          <p className="text-text-secondary font-manrope">
+            © 2025 Académie Jacques Levinet. Tous droits réservés.
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default LandingPage;
