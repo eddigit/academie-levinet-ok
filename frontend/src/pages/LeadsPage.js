@@ -63,11 +63,11 @@ const LeadsPage = () => {
 
   const getPersonTypeIcon = (type) => {
     switch (type) {
-      case 'Femme': return '👩';
-      case 'Homme': return '👨';
-      case 'Enfant': return '👶';
-      case 'Professionnel': return '🛡️';
-      default: return '👤';
+      case 'Femme': return User;
+      case 'Homme': return UserCircle;
+      case 'Enfant': return User;
+      case 'Professionnel': return Shield;
+      default: return User;
     }
   };
 
