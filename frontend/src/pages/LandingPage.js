@@ -303,17 +303,23 @@ const LandingPage = () => {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
               <div className="bg-background/50 backdrop-blur-sm rounded-lg p-6 border border-white/10">
-                <div className="text-4xl mb-3">💪</div>
+                <div className="w-12 h-12 bg-secondary/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Sparkles className="w-7 h-7 text-secondary" strokeWidth={1} />
+                </div>
                 <h5 className="font-oswald text-lg font-bold text-text-primary uppercase mb-2">Empowerment</h5>
                 <p className="text-text-secondary font-manrope text-sm">Développez votre confiance et votre force intérieure</p>
               </div>
               <div className="bg-background/50 backdrop-blur-sm rounded-lg p-6 border border-white/10">
-                <div className="text-4xl mb-3">🎯</div>
+                <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Target className="w-7 h-7 text-accent" strokeWidth={1} />
+                </div>
                 <h5 className="font-oswald text-lg font-bold text-text-primary uppercase mb-2">Scénarios Réalistes</h5>
                 <p className="text-text-secondary font-manrope text-sm">Techniques adaptées aux situations réelles</p>
               </div>
               <div className="bg-background/50 backdrop-blur-sm rounded-lg p-6 border border-white/10">
-                <div className="text-4xl mb-3">🛡️</div>
+                <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Shield className="w-7 h-7 text-primary" strokeWidth={1} />
+                </div>
                 <h5 className="font-oswald text-lg font-bold text-text-primary uppercase mb-2">Sans Agressivité</h5>
                 <p className="text-text-secondary font-manrope text-sm">Pratique sûre et respectueuse</p>
               </div>
