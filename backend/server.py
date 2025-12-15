@@ -310,6 +310,43 @@ class EventRegistrationCreate(BaseModel):
     event_id: str
     member_id: str
 
+# Messaging Models
+class Conversation(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    participants: List[str]  # List of user IDs
+    participant_names: List[str]  # List of user names for display
+    last_message: Optional[str] = None
+    last_message_at: Optional[datetime] = None
+    last_sender_id: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class ConversationCreate(BaseModel):
+    recipient_id: str
+
+class Message(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    conversation_id: str
+    sender_id: str
+    sender_name: str
+    content: str
+    read: bool = False
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class MessageCreate(BaseModel):
+    content: str
+
+class MessageResponse(BaseModel):
+    id: str
+    conversation_id: str
+    sender_id: str
+    sender_name: str
+    content: str
+    read: bool
+    created_at: datetime
+
 class DashboardStats(BaseModel):
     total_members: int
     total_revenue: float
