@@ -22,6 +22,8 @@ import DisciplineIPCPage from './pages/DisciplineIPCPage';
 import PedagogyPage from './pages/PedagogyPage';
 import InternationalPage from './pages/InternationalPage';
 import JoinPage from './pages/JoinPage';
+import MessagingPage from './pages/MessagingPage';
+import AdminMessagesPage from './pages/AdminMessagesPage';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 const ProtectedRoute = ({ children }) => {
