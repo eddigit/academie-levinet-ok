@@ -113,3 +113,6 @@ export const api = {
     return response.data;
   },
 };
+
+// Export axios instance for direct API calls (get, post, put, delete)
+export default apiInstance;
