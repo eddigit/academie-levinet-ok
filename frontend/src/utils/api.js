@@ -8,6 +8,20 @@ const getAuthHeader = () => {
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
+// Create axios instance for direct calls
+const apiInstance = axios.create({
+  baseURL: API,
+});
+
+// Add auth header interceptor
+apiInstance.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 export const api = {
   // Dashboard
   getDashboardStats: async () => {
