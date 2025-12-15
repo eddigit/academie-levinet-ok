@@ -47,9 +47,21 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+          {/* Public pages */}
           <Route path="/" element={<LandingPage />} />
+          <Route path="/founder" element={<FounderPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/disciplines/spk" element={<DisciplineSPKPage />} />
+          <Route path="/disciplines/wkmo" element={<DisciplineWKMOPage />} />
+          <Route path="/disciplines/sfjl" element={<DisciplineSFJLPage />} />
+          <Route path="/disciplines/ipc" element={<DisciplineIPCPage />} />
+          <Route path="/pedagogy" element={<PedagogyPage />} />
+          <Route path="/international" element={<InternationalPage />} />
+          <Route path="/join" element={<JoinPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/login" element={<LoginPage />} />
+          
+          {/* Protected admin routes */}
           <Route
             path="/dashboard"
             element={
