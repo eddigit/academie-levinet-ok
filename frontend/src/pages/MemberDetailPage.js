@@ -8,13 +8,13 @@ import { toast } from 'sonner';
 
 // Belt grade to color mapping
 const beltColors = {
-  'Ceinture Blanche': { bg: 'from-gray-100 to-white', ring: 'ring-gray-200', text: 'text-gray-800', accent: '#E5E7EB' },
-  'Ceinture Jaune': { bg: 'from-yellow-400 to-yellow-300', ring: 'ring-yellow-400', text: 'text-yellow-900', accent: '#FBBF24' },
-  'Ceinture Orange': { bg: 'from-orange-500 to-orange-400', ring: 'ring-orange-500', text: 'text-orange-900', accent: '#F97316' },
-  'Ceinture Verte': { bg: 'from-green-500 to-green-400', ring: 'ring-green-500', text: 'text-green-900', accent: '#22C55E' },
-  'Ceinture Bleue': { bg: 'from-blue-500 to-blue-400', ring: 'ring-blue-500', text: 'text-blue-900', accent: '#3B82F6' },
-  'Ceinture Marron': { bg: 'from-amber-700 to-amber-600', ring: 'ring-amber-700', text: 'text-amber-100', accent: '#B45309' },
-  'Ceinture Noire': { bg: 'from-gray-900 to-gray-800', ring: 'ring-gray-900', text: 'text-white', accent: '#1F2937' },
+  'Ceinture Blanche': { bg: 'from-gray-100 to-white', ring: 'ring-gray-200', text: 'text-gray-800', accent: '#E5E7EB', badgeBg: '#E5E7EB', badgeText: '#1F2937' },
+  'Ceinture Jaune': { bg: 'from-yellow-400 to-yellow-300', ring: 'ring-yellow-400', text: 'text-yellow-900', accent: '#FBBF24', badgeBg: '#FBBF24', badgeText: '#1F2937' },
+  'Ceinture Orange': { bg: 'from-orange-500 to-orange-400', ring: 'ring-orange-500', text: 'text-orange-900', accent: '#F97316', badgeBg: '#F97316', badgeText: '#FFFFFF' },
+  'Ceinture Verte': { bg: 'from-green-500 to-green-400', ring: 'ring-green-500', text: 'text-green-900', accent: '#22C55E', badgeBg: '#22C55E', badgeText: '#FFFFFF' },
+  'Ceinture Bleue': { bg: 'from-blue-500 to-blue-400', ring: 'ring-blue-500', text: 'text-blue-900', accent: '#3B82F6', badgeBg: '#3B82F6', badgeText: '#FFFFFF' },
+  'Ceinture Marron': { bg: 'from-amber-700 to-amber-600', ring: 'ring-amber-700', text: 'text-amber-100', accent: '#B45309', badgeBg: '#B45309', badgeText: '#FFFFFF' },
+  'Ceinture Noire': { bg: 'from-gray-900 to-gray-800', ring: 'ring-gray-900', text: 'text-white', accent: '#374151', badgeBg: '#1F2937', badgeText: '#FFFFFF' },
 };
 
 const getBeltColor = (grade) => {
