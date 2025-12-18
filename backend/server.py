@@ -1260,11 +1260,21 @@ async def admin_get_all_conversations(
 
 # Payment packages (fixed prices - never accept amounts from frontend)
 PAYMENT_PACKAGES = {
-    "cotisation_standard": {"name": "Cotisation Standard", "amount": 50.00, "currency": "eur"},
-    "cotisation_premium": {"name": "Cotisation Premium", "amount": 100.00, "currency": "eur"},
-    "cotisation_vip": {"name": "Cotisation VIP", "amount": 200.00, "currency": "eur"},
-    "stage": {"name": "Stage", "amount": 150.00, "currency": "eur"},
-    "formation_en_ligne": {"name": "Formation en Ligne", "amount": 99.00, "currency": "eur"},
+    "licence": {
+        "name": "Licence Membre (Droit d'entrée)",
+        "amount": 35.00,
+        "currency": "eur",
+        "type": "one_time",
+        "description": "Licence obligatoire pour l'assurance - Droit d'entrée à l'inscription"
+    },
+    "premium": {
+        "name": "Abonnement Premium",
+        "amount": 5.99,
+        "currency": "eur",
+        "type": "subscription",
+        "interval": "month",
+        "description": "10% de remise sur la boutique, 10% sur les stages, et autres avantages premium"
+    },
 }
 
 class CheckoutRequest(BaseModel):
