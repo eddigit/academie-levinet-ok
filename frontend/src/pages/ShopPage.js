@@ -90,11 +90,25 @@ const ProductCard = ({ product, onAddToCart }) => {
             {product.price.toFixed(2)}€
           </p>
           <button
-            disabled={product.stock === 0}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-semibold text-sm hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleAddToCart}
+            disabled={product.stock === 0 || added}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm transition-all disabled:cursor-not-allowed ${
+              added 
+                ? 'bg-green-500 text-white' 
+                : 'bg-primary text-white hover:bg-primary-dark disabled:opacity-50'
+            }`}
           >
-            <ShoppingBag className="w-4 h-4" />
-            Ajouter
+            {added ? (
+              <>
+                <Check className="w-4 h-4" />
+                Ajouté !
+              </>
+            ) : (
+              <>
+                <ShoppingBag className="w-4 h-4" />
+                Ajouter
+              </>
+            )}
           </button>
         </div>
       </div>
@@ -103,6 +117,7 @@ const ProductCard = ({ product, onAddToCart }) => {
 };
 
 const ShopPage = () => {
+  const { addItem, getItemCount, openCart } = useCart();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
