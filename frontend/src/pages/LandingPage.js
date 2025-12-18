@@ -61,14 +61,14 @@ const LandingPage = () => {
 
         {/* Content */}
         <div className="container mx-auto text-center max-w-4xl relative z-10">
-          <h2 className="font-oswald text-5xl md:text-6xl lg:text-7xl font-bold text-text-primary uppercase mb-6 tracking-wide drop-shadow-2xl">
-            La Self-Défense Efficace, Réaliste et Sécurisée
+          <h2 className="font-oswald text-5xl md:text-6xl lg:text-7xl font-bold text-text-primary uppercase mb-10 tracking-wide drop-shadow-2xl leading-tight">
+            La Self-Défense Efficace,<br />Réaliste et Sécurisée
           </h2>
           <p className="text-xl md:text-2xl text-text-secondary font-manrope mb-8 leading-relaxed drop-shadow-lg">
             Validée par l'Expérience d'Élite du Capitaine Jacques Levinet
           </p>
           <p className="text-lg md:text-xl text-text-primary/90 font-manrope mb-12 leading-relaxed drop-shadow-lg max-w-3xl mx-auto">
-            Champion du Monde de Karaté · Capitaine de Gendarmerie · Méthode SPK Brevetée
+            Méthode brevetée par l'ex-capitaine de police et champion de France de karaté.
           </p>
           <div className="flex gap-6 justify-center flex-wrap">
             <Link 
