@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import MemberSidebar from '../../components/MemberSidebar';
+import SocialWall from '../../components/SocialWall';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../utils/api';
 import { 
