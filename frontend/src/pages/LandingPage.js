@@ -99,7 +99,7 @@ const LandingPage = () => {
               <Award className="w-12 h-12 text-primary mx-auto mb-4" strokeWidth={1} />
               <h4 className="font-oswald text-xl font-bold text-text-primary uppercase mb-3">Légitimité & Expertise</h4>
               <p className="text-text-secondary font-manrope leading-relaxed mb-3">
-                Héritage du Capitaine Jacques Levinet, Champion du Monde de Karaté
+                Héritage du Capitaine Jacques Levinet, Champion de France de Karaté
               </p>
               <p className="text-text-muted font-manrope text-sm">
                 Méthode éprouvée et reconnue mondialement (WKMO, IPC)
