@@ -191,7 +191,7 @@ const LandingPage = () => {
                     Les Femmes
                   </h4>
                   <p className="font-manrope text-base text-gray-300 mb-6 opacity-90 max-w-xs">
-                    Techniques spécifiques dans le cadre de la lutte des violences faites aux femmes
+                    Techniques spécifiques dans le cadre de la lutte contre les violences faites aux femmes
                   </p>
                   <div className="flex items-center gap-3 opacity-80 group-hover:opacity-100 transition-opacity duration-300">
                     <span className="font-oswald text-sm font-bold uppercase tracking-wider text-secondary">En savoir plus</span>
@@ -219,7 +219,7 @@ const LandingPage = () => {
                     Forces de Sécurité
                   </h4>
                   <p className="font-manrope text-base text-gray-300 mb-6 opacity-90 max-w-xs">
-                    Formation opérationnelle pour forces de l'ordre et agents de sécurité
+                    Formation opérationnelle pour les forces de l'ordre et les agents de sécurité
                   </p>
                   <div className="flex items-center gap-3 opacity-80 group-hover:opacity-100 transition-opacity duration-300">
                     <span className="font-oswald text-sm font-bold uppercase tracking-wider text-primary">Formation Pro</span>
