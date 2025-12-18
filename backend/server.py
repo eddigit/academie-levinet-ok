@@ -1546,6 +1546,182 @@ async def get_wall_stats(current_user: dict = Depends(get_current_user)):
         "recent_members": recent_members
     }
 
+# ==================== E-COMMERCE ENDPOINTS ====================
+
+class ProductCreate(BaseModel):
+    name: str
+    description: str
+    price: float
+    category: str
+    image_url: Optional[str] = None
+    stock: int = 0
+    sizes: Optional[List[str]] = None
+    is_active: bool = True
+
+class ProductUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    price: Optional[float] = None
+    category: Optional[str] = None
+    image_url: Optional[str] = None
+    stock: Optional[int] = None
+    sizes: Optional[List[str]] = None
+    is_active: Optional[bool] = None
+
+@api_router.get("/products")
+async def get_products(
+    category: Optional[str] = None,
+    active_only: bool = True
+):
+    """Get all products, optionally filtered by category"""
+    query = {}
+    if category:
+        query["category"] = category
+    if active_only:
+        query["is_active"] = True
+    
+    products = await db.products.find(query, {"_id": 0}).sort("created_at", -1).to_list(100)
+    return {"products": products}
+
+@api_router.get("/products/{product_id}")
+async def get_product(product_id: str):
+    """Get a single product by ID"""
+    product = await db.products.find_one({"id": product_id}, {"_id": 0})
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
+
+@api_router.post("/admin/products")
+async def create_product(
+    product_data: ProductCreate,
+    current_user: dict = Depends(get_current_user)
+):
+    """Admin: Create a new product"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    product = {
+        "id": str(uuid.uuid4()),
+        "name": product_data.name,
+        "description": product_data.description,
+        "price": product_data.price,
+        "category": product_data.category,
+        "image_url": product_data.image_url,
+        "stock": product_data.stock,
+        "sizes": product_data.sizes or [],
+        "is_active": product_data.is_active,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "updated_at": datetime.now(timezone.utc).isoformat()
+    }
+    await db.products.insert_one(product)
+    product.pop("_id", None)
+    return product
+
+@api_router.put("/admin/products/{product_id}")
+async def update_product(
+    product_id: str,
+    product_data: ProductUpdate,
+    current_user: dict = Depends(get_current_user)
+):
+    """Admin: Update a product"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    product = await db.products.find_one({"id": product_id})
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    
+    update_data = {k: v for k, v in product_data.dict().items() if v is not None}
+    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    
+    await db.products.update_one({"id": product_id}, {"$set": update_data})
+    
+    updated = await db.products.find_one({"id": product_id}, {"_id": 0})
+    return updated
+
+@api_router.delete("/admin/products/{product_id}")
+async def delete_product(
+    product_id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """Admin: Delete a product"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    result = await db.products.delete_one({"id": product_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Product not found")
+    
+    return {"message": "Product deleted successfully"}
+
+@api_router.get("/admin/products")
+async def admin_get_products(
+    current_user: dict = Depends(get_current_user)
+):
+    """Admin: Get all products including inactive ones"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    products = await db.products.find({}, {"_id": 0}).sort("created_at", -1).to_list(100)
+    return {"products": products}
+
+@api_router.get("/admin/orders")
+async def admin_get_orders(
+    status: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    """Admin: Get all orders"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    query = {}
+    if status:
+        query["status"] = status
+    
+    orders = await db.orders.find(query, {"_id": 0}).sort("created_at", -1).to_list(100)
+    return {"orders": orders}
+
+@api_router.put("/admin/orders/{order_id}/status")
+async def update_order_status(
+    order_id: str,
+    status: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """Admin: Update order status"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    result = await db.orders.update_one(
+        {"id": order_id},
+        {"$set": {"status": status, "updated_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Order not found")
+    
+    return {"message": "Order status updated"}
+
+@api_router.get("/shop/stats")
+async def get_shop_stats(current_user: dict = Depends(get_current_user)):
+    """Get shop statistics"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    total_products = await db.products.count_documents({})
+    active_products = await db.products.count_documents({"is_active": True})
+    total_orders = await db.orders.count_documents({})
+    pending_orders = await db.orders.count_documents({"status": "En attente"})
+    
+    # Low stock products
+    low_stock = await db.products.find({"stock": {"$lt": 5}, "is_active": True}, {"_id": 0}).to_list(10)
+    
+    return {
+        "total_products": total_products,
+        "active_products": active_products,
+        "total_orders": total_orders,
+        "pending_orders": pending_orders,
+        "low_stock_products": low_stock
+    }
+
 # ==================== STRIPE PAYMENT ENDPOINTS ====================
 
 # Payment packages (fixed prices - never accept amounts from frontend)
