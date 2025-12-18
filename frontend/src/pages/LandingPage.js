@@ -380,9 +380,15 @@ const LandingPage = () => {
       {/* Valeurs Section */}
       <section className="py-20 px-6 bg-paper">
         <div className="container mx-auto max-w-4xl">
-          <h3 className="font-oswald text-4xl font-bold text-center text-text-primary uppercase mb-8 tracking-wide">
-            Pourquoi Choisir le SPK ?
+          <h3 className="font-oswald text-4xl font-bold text-center text-text-primary uppercase mb-4 tracking-wide">
+            Pourquoi Choisir Nos Méthodes ?
           </h3>
+          <p className="text-center text-text-secondary font-manrope text-lg mb-4 max-w-3xl mx-auto">
+            Des méthodes brevetées, éprouvées par des décennies d'expérience terrain
+          </p>
+          <p className="text-center text-primary font-manrope text-base mb-16 max-w-3xl mx-auto">
+            Organisme de formations professionnelles et reconnaissance Internationale
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex gap-4 p-6 bg-background/50 rounded-lg border border-white/5">
               <CheckCircle className="w-8 h-8 text-primary flex-shrink-0" strokeWidth={1.5} />
