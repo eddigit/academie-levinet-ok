@@ -236,10 +236,10 @@ const LandingPage = () => {
       <section className="py-20 px-6 bg-background">
         <div className="container mx-auto">
           <h3 className="font-oswald text-4xl font-bold text-center text-text-primary uppercase mb-4 tracking-wide">
-            Présence Mondiale
+            Communauté Mondiale
           </h3>
           <p className="text-center text-text-secondary font-manrope text-lg mb-12 max-w-3xl mx-auto">
-            L'Académie Jacques Levinet est représentée sur tous les continents avec des directeurs techniques et clubs affiliés
+            Un réseau mondial pour s'entraîner partout
           </p>
           <div className="max-w-6xl mx-auto">
             <img 
