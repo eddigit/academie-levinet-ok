@@ -108,16 +108,15 @@ const OnboardingPage = () => {
 
       // 2. Save lead/prospect data
       await api.post('/leads', {
-        type_personne: formData.person_type,
+        person_type: formData.person_type,
         motivations: formData.motivations,
         training_mode: formData.training_mode,
         nearest_club_city: formData.nearest_club_city,
-        nom: formData.full_name,
+        full_name: formData.full_name,
         email: formData.email,
-        telephone: formData.phone,
-        ville: formData.city,
-        pays: formData.country,
-        status: 'Inscription en cours'
+        phone: formData.phone,
+        city: formData.city,
+        country: formData.country
       });
 
       // 3. Create Stripe checkout for licence
