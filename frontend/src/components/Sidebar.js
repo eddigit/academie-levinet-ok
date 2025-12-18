@@ -46,7 +46,7 @@ const Sidebar = () => {
       <div className="p-6 border-b border-white/5">
         <div className="flex items-center gap-3">
           <img 
-            src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/e712cc50_LOGO-WORLD-KRAV-MAGA-ORGANIZATION-150x150.png" 
+            src="https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg" 
             alt="Académie Levinet Logo" 
             className="w-12 h-12 object-contain"
             data-testid="sidebar-logo"

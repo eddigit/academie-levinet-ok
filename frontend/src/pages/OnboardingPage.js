@@ -83,7 +83,7 @@ const OnboardingPage = () => {
         <div className="text-center mb-12">
           <Link to="/" className="inline-block mb-6">
             <img 
-              src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/e712cc50_LOGO-WORLD-KRAV-MAGA-ORGANIZATION-150x150.png" 
+              src="https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg" 
               alt="Logo" 
               className="w-20 h-20 mx-auto"
             />
