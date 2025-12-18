@@ -73,6 +73,7 @@ function App() {
           <Route path="/join" element={<JoinPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/boutique" element={<ShopPage />} />
           
           {/* Protected admin routes */}
           <Route
