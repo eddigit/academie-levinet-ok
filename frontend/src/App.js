@@ -36,7 +36,14 @@ import MemberShopPage from './pages/member/MemberShopPage';
 // Shop pages
 import ShopPage from './pages/ShopPage';
 import AdminProductsPage from './pages/AdminProductsPage';
+// Payment pages
+import PaymentSuccessPage from './pages/PaymentSuccessPage';
+import PaymentCancelPage from './pages/PaymentCancelPage';
+// Contexts
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
+// Components
+import CartDrawer from './components/CartDrawer';
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
