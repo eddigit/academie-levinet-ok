@@ -250,20 +250,20 @@ const LandingPage = () => {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12 max-w-4xl mx-auto">
             <div className="text-center">
-              <p className="text-4xl font-oswald font-bold text-primary mb-2">50+</p>
+              <p className="text-4xl font-oswald font-bold text-primary mb-2">40+</p>
               <p className="text-text-secondary font-manrope text-sm">Pays</p>
             </div>
             <div className="text-center">
-              <p className="text-4xl font-oswald font-bold text-primary mb-2">200+</p>
+              <p className="text-4xl font-oswald font-bold text-primary mb-2">40</p>
               <p className="text-text-secondary font-manrope text-sm">Directeurs Techniques</p>
             </div>
             <div className="text-center">
               <p className="text-4xl font-oswald font-bold text-primary mb-2">500+</p>
-              <p className="text-text-secondary font-manrope text-sm">Clubs</p>
+              <p className="text-text-secondary font-manrope text-sm">Clubs et Membres</p>
             </div>
             <div className="text-center">
-              <p className="text-4xl font-oswald font-bold text-primary mb-2">50K+</p>
-              <p className="text-text-secondary font-manrope text-sm">Membres</p>
+              <p className="text-4xl font-oswald font-bold text-primary mb-2">50 ans</p>
+              <p className="text-text-secondary font-manrope text-sm">d'Expertise</p>
             </div>
           </div>
         </div>
