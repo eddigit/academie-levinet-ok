@@ -1260,20 +1260,13 @@ async def admin_get_all_conversations(
 
 # Payment packages (fixed prices - never accept amounts from frontend)
 PAYMENT_PACKAGES = {
-    "licence": {
-        "name": "Licence Membre (Droit d'entrée)",
-        "amount": 35.00,
-        "currency": "eur",
-        "type": "one_time",
-        "description": "Licence obligatoire pour l'assurance - Droit d'entrée à l'inscription"
-    },
     "premium": {
         "name": "Abonnement Premium",
         "amount": 5.99,
         "currency": "eur",
         "type": "subscription",
         "interval": "month",
-        "description": "10% de remise sur la boutique, 10% sur les stages, et autres avantages premium"
+        "description": "10% de remise sur la boutique, 10% sur les cahiers techniques, 10% sur les stages"
     },
 }
 
