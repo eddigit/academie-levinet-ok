@@ -44,9 +44,9 @@ const MemberSidebar = () => {
       <div className="p-6 border-b border-white/5">
         <Link to="/" className="flex items-center gap-3">
           <img 
-            src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/e712cc50_LOGO-WORLD-KRAV-MAGA-ORGANIZATION-150x150.png" 
-            alt="Logo" 
-            className="w-12 h-12 object-contain"
+            src="https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg" 
+            alt="Logo Académie Jacques Levinet" 
+            className="w-12 h-12 rounded-full object-cover"
           />
           <div>
             <h1 className="font-oswald text-lg font-bold text-text-primary uppercase tracking-wide">
