@@ -152,6 +152,64 @@ function App() {
               </ProtectedRoute>
             }
           />
+          
+          {/* Member Area routes */}
+          <Route
+            path="/member/dashboard"
+            element={
+              <ProtectedRoute>
+                <MemberDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/member/profile"
+            element={
+              <ProtectedRoute>
+                <MemberProfile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/member/messages"
+            element={
+              <ProtectedRoute>
+                <MemberMessages />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/member/programs"
+            element={
+              <ProtectedRoute>
+                <MemberPrograms />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/member/courses"
+            element={
+              <ProtectedRoute>
+                <MemberCourses />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/member/community"
+            element={
+              <ProtectedRoute>
+                <MemberCommunity />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/member/grades"
+            element={
+              <ProtectedRoute>
+                <MemberGrades />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
