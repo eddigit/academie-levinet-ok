@@ -66,8 +66,10 @@ const ProtectedRoute = ({ children }) => {
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
+      <CartProvider>
+        <BrowserRouter>
+          <CartDrawer />
+          <Routes>
           {/* Public pages */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/founder" element={<FounderPage />} />
