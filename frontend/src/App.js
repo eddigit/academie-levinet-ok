@@ -24,6 +24,14 @@ import InternationalPage from './pages/InternationalPage';
 import JoinPage from './pages/JoinPage';
 import MessagingPage from './pages/MessagingPage';
 import AdminMessagesPage from './pages/AdminMessagesPage';
+// Member Area pages
+import MemberDashboard from './pages/member/MemberDashboard';
+import MemberProfile from './pages/member/MemberProfile';
+import MemberMessages from './pages/member/MemberMessages';
+import MemberPrograms from './pages/member/MemberPrograms';
+import MemberCourses from './pages/member/MemberCourses';
+import MemberCommunity from './pages/member/MemberCommunity';
+import MemberGrades from './pages/member/MemberGrades';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 const ProtectedRoute = ({ children }) => {
