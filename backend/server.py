@@ -1724,52 +1724,81 @@ async def get_shop_stats(current_user: dict = Depends(get_current_user)):
 
 # ==================== STRIPE PAYMENT ENDPOINTS ====================
 
-# Payment packages (fixed prices - never accept amounts from frontend)
-PAYMENT_PACKAGES = {
+# Fixed membership packages (not from frontend)
+MEMBERSHIP_PACKAGES = {
+    "licence": {
+        "name": "Licence Membre",
+        "amount": 35.00,
+        "currency": "eur",
+        "type": "one_time",
+        "description": "Cotisation annuelle - Licence obligatoire pour l'assurance"
+    },
     "premium": {
         "name": "Abonnement Premium",
         "amount": 5.99,
         "currency": "eur",
         "type": "subscription",
         "interval": "month",
-        "description": "10% de remise sur la boutique, 10% sur les cahiers techniques, 10% sur les stages"
+        "description": "10% de remise sur boutique, cahiers techniques et stages"
     },
 }
 
-class CheckoutRequest(BaseModel):
-    package_id: str
+# ---- Request Models ----
+class MembershipCheckoutRequest(BaseModel):
+    package_id: str  # "licence" or "premium"
     origin_url: str
-    metadata: Optional[Dict[str, str]] = None
+    user_id: Optional[str] = None
 
-@api_router.post("/payments/checkout")
-async def create_checkout_session(request: CheckoutRequest, http_request: Request):
-    """Create a Stripe checkout session for a payment package"""
+class CartItem(BaseModel):
+    product_id: str
+    quantity: int = 1
+    size: Optional[str] = None
+
+class ShopCheckoutRequest(BaseModel):
+    items: List[CartItem]
+    origin_url: str
+    user_id: Optional[str] = None
+    apply_premium_discount: bool = False
+
+# ---- MEMBERSHIP PAYMENTS (Licence 35€ + Premium 5.99€/mois) ----
+
+@api_router.get("/payments/packages")
+async def get_payment_packages():
+    """Get all available membership packages"""
+    return {"packages": MEMBERSHIP_PACKAGES}
+
+@api_router.post("/payments/membership/checkout")
+async def create_membership_checkout(
+    request: MembershipCheckoutRequest, 
+    http_request: Request,
+    current_user: dict = Depends(get_current_user)
+):
+    """Create checkout session for licence or premium subscription"""
     
-    # Validate package exists
-    if request.package_id not in PAYMENT_PACKAGES:
-        raise HTTPException(status_code=400, detail="Invalid package ID")
+    if request.package_id not in MEMBERSHIP_PACKAGES:
+        raise HTTPException(status_code=400, detail="Package invalide")
     
-    package = PAYMENT_PACKAGES[request.package_id]
+    package = MEMBERSHIP_PACKAGES[request.package_id]
     stripe_api_key = os.environ.get('STRIPE_API_KEY')
     
     if not stripe_api_key:
-        raise HTTPException(status_code=500, detail="Payment system not configured")
+        raise HTTPException(status_code=500, detail="Système de paiement non configuré")
     
-    # Build URLs from frontend origin
-    success_url = f"{request.origin_url}/payment/success?session_id={{CHECKOUT_SESSION_ID}}"
+    success_url = f"{request.origin_url}/payment/success?session_id={{CHECKOUT_SESSION_ID}}&type=membership"
     cancel_url = f"{request.origin_url}/payment/cancel"
     
-    # Initialize Stripe
     host_url = str(http_request.base_url)
     webhook_url = f"{host_url}api/webhook/stripe"
     stripe_checkout = StripeCheckout(api_key=stripe_api_key, webhook_url=webhook_url)
     
-    # Create metadata
-    metadata = request.metadata or {}
-    metadata["package_id"] = request.package_id
-    metadata["package_name"] = package["name"]
+    metadata = {
+        "type": "membership",
+        "package_id": request.package_id,
+        "package_name": package["name"],
+        "user_id": current_user.get("id"),
+        "user_email": current_user.get("email")
+    }
     
-    # Create checkout session
     checkout_request = CheckoutSessionRequest(
         amount=package["amount"],
         currency=package["currency"],
@@ -1780,17 +1809,17 @@ async def create_checkout_session(request: CheckoutRequest, http_request: Reques
     
     session: CheckoutSessionResponse = await stripe_checkout.create_checkout_session(checkout_request)
     
-    # Save transaction to database
+    # Save transaction
     transaction = {
         "id": str(uuid.uuid4()),
         "session_id": session.session_id,
+        "type": "membership",
         "package_id": request.package_id,
         "package_name": package["name"],
+        "user_id": current_user.get("id"),
         "amount": package["amount"],
         "currency": package["currency"],
         "status": "pending",
-        "payment_status": "initiated",
-        "metadata": metadata,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "updated_at": datetime.now(timezone.utc).isoformat()
     }
@@ -1798,28 +1827,111 @@ async def create_checkout_session(request: CheckoutRequest, http_request: Reques
     
     return {"url": session.url, "session_id": session.session_id}
 
+# ---- SHOP PAYMENTS (Produits boutique) ----
+
+@api_router.post("/payments/shop/checkout")
+async def create_shop_checkout(
+    request: ShopCheckoutRequest, 
+    http_request: Request,
+    current_user: dict = Depends(get_current_user)
+):
+    """Create checkout session for shop products"""
+    
+    if not request.items:
+        raise HTTPException(status_code=400, detail="Panier vide")
+    
+    stripe_api_key = os.environ.get('STRIPE_API_KEY')
+    if not stripe_api_key:
+        raise HTTPException(status_code=500, detail="Système de paiement non configuré")
+    
+    # Calculate total from database (NEVER trust frontend amounts)
+    total_amount = 0.0
+    order_items = []
+    
+    for item in request.items:
+        product = await db.products.find_one({"id": item.product_id, "is_active": True})
+        if not product:
+            raise HTTPException(status_code=400, detail=f"Produit {item.product_id} non trouvé")
+        if product["stock"] < item.quantity:
+            raise HTTPException(status_code=400, detail=f"Stock insuffisant pour {product['name']}")
+        
+        item_price = product["price"] * item.quantity
+        
+        # Apply 10% discount for premium members
+        if request.apply_premium_discount:
+            item_price = item_price * 0.9
+        
+        total_amount += item_price
+        order_items.append({
+            "product_id": item.product_id,
+            "product_name": product["name"],
+            "quantity": item.quantity,
+            "size": item.size,
+            "unit_price": product["price"],
+            "total_price": item_price
+        })
+    
+    success_url = f"{request.origin_url}/payment/success?session_id={{CHECKOUT_SESSION_ID}}&type=shop"
+    cancel_url = f"{request.origin_url}/payment/cancel"
+    
+    host_url = str(http_request.base_url)
+    webhook_url = f"{host_url}api/webhook/stripe"
+    stripe_checkout = StripeCheckout(api_key=stripe_api_key, webhook_url=webhook_url)
+    
+    order_id = str(uuid.uuid4())
+    metadata = {
+        "type": "shop",
+        "order_id": order_id,
+        "user_id": current_user.get("id"),
+        "user_email": current_user.get("email"),
+        "premium_discount": str(request.apply_premium_discount),
+        "items_count": str(len(order_items))
+    }
+    
+    checkout_request = CheckoutSessionRequest(
+        amount=round(total_amount, 2),
+        currency="eur",
+        success_url=success_url,
+        cancel_url=cancel_url,
+        metadata=metadata
+    )
+    
+    session: CheckoutSessionResponse = await stripe_checkout.create_checkout_session(checkout_request)
+    
+    # Create order (pending payment)
+    order = {
+        "id": order_id,
+        "session_id": session.session_id,
+        "user_id": current_user.get("id"),
+        "user_email": current_user.get("email"),
+        "items": order_items,
+        "subtotal": sum(item["unit_price"] * item["quantity"] for item in order_items),
+        "discount_applied": request.apply_premium_discount,
+        "total_amount": round(total_amount, 2),
+        "currency": "eur",
+        "status": "En attente",
+        "payment_status": "pending",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "updated_at": datetime.now(timezone.utc).isoformat()
+    }
+    await db.orders.insert_one(order)
+    
+    return {"url": session.url, "session_id": session.session_id, "order_id": order_id}
+
+# ---- PAYMENT STATUS ----
+
 @api_router.get("/payments/status/{session_id}")
 async def get_payment_status(session_id: str):
     """Get the status of a payment session"""
     
     stripe_api_key = os.environ.get('STRIPE_API_KEY')
     if not stripe_api_key:
-        raise HTTPException(status_code=500, detail="Payment system not configured")
+        raise HTTPException(status_code=500, detail="Système de paiement non configuré")
     
     stripe_checkout = StripeCheckout(api_key=stripe_api_key, webhook_url="")
     
     try:
         status: CheckoutStatusResponse = await stripe_checkout.get_checkout_status(session_id)
-        
-        # Update transaction in database
-        await db.payment_transactions.update_one(
-            {"session_id": session_id},
-            {"$set": {
-                "status": status.status,
-                "payment_status": status.payment_status,
-                "updated_at": datetime.now(timezone.utc).isoformat()
-            }}
-        )
         
         return {
             "status": status.status,
@@ -1831,20 +1943,24 @@ async def get_payment_status(session_id: str):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@api_router.get("/payments/packages")
-async def get_payment_packages():
-    """Get all available payment packages"""
-    return {"packages": PAYMENT_PACKAGES}
+# ---- STRIPE WEBHOOK ----
 
 @api_router.post("/webhook/stripe")
 async def stripe_webhook(request: Request):
-    """Handle Stripe webhook events"""
+    """
+    Handle Stripe webhook events
+    
+    Events handled:
+    - checkout.session.completed: Payment successful
+    - checkout.session.expired: Session expired
+    - invoice.paid: Subscription renewed
+    - customer.subscription.deleted: Subscription cancelled
+    """
     
     stripe_api_key = os.environ.get('STRIPE_API_KEY')
     if not stripe_api_key:
-        raise HTTPException(status_code=500, detail="Payment system not configured")
+        raise HTTPException(status_code=500, detail="Système de paiement non configuré")
     
-    # Get request body and signature
     body = await request.body()
     signature = request.headers.get("Stripe-Signature")
     
@@ -1854,23 +1970,127 @@ async def stripe_webhook(request: Request):
     
     try:
         webhook_response = await stripe_checkout.handle_webhook(body, signature)
+        event_type = webhook_response.event_type
+        session_id = webhook_response.session_id
+        metadata = webhook_response.metadata or {}
         
-        # Update transaction based on webhook event
-        if webhook_response.session_id:
+        logger.info(f"Webhook received: {event_type} for session {session_id}")
+        
+        # Handle different payment types
+        payment_type = metadata.get("type", "unknown")
+        
+        if event_type == "checkout.session.completed":
+            if payment_type == "membership":
+                # Update user membership status
+                user_id = metadata.get("user_id")
+                package_id = metadata.get("package_id")
+                
+                if user_id and package_id == "licence":
+                    await db.users.update_one(
+                        {"id": user_id},
+                        {"$set": {
+                            "licence_paid": True,
+                            "licence_date": datetime.now(timezone.utc).isoformat()
+                        }}
+                    )
+                    logger.info(f"Licence activated for user {user_id}")
+                
+                elif user_id and package_id == "premium":
+                    await db.users.update_one(
+                        {"id": user_id},
+                        {"$set": {
+                            "is_premium": True,
+                            "premium_since": datetime.now(timezone.utc).isoformat()
+                        }}
+                    )
+                    logger.info(f"Premium activated for user {user_id}")
+                
+                # Update transaction
+                await db.payment_transactions.update_one(
+                    {"session_id": session_id},
+                    {"$set": {
+                        "status": "completed",
+                        "payment_status": "paid",
+                        "completed_at": datetime.now(timezone.utc).isoformat()
+                    }}
+                )
+            
+            elif payment_type == "shop":
+                # Update order status
+                order_id = metadata.get("order_id")
+                if order_id:
+                    order = await db.orders.find_one({"id": order_id})
+                    if order:
+                        # Decrease stock for each item
+                        for item in order.get("items", []):
+                            await db.products.update_one(
+                                {"id": item["product_id"]},
+                                {"$inc": {"stock": -item["quantity"]}}
+                            )
+                        
+                        # Update order status
+                        await db.orders.update_one(
+                            {"id": order_id},
+                            {"$set": {
+                                "status": "Payé",
+                                "payment_status": "paid",
+                                "paid_at": datetime.now(timezone.utc).isoformat()
+                            }}
+                        )
+                        logger.info(f"Order {order_id} completed")
+        
+        elif event_type == "checkout.session.expired":
+            # Mark as expired
+            if payment_type == "shop":
+                order_id = metadata.get("order_id")
+                if order_id:
+                    await db.orders.update_one(
+                        {"id": order_id},
+                        {"$set": {"status": "Annulé", "payment_status": "expired"}}
+                    )
+            
             await db.payment_transactions.update_one(
-                {"session_id": webhook_response.session_id},
-                {"$set": {
-                    "status": webhook_response.event_type,
-                    "payment_status": webhook_response.payment_status,
-                    "webhook_event_id": webhook_response.event_id,
-                    "updated_at": datetime.now(timezone.utc).isoformat()
-                }}
+                {"session_id": session_id},
+                {"$set": {"status": "expired", "payment_status": "expired"}}
             )
         
-        return {"status": "success", "event_type": webhook_response.event_type}
+        elif event_type == "customer.subscription.deleted":
+            # Premium subscription cancelled
+            user_id = metadata.get("user_id")
+            if user_id:
+                await db.users.update_one(
+                    {"id": user_id},
+                    {"$set": {"is_premium": False, "premium_cancelled_at": datetime.now(timezone.utc).isoformat()}}
+                )
+                logger.info(f"Premium cancelled for user {user_id}")
+        
+        return {"status": "success", "event_type": event_type}
+    
     except Exception as e:
         logger.error(f"Webhook error: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
+
+# ---- USER ORDERS ----
+
+@api_router.get("/orders/my")
+async def get_my_orders(current_user: dict = Depends(get_current_user)):
+    """Get current user's orders"""
+    orders = await db.orders.find(
+        {"user_id": current_user.get("id")},
+        {"_id": 0}
+    ).sort("created_at", -1).to_list(50)
+    return {"orders": orders}
+
+@api_router.get("/membership/status")
+async def get_membership_status(current_user: dict = Depends(get_current_user)):
+    """Get current user's membership status"""
+    user = await db.users.find_one({"id": current_user.get("id")}, {"_id": 0, "password_hash": 0})
+    return {
+        "licence_paid": user.get("licence_paid", False),
+        "licence_date": user.get("licence_date"),
+        "is_premium": user.get("is_premium", False),
+        "premium_since": user.get("premium_since")
+    }
 
 app.include_router(api_router)
 
