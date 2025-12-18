@@ -308,13 +308,13 @@ const LandingPage = () => {
               <div className="relative">
                 <div className="stat-card p-8 text-center">
                   <Video className="w-16 h-16 text-primary mx-auto mb-4" strokeWidth={1} />
-                  <h4 className="font-oswald text-2xl font-bold text-text-primary uppercase mb-4">E-Learning SPK</h4>
+                  <h4 className="font-oswald text-2xl font-bold text-text-primary uppercase mb-4">E-Learning Self Défense</h4>
                   <p className="text-text-secondary font-manrope mb-6">
-                    Rejoignez des milliers d'élèves qui se forment en ligne
+                    Rejoignez des centaines d'élèves qui se forment en ligne
                   </p>
                   <div className="grid grid-cols-2 gap-4 text-center">
                     <div>
-                      <p className="text-3xl font-oswald font-bold text-primary">100+</p>
+                      <p className="text-3xl font-oswald font-bold text-primary">50+</p>
                       <p className="text-xs text-text-muted font-manrope">Cours Vidéo</p>
                     </div>
                     <div>
@@ -322,6 +322,12 @@ const LandingPage = () => {
                       <p className="text-xs text-text-muted font-manrope">Accès Illimité</p>
                     </div>
                   </div>
+                  <Link 
+                    to="/onboarding"
+                    className="inline-block mt-6 px-6 py-3 bg-primary hover:bg-primary-dark text-white font-oswald uppercase tracking-wider rounded-sm transition-all"
+                  >
+                    Apprendre en Ligne
+                  </Link>
                 </div>
               </div>
             </div>
