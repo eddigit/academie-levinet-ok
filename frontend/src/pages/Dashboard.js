@@ -219,6 +219,14 @@ const Dashboard = () => {
             </table>
           </div>
         </div>
+
+        {/* Community Social Wall */}
+        <div className="mt-8">
+          <h3 className="font-oswald text-xl font-bold text-text-primary uppercase mb-6 tracking-wide">
+            Activité de la Communauté
+          </h3>
+          <SocialWall />
+        </div>
       </div>
     </DashboardLayout>
   );
