@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import MemberSidebar from '../../components/MemberSidebar';
 import { useAuth } from '../../context/AuthContext';
+import { useCart } from '../../context/CartContext';
 import api from '../../utils/api';
-import { ShoppingBag, Filter, Search, Star, Tag } from 'lucide-react';
+import { ShoppingBag, Filter, Search, Star, Tag, Check } from 'lucide-react';
 
 const CATEGORIES = [
   { id: 'all', name: 'Tous les produits' },
