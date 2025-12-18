@@ -76,6 +76,20 @@ class NewsStatus(str, Enum):
     DRAFT = "Brouillon"
     PUBLISHED = "Publié"
 
+class PostType(str, Enum):
+    TEXT = "text"
+    IMAGE = "image"
+    VIDEO = "video"
+    ACHIEVEMENT = "achievement"
+    EVENT = "event"
+
+class ReactionType(str, Enum):
+    LIKE = "like"
+    LOVE = "love"
+    FIRE = "fire"
+    CLAP = "clap"
+    STRONG = "strong"
+
 class EventType(str, Enum):
     STAGE = "Stage"
     COURSE = "Cours"
