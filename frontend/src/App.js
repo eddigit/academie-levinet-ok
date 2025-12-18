@@ -32,6 +32,9 @@ import MemberPrograms from './pages/member/MemberPrograms';
 import MemberCourses from './pages/member/MemberCourses';
 import MemberCommunity from './pages/member/MemberCommunity';
 import MemberGrades from './pages/member/MemberGrades';
+// Shop pages
+import ShopPage from './pages/ShopPage';
+import AdminProductsPage from './pages/AdminProductsPage';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 const ProtectedRoute = ({ children }) => {
