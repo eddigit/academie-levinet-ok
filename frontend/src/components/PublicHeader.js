@@ -18,7 +18,7 @@ const PublicHeader = () => {
             <h1 className="font-oswald text-xl font-bold text-text-primary uppercase tracking-wide">
               Académie Jacques Levinet
             </h1>
-            <p className="text-xs text-text-secondary font-manrope">(École Internationale de Self-Défense)</p>
+            <p className="text-xs text-text-secondary font-manrope">École Internationale de Self-Défense</p>
           </div>
         </Link>
 
