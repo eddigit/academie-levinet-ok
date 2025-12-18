@@ -223,6 +223,14 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/member/boutique"
+            element={
+              <ProtectedRoute>
+                <MemberShopPage />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
