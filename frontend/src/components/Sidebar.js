@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, UserCog, CreditCard, LogOut, UserPlus, Newspaper, Calendar, MessageSquare, Shield } from 'lucide-react';
+import { LayoutDashboard, Users, UserCog, CreditCard, LogOut, UserPlus, Newspaper, Calendar, MessageSquare, Shield, ShoppingBag } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 
