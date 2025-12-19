@@ -50,6 +50,7 @@ class BeltGrade(str, Enum):
     GREEN = "Ceinture Verte"
     BLUE = "Ceinture Bleue"
     BROWN = "Ceinture Marron"
+    BLACK = "Ceinture Noire"  # Legacy - keep for compatibility
     BLACK_1DAN = "Ceinture Noire 1er Dan"
     BLACK_2DAN = "Ceinture Noire 2ème Dan"
     BLACK_3DAN = "Ceinture Noire 3ème Dan"
