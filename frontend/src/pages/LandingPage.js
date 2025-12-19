@@ -239,14 +239,20 @@ const LandingPage = () => {
             Communauté Mondiale
           </h3>
           <p className="text-center text-text-secondary font-manrope text-lg mb-12 max-w-3xl mx-auto">
-            Un réseau mondial pour s'entraîner partout
+            Un réseau mondial pour s'entraîner partout - Découvrez tous nos clubs et membres
           </p>
           <div className="max-w-6xl mx-auto">
-            <img 
-              src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/2hjhk0ei_Generated%20Image%20December%2014%2C%202025%20-%209_12PM.jpeg"
-              alt="Réseau mondial de l'Académie Jacques Levinet"
-              className="w-full rounded-lg border border-white/10"
-            />
+            <div className="relative w-full rounded-lg border border-white/10 overflow-hidden" style={{ paddingBottom: '56.25%' }}>
+              <iframe
+                src="https://www.google.com/maps/d/u/0/embed?mid=1RdKNrRv4jEPjQTr7BDBCpXuuYAs&ll=-0.10736278113021733%2C0&z=2"
+                className="absolute inset-0 w-full h-full"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Carte mondiale des clubs de l'Académie Jacques Levinet"
+              />
+            </div>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12 max-w-4xl mx-auto">
             <div className="text-center">
