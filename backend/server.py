@@ -509,6 +509,83 @@ class DashboardStats(BaseModel):
     members_by_country: List[dict]
     recent_members: List[Member]
 
+# Club Models
+class ClubStatus(str, Enum):
+    ACTIVE = "Actif"
+    INACTIVE = "Inactif"
+
+class VisitRequestStatus(str, Enum):
+    PENDING = "En attente"
+    APPROVED = "Approuvé"
+    REJECTED = "Rejeté"
+
+class Club(BaseModel):
+    id: str
+    name: str
+    address: Optional[str] = None
+    city: str
+    country: str = "France"
+    phone: Optional[str] = None
+    email: Optional[str] = None
+    logo_url: Optional[str] = None
+    technical_director_id: str
+    technical_director_name: Optional[str] = None
+    instructor_ids: List[str] = []
+    disciplines: List[str] = []
+    schedule: Optional[str] = None
+    status: ClubStatus = ClubStatus.ACTIVE
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: Optional[datetime] = None
+
+class ClubCreate(BaseModel):
+    name: str
+    address: Optional[str] = None
+    city: str
+    country: str = "France"
+    phone: Optional[str] = None
+    email: Optional[str] = None
+    logo_url: Optional[str] = None
+    technical_director_id: str
+    instructor_ids: List[str] = []
+    disciplines: List[str] = []
+    schedule: Optional[str] = None
+
+class ClubUpdate(BaseModel):
+    name: Optional[str] = None
+    address: Optional[str] = None
+    city: Optional[str] = None
+    country: Optional[str] = None
+    phone: Optional[str] = None
+    email: Optional[str] = None
+    logo_url: Optional[str] = None
+    technical_director_id: Optional[str] = None
+    instructor_ids: Optional[List[str]] = None
+    disciplines: Optional[List[str]] = None
+    schedule: Optional[str] = None
+    status: Optional[ClubStatus] = None
+
+class VisitRequest(BaseModel):
+    id: str
+    member_id: str
+    member_name: Optional[str] = None
+    member_email: Optional[str] = None
+    home_club_id: str
+    home_club_name: Optional[str] = None
+    target_club_id: str
+    target_club_name: Optional[str] = None
+    status: VisitRequestStatus = VisitRequestStatus.PENDING
+    reason: Optional[str] = None
+    visit_date: Optional[str] = None
+    approved_by: Optional[str] = None
+    approved_by_name: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    processed_at: Optional[datetime] = None
+
+class VisitRequestCreate(BaseModel):
+    target_club_id: str
+    reason: Optional[str] = None
+    visit_date: Optional[str] = None
+
 # Utility functions
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
