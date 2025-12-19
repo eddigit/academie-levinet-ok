@@ -143,6 +143,36 @@ class User(BaseModel):
     has_paid_license: bool = False  # Track license payment status
     is_premium: bool = False  # Track premium subscription status
     stripe_customer_id: Optional[str] = None
+    # Profile fields
+    photo_url: Optional[str] = None
+    phone: Optional[str] = None
+    city: Optional[str] = None
+    country: str = "France"
+    date_of_birth: Optional[str] = None
+    belt_grade: Optional[str] = None
+    club_name: Optional[str] = None
+    instructor_name: Optional[str] = None
+    bio: Optional[str] = None
+
+class UserProfileUpdate(BaseModel):
+    full_name: Optional[str] = None
+    phone: Optional[str] = None
+    city: Optional[str] = None
+    country: Optional[str] = None
+    date_of_birth: Optional[str] = None
+    belt_grade: Optional[str] = None
+    club_name: Optional[str] = None
+    instructor_name: Optional[str] = None
+    bio: Optional[str] = None
+    photo_url: Optional[str] = None
+
+class AdminUserCreate(BaseModel):
+    email: EmailStr
+    password: str
+    full_name: str
+    role: str = "admin"  # admin or member
+    phone: Optional[str] = None
+    city: Optional[str] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class UserCreate(BaseModel):
