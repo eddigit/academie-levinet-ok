@@ -1,27 +1,36 @@
 # Test Result Document
 
 ## Current Test Scope
-Testing the new Club Management feature for the Académie Jacques Levinet CRM.
-
-## Features to Test
-1. Club CRUD operations (Create, Read, Update, Delete)
-2. Club details display with statistics
-3. Member assignment to clubs
-4. Technical Director assignment
-5. Visit request system (if time permits)
+Testing CRUD operations for Admin accounts on:
+1. Events (Événements)
+2. Member accounts (Comptes membres)
+3. Instructor accounts (Comptes instructeurs)
+4. Clubs
 
 ## Test Credentials
 - Admin: admin@academie-levinet.com / Admin2025!
-- Member: membre@academie-levinet.com / Membre2025!
+
+## Features to Test
+### Events CRUD
+- GET /api/events - List all events
+- POST /api/events - Create event
+- PUT /api/events/{id} - Update event
+- DELETE /api/events/{id} - Delete event
+
+### Users/Members CRUD
+- GET /api/admin/users - List all users
+- POST /api/admin/users - Create user
+- PUT /api/admin/users/{id} - Update user
+- DELETE /api/admin/users/{id} - Delete user
+- POST /api/admin/users/{id}/change-password - Change password
+
+### Clubs CRUD
+- GET /api/clubs - List all clubs
+- POST /api/admin/clubs - Create club
+- PUT /api/admin/clubs/{id} - Update club
+- DELETE /api/admin/clubs/{id} - Delete club
+- POST /api/admin/clubs/{id}/members/{user_id} - Assign member
 
 ## Incorporate User Feedback
-- Club must be assigned to a technical director
-- Members are assigned to a "club mère" (home club)
-- Members can request to visit other clubs with DT/admin approval
-- Statistics per club should be displayed
-
-## Previous Issues
-- Frontend was broken due to duplicate Switch import (FIXED)
-
-## Test Status
-- Waiting for testing agent validation
+- All CRUD operations must work for admins
+- Test create, read, update, delete for each entity
