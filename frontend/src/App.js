@@ -39,6 +39,7 @@ import AdminProductsPage from './pages/AdminProductsPage';
 // Admin pages
 import PendingMembersPage from './pages/PendingMembersPage';
 import SettingsPage from './pages/SettingsPage';
+import AdminUsersPage from './pages/AdminUsersPage';
 // Payment pages
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
 import PaymentCancelPage from './pages/PaymentCancelPage';
@@ -190,6 +191,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <SettingsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute>
+                <AdminUsersPage />
               </ProtectedRoute>
             }
           />
