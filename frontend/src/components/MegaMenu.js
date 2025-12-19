@@ -118,7 +118,7 @@ const MegaMenu = () => {
           <Link
             to="/onboarding"
             onClick={() => setIsOpen(false)}
-            className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-oswald uppercase tracking-widest rounded-sm shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all hover:scale-105"
+            className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-oswald uppercase tracking-widest leading-none rounded-sm shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all hover:scale-105"
           >
             Commencer Maintenant
           </Link>
