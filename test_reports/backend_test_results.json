@@ -10,278 +10,278 @@
       "test_name": "Admin Login",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:34.214679"
+      "timestamp": "2025-12-19T22:12:37.678242"
     },
     {
       "test_name": "Get Current User",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:34.252997"
+      "timestamp": "2025-12-19T22:12:37.721480"
     },
     {
       "test_name": "Create Technical Director",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:34.295422"
+      "timestamp": "2025-12-19T22:12:37.760483"
     },
     {
       "test_name": "Get Technical Directors",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:34.337514"
+      "timestamp": "2025-12-19T22:12:37.803824"
     },
     {
       "test_name": "Create Member",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:34.401252"
+      "timestamp": "2025-12-19T22:12:37.846419"
     },
     {
       "test_name": "Get Members",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:34.439948"
+      "timestamp": "2025-12-19T22:12:37.887776"
     },
     {
       "test_name": "Create Subscription",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:34.477661"
+      "timestamp": "2025-12-19T22:12:37.928289"
     },
     {
       "test_name": "Get Subscriptions",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:34.517144"
+      "timestamp": "2025-12-19T22:12:37.969955"
     },
     {
       "test_name": "Get Dashboard Stats",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:34.556833"
+      "timestamp": "2025-12-19T22:12:38.017856"
     },
     {
       "test_name": "Dashboard Stats Validation",
       "success": true,
       "details": "All required fields present",
-      "timestamp": "2025-12-19T22:07:34.557448"
+      "timestamp": "2025-12-19T22:12:38.018473"
     },
     {
       "test_name": "Create Pending Member",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:34.595717"
+      "timestamp": "2025-12-19T22:12:38.057604"
     },
     {
       "test_name": "Get Pending Members",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:34.634880"
+      "timestamp": "2025-12-19T22:12:38.098811"
     },
     {
       "test_name": "Approve Pending Member",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:34.900047"
+      "timestamp": "2025-12-19T22:12:38.359044"
     },
     {
       "test_name": "Get SMTP Settings",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:34.938223"
+      "timestamp": "2025-12-19T22:12:38.395694"
     },
     {
       "test_name": "Update SMTP Settings",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:34.983975"
+      "timestamp": "2025-12-19T22:12:38.441977"
     },
     {
       "test_name": "Get Technical Directors List",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.022330"
+      "timestamp": "2025-12-19T22:12:38.521849"
     },
     {
       "test_name": "Get Instructors List",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.058715"
+      "timestamp": "2025-12-19T22:12:38.558467"
     },
     {
       "test_name": "Create Club",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.097377"
+      "timestamp": "2025-12-19T22:12:38.597129"
     },
     {
       "test_name": "Get All Clubs",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.137439"
+      "timestamp": "2025-12-19T22:12:38.640724"
     },
     {
       "test_name": "Get Club Details",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.175470"
+      "timestamp": "2025-12-19T22:12:38.720186"
     },
     {
       "test_name": "Update Club",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.215378"
+      "timestamp": "2025-12-19T22:12:38.758083"
     },
     {
       "test_name": "Get Club Stats",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.251694"
+      "timestamp": "2025-12-19T22:12:38.798888"
     },
     {
       "test_name": "Get Current User for Club Assignment",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.290980"
+      "timestamp": "2025-12-19T22:12:38.838650"
     },
     {
       "test_name": "Assign Member to Club",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.328801"
+      "timestamp": "2025-12-19T22:12:38.875346"
     },
     {
       "test_name": "Remove Member from Club",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.363793"
+      "timestamp": "2025-12-19T22:12:38.911862"
     },
     {
       "test_name": "Get Visit Requests",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.400382"
+      "timestamp": "2025-12-19T22:12:38.950884"
     },
     {
       "test_name": "Delete Club",
       "success": false,
       "details": "Expected 200, got 400 - {'detail': 'Impossible de supprimer: 1 membre(s) sont rattach\u00e9s \u00e0 ce club'}",
-      "timestamp": "2025-12-19T22:07:35.441783"
+      "timestamp": "2025-12-19T22:12:38.988039"
     },
     {
       "test_name": "Create Event",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.504729"
+      "timestamp": "2025-12-19T22:12:39.030867"
     },
     {
       "test_name": "Get All Events",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.543099"
+      "timestamp": "2025-12-19T22:12:39.066571"
     },
     {
       "test_name": "Get Event Details",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.579155"
+      "timestamp": "2025-12-19T22:12:39.102880"
     },
     {
       "test_name": "Update Event",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.617190"
+      "timestamp": "2025-12-19T22:12:39.141179"
     },
     {
       "test_name": "Register for Event",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.716481"
+      "timestamp": "2025-12-19T22:12:39.177261"
     },
     {
       "test_name": "Get Event Registrations",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.753704"
+      "timestamp": "2025-12-19T22:12:39.215845"
     },
     {
       "test_name": "Unregister from Event",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.795242"
+      "timestamp": "2025-12-19T22:12:39.296042"
     },
     {
       "test_name": "Delete Event",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.831075"
+      "timestamp": "2025-12-19T22:12:39.333844"
     },
     {
       "test_name": "Get All Users (Admin)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:35.867270"
+      "timestamp": "2025-12-19T22:12:39.375253"
     },
     {
       "test_name": "Create Admin User",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:36.127219"
+      "timestamp": "2025-12-19T22:12:39.634639"
     },
     {
       "test_name": "Create Member User",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:36.387786"
+      "timestamp": "2025-12-19T22:12:39.896913"
     },
     {
       "test_name": "Create Instructor User",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:36.645452"
+      "timestamp": "2025-12-19T22:12:40.197708"
     },
     {
       "test_name": "Get User Details",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:36.722845"
+      "timestamp": "2025-12-19T22:12:40.237751"
     },
     {
       "test_name": "Update User",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:36.761673"
+      "timestamp": "2025-12-19T22:12:40.276239"
     },
     {
       "test_name": "Change User Password",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:37.064219"
+      "timestamp": "2025-12-19T22:12:40.534739"
     },
     {
       "test_name": "Update User Role",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:37.105046"
+      "timestamp": "2025-12-19T22:12:40.570647"
     },
     {
       "test_name": "Delete User",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:37.139850"
+      "timestamp": "2025-12-19T22:12:40.609817"
     },
     {
       "test_name": "Delete User",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:37.216543"
+      "timestamp": "2025-12-19T22:12:40.646783"
     },
     {
       "test_name": "Delete User",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T22:07:37.252545"
+      "timestamp": "2025-12-19T22:12:40.684467"
     }
   ],
-  "timestamp": "2025-12-19T22:07:37.253367"
+  "timestamp": "2025-12-19T22:12:40.685374"
 }
