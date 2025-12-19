@@ -67,18 +67,25 @@ const DisciplineSPKPage = () => {
                 Qu'est-ce que le <span className="text-accent">SPK</span> ?
               </h2>
               <p className="text-text-secondary font-manrope text-lg leading-relaxed mb-6">
-                Le Self-Pro Krav (SPK) est une méthode de self-défense développée par le Capitaine 
-                Jacques Levinet après des années de recherche internationale et d'expérience terrain 
-                dans la Police Nationale.
+                Le Self-Pro Krav (SPK) est une <strong className="text-white">version améliorée du Krav Maga</strong>, 
+                créée par le Capitaine Jacques Levinet. Elle a été conçue spécifiquement pour 
+                respecter les lois françaises et la déontologie.
               </p>
               <p className="text-text-secondary font-manrope text-lg leading-relaxed mb-6">
-                Contrairement au Krav Maga traditionnel, le SPK intègre des "garde-fous" éthiques 
-                et légaux, rendant la pratique à la fois efficace et responsable.
+                Contrairement au Krav Maga traditionnel, <strong className="text-white">on ne va jamais au-delà de la légitime défense</strong>. 
+                Nos techniques sont proportionnées : vous apprenez à vous protéger efficacement, 
+                tout en restant dans le cadre légal.
               </p>
-              <p className="text-text-muted font-manrope leading-relaxed">
-                <strong className="text-white">SPK = Self-Pro Krav</strong> — L'évolution responsable 
-                du Krav Maga, conçue pour les réalités du 21ème siècle.
+              <p className="text-text-secondary font-manrope text-lg leading-relaxed mb-6">
+                C'est une self-défense <strong className="text-white">responsable et éthique</strong>, 
+                adaptée aux réalités du terrain et aux exigences morales.
               </p>
+              <div className="bg-accent/10 border border-accent/30 rounded-lg p-6">
+                <p className="text-accent font-oswald uppercase leading-none tracking-wide mb-2">Notre Différence</p>
+                <p className="text-text-secondary font-manrope">
+                  "Le SPK, c'est le Krav Maga qui respecte les règles. Efficace, légal, éthique."
+                </p>
+              </div>
             </div>
             
             <div className="relative">
