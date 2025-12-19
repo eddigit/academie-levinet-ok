@@ -608,11 +608,15 @@ class AcademieLevinetAPITester:
         # Test club stats
         self.test_get_club_stats(club_id)
         
-        # Test member assignment to club (using existing member if available)
-        if member_id:
-            self.test_assign_member_to_club(club_id, member_id)
-            # Test removing member from club
-            self.test_remove_member_from_club(club_id, member_id)
+        # Test member assignment to club (need to use a user ID, not member ID)
+        # Get current user ID for assignment test
+        success, user_response = self.run_test("Get Current User for Club Assignment", "GET", "auth/me", 200)
+        if success and user_response:
+            current_user_id = user_response.get('id')
+            if current_user_id:
+                self.test_assign_member_to_club(club_id, current_user_id)
+                # Test removing member from club
+                self.test_remove_member_from_club(club_id, current_user_id)
         
         print("\n📋 VISIT REQUESTS TESTS")
         print("-" * 30)
