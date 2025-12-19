@@ -1,95 +1,101 @@
 {
   "summary": {
-    "total_tests": 14,
-    "passed_tests": 8,
-    "failed_tests": 6,
-    "success_rate": 57.14285714285714
+    "total_tests": 15,
+    "passed_tests": 14,
+    "failed_tests": 1,
+    "success_rate": 93.33333333333333
   },
   "detailed_results": [
     {
       "test_name": "Admin Login",
-      "success": false,
-      "details": "Expected 200, got 401 - {'detail': 'Invalid credentials'}",
-      "timestamp": "2025-12-19T07:19:45.753488"
-    },
-    {
-      "test_name": "User Registration",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T07:19:46.013596"
+      "timestamp": "2025-12-19T07:20:14.739364"
     },
     {
       "test_name": "Get Current User",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T07:19:46.047452"
+      "timestamp": "2025-12-19T07:20:14.811122"
     },
     {
       "test_name": "Create Technical Director",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T07:19:46.086107"
+      "timestamp": "2025-12-19T07:20:14.843444"
     },
     {
       "test_name": "Get Technical Directors",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T07:19:46.123324"
+      "timestamp": "2025-12-19T07:20:14.880594"
     },
     {
       "test_name": "Create Member",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T07:19:46.165989"
+      "timestamp": "2025-12-19T07:20:14.914600"
     },
     {
       "test_name": "Get Members",
       "success": false,
       "details": "Expected 200, got 520 - Internal Server Error",
-      "timestamp": "2025-12-19T07:19:46.200982"
+      "timestamp": "2025-12-19T07:20:14.951447"
     },
     {
       "test_name": "Create Subscription",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T07:19:46.235107"
+      "timestamp": "2025-12-19T07:20:14.985248"
     },
     {
       "test_name": "Get Subscriptions",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T07:19:46.271476"
+      "timestamp": "2025-12-19T07:20:15.021017"
     },
     {
       "test_name": "Get Dashboard Stats",
-      "success": false,
-      "details": "Expected 200, got 520 - Internal Server Error",
-      "timestamp": "2025-12-19T07:19:46.305513"
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-12-19T07:20:15.058527"
+    },
+    {
+      "test_name": "Dashboard Stats Validation",
+      "success": true,
+      "details": "All required fields present",
+      "timestamp": "2025-12-19T07:20:15.059046"
     },
     {
       "test_name": "Create Pending Member",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-19T07:19:46.339807"
+      "timestamp": "2025-12-19T07:20:15.098970"
     },
     {
       "test_name": "Get Pending Members",
-      "success": false,
-      "details": "Expected 200, got 403 - {'detail': 'Admin access required'}",
-      "timestamp": "2025-12-19T07:19:46.371692"
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-12-19T07:20:15.134844"
     },
     {
       "test_name": "Approve Pending Member",
-      "success": false,
-      "details": "Expected 200, got 403 - {'detail': 'Admin access required'}",
-      "timestamp": "2025-12-19T07:19:46.420851"
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-12-19T07:20:15.406106"
     },
     {
       "test_name": "Get SMTP Settings",
-      "success": false,
-      "details": "Expected 200, got 403 - {'detail': 'Admin access required'}",
-      "timestamp": "2025-12-19T07:19:46.494369"
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-12-19T07:20:15.438681"
+    },
+    {
+      "test_name": "Update SMTP Settings",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-12-19T07:20:15.496683"
     }
   ],
-  "timestamp": "2025-12-19T07:19:46.495178"
+  "timestamp": "2025-12-19T07:20:15.497525"
 }
