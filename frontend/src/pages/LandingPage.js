@@ -330,7 +330,7 @@ const LandingPage = () => {
                   </div>
                   <Link 
                     to="/onboarding"
-                    className="inline-block mt-6 px-6 py-3 bg-primary hover:bg-primary-dark text-white font-oswald uppercase tracking-wider rounded-sm transition-all"
+                    className="inline-flex items-center justify-center mt-6 px-6 py-3 bg-primary hover:bg-primary-dark text-white font-oswald uppercase tracking-wider leading-none rounded-sm transition-all"
                   >
                     Apprendre en Ligne
                   </Link>
