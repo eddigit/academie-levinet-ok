@@ -132,7 +132,7 @@ const MegaMenu = () => {
       {/* Menu Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-2 px-4 py-2 border border-white/20 hover:border-white/50 text-white font-oswald uppercase tracking-widest rounded-sm backdrop-blur-sm transition-all duration-300 hover:bg-white/5"
+        className="flex items-center justify-center gap-2 px-5 py-3 h-11 border border-white/20 hover:border-white/50 text-white font-oswald uppercase tracking-widest rounded-sm backdrop-blur-sm transition-all duration-300 hover:bg-white/5"
         data-testid="mega-menu-trigger"
       >
         <Menu className="w-5 h-5" strokeWidth={1.5} />
