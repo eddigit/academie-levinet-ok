@@ -189,14 +189,14 @@ const AboutPage = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/join"
-              className="px-8 py-4 bg-secondary hover:bg-secondary/80 text-white font-oswald uppercase tracking-wider rounded-sm transition-all shadow-[0_0_20px_rgba(239,68,68,0.4)] flex items-center justify-center gap-2"
+              className="px-8 py-4 bg-secondary hover:bg-secondary/80 text-white font-oswald uppercase leading-none tracking-wider rounded-sm transition-all shadow-[0_0_20px_rgba(239,68,68,0.4)] flex items-center justify-center gap-2"
             >
               Devenir Membre
               <ChevronRight className="w-5 h-5" strokeWidth={2} />
             </Link>
             <Link
               to="/founder"
-              className="px-8 py-4 border border-white/20 hover:border-white/50 text-white font-oswald uppercase tracking-wider rounded-sm transition-all flex items-center justify-center gap-2"
+              className="px-8 py-4 border border-white/20 hover:border-white/50 text-white font-oswald uppercase leading-none tracking-wider rounded-sm transition-all flex items-center justify-center gap-2"
             >
               Le Fondateur
               <ChevronRight className="w-5 h-5" strokeWidth={2} />

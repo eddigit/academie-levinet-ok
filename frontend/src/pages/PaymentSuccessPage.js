@@ -107,7 +107,7 @@ const PaymentSuccessPage = () => {
                 {paymentType === 'shop' && (
                   <Link
                     to="/member/boutique"
-                    className="w-full py-3 bg-primary hover:bg-primary-dark text-white font-oswald uppercase tracking-wider rounded-lg flex items-center justify-center gap-2 transition-colors"
+                    className="w-full py-3 bg-primary hover:bg-primary-dark text-white font-oswald uppercase leading-none tracking-wider rounded-lg flex items-center justify-center gap-2 transition-colors"
                   >
                     Continuer mes achats
                     <ArrowRight className="w-4 h-4" />
@@ -116,7 +116,7 @@ const PaymentSuccessPage = () => {
                 
                 <Link
                   to="/member/dashboard"
-                  className="w-full py-3 bg-white/5 hover:bg-white/10 text-text-primary font-oswald uppercase tracking-wider rounded-lg flex items-center justify-center gap-2 transition-colors"
+                  className="w-full py-3 bg-white/5 hover:bg-white/10 text-text-primary font-oswald uppercase leading-none tracking-wider rounded-lg flex items-center justify-center gap-2 transition-colors"
                 >
                   Retour à l'espace membre
                 </Link>

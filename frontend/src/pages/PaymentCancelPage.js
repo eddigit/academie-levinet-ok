@@ -31,7 +31,7 @@ const PaymentCancelPage = () => {
           <div className="space-y-3">
             <Link
               to="/member/boutique"
-              className="w-full py-3 bg-primary hover:bg-primary-dark text-white font-oswald uppercase tracking-wider rounded-lg flex items-center justify-center gap-2 transition-colors"
+              className="w-full py-3 bg-primary hover:bg-primary-dark text-white font-oswald uppercase leading-none tracking-wider rounded-lg flex items-center justify-center gap-2 transition-colors"
             >
               <ShoppingBag className="w-4 h-4" />
               Retourner à la boutique
@@ -39,7 +39,7 @@ const PaymentCancelPage = () => {
             
             <Link
               to="/member/dashboard"
-              className="w-full py-3 bg-white/5 hover:bg-white/10 text-text-primary font-oswald uppercase tracking-wider rounded-lg flex items-center justify-center gap-2 transition-colors"
+              className="w-full py-3 bg-white/5 hover:bg-white/10 text-text-primary font-oswald uppercase leading-none tracking-wider rounded-lg flex items-center justify-center gap-2 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               Retour à l'espace membre

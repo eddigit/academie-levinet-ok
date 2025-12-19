@@ -51,7 +51,7 @@ const DisciplineSFJLPage = () => {
           
           <Link
             to="/onboarding"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-secondary hover:bg-secondary/80 text-white font-oswald uppercase tracking-wider rounded-sm transition-all shadow-[0_0_20px_rgba(239,68,68,0.4)]"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-secondary hover:bg-secondary/80 text-white font-oswald uppercase leading-none tracking-wider rounded-sm transition-all shadow-[0_0_20px_rgba(239,68,68,0.4)]"
           >
             Rejoindre le Programme
             <ChevronRight className="w-5 h-5" strokeWidth={2} />
@@ -77,7 +77,7 @@ const DisciplineSFJLPage = () => {
                 Jacques Levinet, ce programme allie efficacité technique et approche psychologique.
               </p>
               <div className="bg-secondary/10 border border-secondary/30 rounded-lg p-6">
-                <p className="text-secondary font-oswald uppercase tracking-wide mb-2">Notre Philosophie</p>
+                <p className="text-secondary font-oswald uppercase leading-none tracking-wide mb-2">Notre Philosophie</p>
                 <p className="text-text-secondary font-manrope italic">
                   "La vraie force n'est pas dans la violence, mais dans la capacité à se protéger 
                   et à protéger les autres avec intelligence et détermination."
@@ -152,7 +152,7 @@ const DisciplineSFJLPage = () => {
               "Le SFJL m'a donné bien plus que des techniques de défense. 
               Il m'a donné la confiance de marcher la tête haute."
             </blockquote>
-            <p className="text-secondary font-oswald uppercase tracking-wider">
+            <p className="text-secondary font-oswald uppercase leading-none tracking-wider">
               — Une pratiquante SFJL
             </p>
           </div>
@@ -171,14 +171,14 @@ const DisciplineSFJLPage = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/onboarding"
-              className="px-8 py-4 bg-secondary hover:bg-secondary/80 text-white font-oswald uppercase tracking-wider rounded-sm transition-all shadow-[0_0_20px_rgba(239,68,68,0.4)] flex items-center justify-center gap-2"
+              className="px-8 py-4 bg-secondary hover:bg-secondary/80 text-white font-oswald uppercase leading-none tracking-wider rounded-sm transition-all shadow-[0_0_20px_rgba(239,68,68,0.4)] flex items-center justify-center gap-2"
             >
               S'inscrire au SFJL
               <ChevronRight className="w-5 h-5" strokeWidth={2} />
             </Link>
             <Link
               to="/international"
-              className="px-8 py-4 border border-white/20 hover:border-white/50 text-white font-oswald uppercase tracking-wider rounded-sm transition-all flex items-center justify-center gap-2"
+              className="px-8 py-4 border border-white/20 hover:border-white/50 text-white font-oswald uppercase leading-none tracking-wider rounded-sm transition-all flex items-center justify-center gap-2"
             >
               Trouver un Cours
               <ChevronRight className="w-5 h-5" strokeWidth={2} />

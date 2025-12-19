@@ -155,7 +155,7 @@ const LoginPage = () => {
               type="submit"
               data-testid="submit-button"
               disabled={loading}
-              className="w-full px-6 py-3 bg-primary hover:bg-primary-dark text-white font-oswald uppercase tracking-wider rounded-sm transition-smooth glow-effect disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-6 py-3 bg-primary hover:bg-primary-dark text-white font-oswald uppercase leading-none tracking-wider rounded-sm transition-smooth glow-effect disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Chargement...' : (isLogin ? 'Se Connecter' : 'S\'inscrire')}
             </button>

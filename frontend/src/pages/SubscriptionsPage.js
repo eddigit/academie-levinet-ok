@@ -225,11 +225,11 @@ const SubscriptionsPage = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-white/5">
-                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Membre</th>
-                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Montant</th>
-                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Date</th>
-                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Méthode</th>
-                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Statut</th>
+                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Membre</th>
+                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Montant</th>
+                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Date</th>
+                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Méthode</th>
+                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Statut</th>
                   </tr>
                 </thead>
                 <tbody>

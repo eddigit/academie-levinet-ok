@@ -199,7 +199,7 @@ const MemberDetailPage = () => {
                   style={{ backgroundColor: beltStyle.badgeBg, color: beltStyle.badgeText }}
                 >
                   <Award className="w-5 h-5" strokeWidth={1.5} />
-                  <span className="font-oswald uppercase tracking-wide font-bold">
+                  <span className="font-oswald uppercase leading-none tracking-wide font-bold">
                     Grade: SPK - {member.belt_grade}
                   </span>
                 </div>

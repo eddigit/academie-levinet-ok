@@ -92,7 +92,7 @@ const FounderPage = () => {
               et d'entraînement policier. Mon objectif : créer une méthode efficace, réaliste, 
               et adaptée à la législation française."
             </blockquote>
-            <p className="text-center text-primary font-oswald uppercase tracking-wider mt-6">
+            <p className="text-center text-primary font-oswald uppercase leading-none tracking-wider mt-6">
               — Capitaine Jacques Levinet
             </p>
           </div>
@@ -139,14 +139,14 @@ const FounderPage = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/about"
-              className="px-8 py-4 bg-primary hover:bg-primary-dark text-white font-oswald uppercase tracking-wider rounded-sm transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)] flex items-center justify-center gap-2"
+              className="px-8 py-4 bg-primary hover:bg-primary-dark text-white font-oswald uppercase leading-none tracking-wider rounded-sm transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)] flex items-center justify-center gap-2"
             >
               L'Académie
               <ChevronRight className="w-5 h-5" strokeWidth={2} />
             </Link>
             <Link
               to="/disciplines/spk"
-              className="px-8 py-4 border border-white/20 hover:border-white/50 text-white font-oswald uppercase tracking-wider rounded-sm transition-all flex items-center justify-center gap-2"
+              className="px-8 py-4 border border-white/20 hover:border-white/50 text-white font-oswald uppercase leading-none tracking-wider rounded-sm transition-all flex items-center justify-center gap-2"
             >
               La Méthode SPK
               <ChevronRight className="w-5 h-5" strokeWidth={2} />

@@ -186,11 +186,11 @@ const Dashboard = () => {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5">
-                  <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Nom</th>
-                  <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Email</th>
-                  <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Pays</th>
-                  <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Grade</th>
-                  <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Statut</th>
+                  <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Nom</th>
+                  <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Email</th>
+                  <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Pays</th>
+                  <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Grade</th>
+                  <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Statut</th>
                 </tr>
               </thead>
               <tbody>

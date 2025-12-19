@@ -339,12 +339,12 @@ const MembersPage = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-white/5">
-                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Nom</th>
-                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Email</th>
-                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Pays / Ville</th>
-                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Grade</th>
-                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Statut</th>
-                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Action</th>
+                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Nom</th>
+                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Email</th>
+                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Pays / Ville</th>
+                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Grade</th>
+                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Statut</th>
+                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Action</th>
                   </tr>
                 </thead>
                 <tbody>

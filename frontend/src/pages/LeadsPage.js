@@ -186,13 +186,13 @@ const LeadsPage = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-white/5">
-                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Type</th>
-                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Nom</th>
-                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Contact</th>
-                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Localisation</th>
-                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Motivations</th>
-                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Statut</th>
-                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase tracking-wide text-text-secondary">Action</th>
+                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Type</th>
+                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Nom</th>
+                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Contact</th>
+                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Localisation</th>
+                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Motivations</th>
+                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Statut</th>
+                    <th className="text-left py-3 px-4 text-sm font-oswald uppercase leading-none tracking-wide text-text-secondary">Action</th>
                   </tr>
                 </thead>
                 <tbody>

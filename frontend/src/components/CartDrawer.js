@@ -218,7 +218,7 @@ const CartDrawer = () => {
             <button
               onClick={handleCheckout}
               disabled={loading}
-              className="w-full py-4 bg-primary hover:bg-primary-dark text-white font-oswald uppercase tracking-wider rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+              className="w-full py-4 bg-primary hover:bg-primary-dark text-white font-oswald uppercase leading-none tracking-wider rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
             >
               {loading ? (
                 <>
