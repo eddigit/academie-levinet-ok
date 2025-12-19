@@ -41,9 +41,11 @@ const DisciplineSPKPage = () => {
             Self-Pro <span className="text-accent">Krav</span>
           </h1>
           
-          <p className="text-xl text-text-secondary font-manrope mb-8 leading-relaxed max-w-3xl mx-auto">
-            La méthode de self-défense créée par le Capitaine Jacques Levinet. 
-            Efficace, réaliste, et conforme aux lois sur la légitime défense.
+          <p className="text-xl text-text-secondary font-manrope mb-4 leading-relaxed max-w-3xl mx-auto">
+            Le Krav Maga version améliorée, conçu pour la France.
+          </p>
+          <p className="text-lg text-text-muted font-manrope mb-8 leading-relaxed max-w-3xl mx-auto">
+            Respectueux des lois françaises, de la déontologie et de la légitime défense proportionnée.
           </p>
           
           <Link
