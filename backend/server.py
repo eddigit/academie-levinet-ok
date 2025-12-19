@@ -3832,9 +3832,9 @@ async def chat_visitor_endpoint(message: dict):
     """AI Chat for visitors - Sales-oriented assistant"""
     try:
         session_id = message.get("session_id", str(uuid.uuid4()))
-        user_message = message.get("message", "")
+        user_message_text = message.get("message", "")
         
-        if not user_message:
+        if not user_message_text:
             return {
                 "response": "👋 Bonjour et bienvenue à l'Académie Jacques Levinet ! Je suis Léo, votre guide. Qu'est-ce qui vous amène vers la self-défense aujourd'hui ?",
                 "session_id": session_id
@@ -3846,9 +3846,10 @@ async def chat_visitor_endpoint(message: dict):
                 api_key=EMERGENT_LLM_KEY,
                 session_id=session_id,
                 system_message=VISITOR_ASSISTANT_PROMPT
-            )
+            ).with_model("openai", "gpt-4o-mini")
         
         chat = chat_sessions[session_id]
+        user_message = UserMessage(text=user_message_text)
         response = await chat.send_message(user_message)
         
         return {
@@ -3868,10 +3869,10 @@ async def chat_member_endpoint(message: dict, current_user: dict = Depends(get_c
     """AI Chat for members - Platform guide assistant"""
     try:
         session_id = message.get("session_id", str(uuid.uuid4()))
-        user_message = message.get("message", "")
+        user_message_text = message.get("message", "")
         user_name = current_user.get("full_name", "").split()[0] if current_user.get("full_name") else "Champion"
         
-        if not user_message:
+        if not user_message_text:
             return {
                 "response": f"👋 Salut {user_name} ! Je suis Léo, ton assistant personnel. Comment puis-je t'aider aujourd'hui ? Tu veux explorer ton espace membre, trouver un événement, ou autre chose ? 🥋",
                 "session_id": session_id
@@ -3879,6 +3880,7 @@ async def chat_member_endpoint(message: dict, current_user: dict = Depends(get_c
         
         # Personalize the prompt with member info
         member_context = f"""
+
 INFORMATIONS SUR CE MEMBRE :
 - Prénom : {user_name}
 - Grade : {current_user.get('belt_grade', 'Non défini')}
@@ -3893,9 +3895,10 @@ INFORMATIONS SUR CE MEMBRE :
                 api_key=EMERGENT_LLM_KEY,
                 session_id=member_session_key,
                 system_message=MEMBER_ASSISTANT_PROMPT + member_context
-            )
+            ).with_model("openai", "gpt-4o-mini")
         
         chat = chat_sessions[member_session_key]
+        user_message = UserMessage(text=user_message_text)
         response = await chat.send_message(user_message)
         
         return {
