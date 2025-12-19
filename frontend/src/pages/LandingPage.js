@@ -89,7 +89,7 @@ const LandingPage = () => {
             Les 3 Piliers de Nos Méthodes
           </h3>
           <p className="text-center text-text-secondary font-manrope text-lg mb-2 max-w-3xl mx-auto">
-            Self Pro Krav - Canne défense - Bâton défense - Self Féminine - Self Enfants
+            Krav Maga Self-Défense - Canne Défense - Bâton Défense - Self-Défense Femmes - Self-Défense Enfants
           </p>
           <p className="text-center text-primary font-manrope text-base mb-16 max-w-3xl mx-auto">
             Pour les professionnels de la sécurité et Forces de l'ordre : Real Operational System
