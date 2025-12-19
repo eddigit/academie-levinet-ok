@@ -648,9 +648,31 @@ const OnboardingPage = () => {
                     />
                   </div>
                 </div>
-              </div>
-            </div>
-          )}
+                <div>
+                  <Label className="text-text-secondary">Pays *</Label>
+                  <Select
+                    value={formData.country}
+                    onValueChange={(value) => setFormData({ ...formData, country: value })}
+                  >
+                    <SelectTrigger className="mt-1 bg-background border-white/10 text-text-primary">
+                      <SelectValue placeholder="Sélectionnez votre pays" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-paper border-white/10 max-h-60">
+                      {countries.length > 0 ? countries.map((country) => (
+                        <SelectItem key={country.code} value={country.name} className="text-text-primary hover:bg-white/5">
+                          {country.name}
+                        </SelectItem>
+                      )) : (
+                        <>
+                          <SelectItem value="France" className="text-text-primary hover:bg-white/5">France</SelectItem>
+                          <SelectItem value="Belgique" className="text-text-primary hover:bg-white/5">Belgique</SelectItem>
+                          <SelectItem value="Suisse" className="text-text-primary hover:bg-white/5">Suisse</SelectItem>
+                          <SelectItem value="Canada" className="text-text-primary hover:bg-white/5">Canada</SelectItem>
+                        </>
+                      )}
+                    </SelectContent>
+                  </Select>
+                </div>
 
           {/* Step 5: Payment */}
           {step === 5 && (
