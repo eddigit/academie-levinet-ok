@@ -2605,6 +2605,271 @@ async def get_chat_history(current_user: dict = Depends(get_current_user)):
     
     return {"history": history}
 
+# ==================== AI CONFIGURATION ENDPOINTS ====================
+
+@api_router.get("/admin/ai-config")
+async def get_ai_configuration(current_user: dict = Depends(get_current_user)):
+    """Admin: Get AI assistant configuration"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    config = await db.settings.find_one({"id": "ai_config"}, {"_id": 0})
+    if not config:
+        return {
+            "visitor_extra_instructions": "",
+            "member_extra_instructions": "",
+            "ai_enabled": True,
+            "visitor_base_prompt": VISITOR_ASSISTANT_PROMPT,
+            "member_base_prompt": MEMBER_ASSISTANT_PROMPT
+        }
+    
+    config["visitor_base_prompt"] = VISITOR_ASSISTANT_PROMPT
+    config["member_base_prompt"] = MEMBER_ASSISTANT_PROMPT
+    return config
+
+@api_router.put("/admin/ai-config")
+async def update_ai_configuration(data: dict, current_user: dict = Depends(get_current_user)):
+    """Admin: Update AI assistant configuration"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    allowed_fields = ["visitor_extra_instructions", "member_extra_instructions", "ai_enabled"]
+    update_data = {k: v for k, v in data.items() if k in allowed_fields}
+    update_data["id"] = "ai_config"
+    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    
+    await db.settings.update_one(
+        {"id": "ai_config"},
+        {"$set": update_data},
+        upsert=True
+    )
+    
+    # Clear chat sessions to apply new instructions
+    global chat_sessions
+    chat_sessions = {}
+    
+    return {"message": "Configuration IA mise à jour"}
+
+# ==================== MEMBERSHIP & INVOICE ENDPOINTS ====================
+
+@api_router.get("/admin/members/subscriptions")
+async def get_members_subscriptions(current_user: dict = Depends(get_current_user)):
+    """Admin: Get all members with their subscription status"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    members = await db.users.find(
+        {"role": "member"},
+        {"_id": 0, "password_hash": 0}
+    ).sort("created_at", -1).to_list(500)
+    
+    # Calculate subscription status for each member
+    today = datetime.now(timezone.utc)
+    for member in members:
+        license_date = member.get("license_paid_at") or member.get("created_at")
+        if license_date:
+            if isinstance(license_date, str):
+                license_date = datetime.fromisoformat(license_date.replace('Z', '+00:00'))
+            
+            expiry_date = license_date + timedelta(days=365)
+            member["subscription_status"] = "active" if today < expiry_date else "expired"
+            member["expiry_date"] = expiry_date.isoformat()
+            member["days_remaining"] = max(0, (expiry_date - today).days)
+        else:
+            member["subscription_status"] = "never_paid"
+            member["expiry_date"] = None
+            member["days_remaining"] = 0
+    
+    active = sum(1 for m in members if m["subscription_status"] == "active")
+    expired = sum(1 for m in members if m["subscription_status"] == "expired")
+    
+    return {
+        "members": members,
+        "stats": {
+            "total": len(members),
+            "active": active,
+            "expired": expired,
+            "never_paid": len(members) - active - expired
+        }
+    }
+
+@api_router.put("/admin/members/{user_id}/subscription")
+async def update_member_subscription(
+    user_id: str,
+    has_paid_license: bool,
+    license_paid_at: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    """Admin: Manually update a member's subscription status"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    update_data = {"has_paid_license": has_paid_license}
+    if license_paid_at:
+        update_data["license_paid_at"] = license_paid_at
+    elif has_paid_license:
+        update_data["license_paid_at"] = datetime.now(timezone.utc).isoformat()
+    
+    result = await db.users.update_one(
+        {"id": user_id},
+        {"$set": update_data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Membre non trouvé")
+    
+    # Create invoice record
+    if has_paid_license:
+        invoice = {
+            "id": str(uuid.uuid4()),
+            "user_id": user_id,
+            "type": "membership",
+            "amount": 35.00,
+            "currency": "EUR",
+            "status": "paid",
+            "payment_method": "manual",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "created_by": current_user["id"]
+        }
+        await db.invoices.insert_one(invoice)
+    
+    return {"message": "Statut de cotisation mis à jour"}
+
+@api_router.get("/invoices/my")
+async def get_my_invoices(current_user: dict = Depends(get_current_user)):
+    """Get current user's invoices"""
+    invoices = await db.invoices.find(
+        {"user_id": current_user["id"]},
+        {"_id": 0}
+    ).sort("created_at", -1).to_list(50)
+    
+    return {"invoices": invoices}
+
+@api_router.get("/invoices/{invoice_id}/pdf")
+async def download_invoice_pdf(invoice_id: str, current_user: dict = Depends(get_current_user)):
+    """Generate and download invoice as PDF"""
+    # Get invoice
+    invoice = await db.invoices.find_one({"id": invoice_id}, {"_id": 0})
+    if not invoice:
+        raise HTTPException(status_code=404, detail="Facture non trouvée")
+    
+    # Check access (user's own invoice or admin)
+    if invoice["user_id"] != current_user["id"] and current_user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Accès non autorisé")
+    
+    # Get user info
+    user = await db.users.find_one({"id": invoice["user_id"]}, {"_id": 0, "password_hash": 0})
+    
+    # Generate PDF
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=2*cm, leftMargin=2*cm, topMargin=2*cm, bottomMargin=2*cm)
+    
+    styles = getSampleStyleSheet()
+    title_style = ParagraphStyle('Title', parent=styles['Heading1'], fontSize=24, spaceAfter=30, alignment=1)
+    normal_style = styles['Normal']
+    
+    elements = []
+    
+    # Header
+    elements.append(Paragraph("ACADÉMIE JACQUES LEVINET", title_style))
+    elements.append(Paragraph("Self-Pro Krav (SPK)", ParagraphStyle('Subtitle', parent=styles['Normal'], fontSize=14, alignment=1, spaceAfter=20)))
+    elements.append(Spacer(1, 20))
+    
+    # Invoice info
+    invoice_date = invoice.get("created_at", "")
+    if isinstance(invoice_date, str) and invoice_date:
+        invoice_date = datetime.fromisoformat(invoice_date.replace('Z', '+00:00')).strftime("%d/%m/%Y")
+    
+    elements.append(Paragraph(f"<b>FACTURE N° {invoice['id'][:8].upper()}</b>", styles['Heading2']))
+    elements.append(Paragraph(f"Date : {invoice_date}", normal_style))
+    elements.append(Spacer(1, 20))
+    
+    # Client info
+    elements.append(Paragraph("<b>FACTURÉ À :</b>", styles['Heading3']))
+    elements.append(Paragraph(f"{user.get('full_name', 'N/A')}", normal_style))
+    elements.append(Paragraph(f"Email : {user.get('email', 'N/A')}", normal_style))
+    if user.get('city'):
+        elements.append(Paragraph(f"Ville : {user.get('city')}", normal_style))
+    elements.append(Spacer(1, 30))
+    
+    # Invoice table
+    invoice_type = "Cotisation Membre Annuelle" if invoice.get("type") == "membership" else invoice.get("type", "Autre")
+    data = [
+        ["Description", "Montant"],
+        [invoice_type, f"{invoice.get('amount', 35):.2f} €"],
+        ["", ""],
+        ["TOTAL", f"{invoice.get('amount', 35):.2f} €"]
+    ]
+    
+    table = Table(data, colWidths=[12*cm, 4*cm])
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#1e3a5f')),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('ALIGN', (1, 0), (1, -1), 'RIGHT'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTNAME', (0, -1), (-1, -1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 12),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('TOPPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, -1), (-1, -1), colors.HexColor('#f0f0f0')),
+        ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#cccccc')),
+    ]))
+    elements.append(table)
+    elements.append(Spacer(1, 30))
+    
+    # Payment status
+    status_text = "PAYÉE" if invoice.get("status") == "paid" else "EN ATTENTE"
+    elements.append(Paragraph(f"<b>Statut :</b> {status_text}", normal_style))
+    elements.append(Spacer(1, 40))
+    
+    # Footer
+    elements.append(Paragraph("Merci de votre confiance !", ParagraphStyle('Footer', parent=styles['Normal'], fontSize=10, alignment=1)))
+    elements.append(Paragraph("Académie Jacques Levinet - Self-Pro Krav", ParagraphStyle('Footer', parent=styles['Normal'], fontSize=9, alignment=1, textColor=colors.gray)))
+    
+    doc.build(elements)
+    
+    # Return PDF as base64
+    pdf_data = buffer.getvalue()
+    buffer.close()
+    
+    return {
+        "filename": f"facture_{invoice['id'][:8]}.pdf",
+        "content": base64.b64encode(pdf_data).decode('utf-8'),
+        "content_type": "application/pdf"
+    }
+
+@api_router.post("/admin/invoices/generate")
+async def generate_invoice_for_member(
+    user_id: str,
+    amount: float = 35.0,
+    invoice_type: str = "membership",
+    current_user: dict = Depends(get_current_user)
+):
+    """Admin: Generate an invoice for a member"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    user = await db.users.find_one({"id": user_id}, {"_id": 0})
+    if not user:
+        raise HTTPException(status_code=404, detail="Utilisateur non trouvé")
+    
+    invoice = {
+        "id": str(uuid.uuid4()),
+        "user_id": user_id,
+        "type": invoice_type,
+        "amount": amount,
+        "currency": "EUR",
+        "status": "paid",
+        "payment_method": "manual",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "created_by": current_user["id"]
+    }
+    
+    await db.invoices.insert_one(invoice)
+    
+    return {"message": "Facture générée", "invoice_id": invoice["id"]}
+
 # ==================== PENDING MEMBERS ENDPOINTS ====================
 
 @api_router.post("/pending-members")
