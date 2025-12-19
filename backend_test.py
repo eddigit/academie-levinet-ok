@@ -380,6 +380,22 @@ class AcademieLevinetAPITester:
         
         self.test_dashboard_stats()
         
+        print("\n📋 PENDING MEMBERS TESTS")
+        print("-" * 30)
+        
+        # Create a pending member request
+        success, pending_id = self.test_create_pending_member()
+        if success and pending_id:
+            # Test getting pending members
+            self.test_get_pending_members()
+            # Test approving the pending member
+            self.test_approve_pending_member(pending_id)
+        
+        print("\n📋 ADMIN SETTINGS TESTS")
+        print("-" * 30)
+        
+        self.test_smtp_settings()
+        
         return True
 
     def print_summary(self):
