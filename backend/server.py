@@ -663,7 +663,7 @@ async def get_all_users(
 
 @api_router.post("/admin/users")
 async def create_admin_user(data: AdminUserCreate, current_user: dict = Depends(get_current_user)):
-    """Admin: Create a new user (admin or member)"""
+    """Admin: Create a new user (admin, member, instructor, technical_director)"""
     if current_user.get('role') != 'admin':
         raise HTTPException(status_code=403, detail="Admin access required")
     
@@ -673,25 +673,92 @@ async def create_admin_user(data: AdminUserCreate, current_user: dict = Depends(
         raise HTTPException(status_code=400, detail="Email déjà utilisé")
     
     # Validate role
-    if data.role not in ['admin', 'member']:
-        raise HTTPException(status_code=400, detail="Rôle invalide. Utilisez 'admin' ou 'member'")
+    valid_roles = ['admin', 'member', 'instructor', 'technical_director']
+    if data.role not in valid_roles:
+        raise HTTPException(status_code=400, detail=f"Rôle invalide. Utilisez: {', '.join(valid_roles)}")
+    
+    # Generate password if not provided
+    import secrets
+    import string
+    password = data.password
+    if not password:
+        password = ''.join(secrets.choice(string.ascii_letters + string.digits) for _ in range(12))
+    
+    # Determine belt grade based on role if not provided
+    belt_grade = data.belt_grade
+    if not belt_grade and data.role == 'instructor':
+        belt_grade = 'Instructeur'
+    elif not belt_grade and data.role == 'technical_director':
+        belt_grade = 'Directeur Technique'
     
     user = User(
         email=data.email,
-        password_hash=hash_password(data.password),
+        password_hash=hash_password(password),
         full_name=data.full_name,
-        role=data.role,
+        role='admin' if data.role in ['admin', 'instructor', 'technical_director'] else 'member',
         phone=data.phone,
         city=data.city,
-        has_paid_license=True if data.role == 'admin' else False
+        has_paid_license=True  # Admin-created users are considered paid
     )
     
     doc = user.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
+    doc['country'] = data.country
+    doc['belt_grade'] = belt_grade
+    doc['club_name'] = data.club_name
+    doc['user_type'] = data.role  # Store original type
     
     await db.users.insert_one(doc)
     
-    return {"message": f"Utilisateur {data.role} créé avec succès", "user_id": user.id}
+    # Send email with credentials if requested
+    if data.send_email:
+        role_labels = {
+            'admin': 'Administrateur',
+            'member': 'Membre',
+            'instructor': 'Instructeur',
+            'technical_director': 'Directeur Technique'
+        }
+        role_label = role_labels.get(data.role, data.role)
+        
+        login_url = os.environ.get('FRONTEND_URL', 'https://levinet-crm-1.preview.emergentagent.com')
+        
+        asyncio.create_task(send_email(
+            to_email=data.email,
+            subject=f"🎉 Votre compte {role_label} - Académie Jacques Levinet",
+            html_content=f"""
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <h2 style="color: #1e3a5f;">Bienvenue {data.full_name} !</h2>
+                <p>Votre compte <strong>{role_label}</strong> a été créé sur la plateforme de l'Académie Jacques Levinet.</p>
+                
+                <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <h3 style="margin-top: 0; color: #1e3a5f;">Vos identifiants de connexion :</h3>
+                    <p><strong>Email :</strong> {data.email}</p>
+                    <p><strong>Mot de passe :</strong> {password}</p>
+                </div>
+                
+                <p>⚠️ <strong>Important :</strong> Nous vous recommandons de changer votre mot de passe dès votre première connexion.</p>
+                
+                <p style="margin-top: 30px;">
+                    <a href="{login_url}/login" style="background: #3B82F6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
+                        Se connecter maintenant
+                    </a>
+                </p>
+                
+                <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
+                <p style="color: #666; font-size: 12px;">
+                    Académie Jacques Levinet - Self-Pro Krav (SPK)<br>
+                    Cet email a été envoyé automatiquement, merci de ne pas y répondre.
+                </p>
+            </div>
+            """,
+            text_content=f"Bienvenue {data.full_name} ! Votre compte {role_label} a été créé. Email: {data.email}, Mot de passe: {password}. Connectez-vous sur {login_url}/login"
+        ))
+    
+    return {
+        "message": f"Utilisateur {data.role} créé avec succès" + (" - Email envoyé" if data.send_email else ""),
+        "user_id": user.id,
+        "password": password if not data.password else None  # Return generated password if applicable
+    }
 
 @api_router.put("/admin/users/{user_id}/role")
 async def update_user_role(user_id: str, role: str, current_user: dict = Depends(get_current_user)):
