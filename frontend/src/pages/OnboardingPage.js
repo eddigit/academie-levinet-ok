@@ -328,26 +328,50 @@ const OnboardingPage = () => {
               
               <div>
                 <Label className="text-text-secondary flex items-center gap-2">
-                  <Home className="w-4 h-4" /> Nom de votre club *
+                  <Home className="w-4 h-4" /> Votre club *
                 </Label>
-                <Input
+                <Select
                   value={formData.club_name}
-                  onChange={(e) => setFormData({ ...formData, club_name: e.target.value })}
-                  className="mt-1 bg-background border-white/10 text-text-primary"
-                  placeholder="Ex: Club SPK Paris Centre"
-                />
+                  onValueChange={(value) => setFormData({ ...formData, club_name: value })}
+                >
+                  <SelectTrigger className="mt-1 bg-background border-white/10 text-text-primary">
+                    <SelectValue placeholder="Sélectionnez votre club" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-paper border-white/10 max-h-60">
+                    {clubs.map((club) => (
+                      <SelectItem key={club.id} value={club.name} className="text-text-primary hover:bg-white/5">
+                        {club.name} ({club.city})
+                      </SelectItem>
+                    ))}
+                    <SelectItem value="other" className="text-text-primary hover:bg-white/5">
+                      Autre club (non listé)
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               
               <div>
                 <Label className="text-text-secondary flex items-center gap-2">
-                  <User className="w-4 h-4" /> Nom de votre instructeur *
+                  <User className="w-4 h-4" /> Votre instructeur *
                 </Label>
-                <Input
+                <Select
                   value={formData.instructor_name}
-                  onChange={(e) => setFormData({ ...formData, instructor_name: e.target.value })}
-                  className="mt-1 bg-background border-white/10 text-text-primary"
-                  placeholder="Prénom et nom de votre instructeur"
-                />
+                  onValueChange={(value) => setFormData({ ...formData, instructor_name: value })}
+                >
+                  <SelectTrigger className="mt-1 bg-background border-white/10 text-text-primary">
+                    <SelectValue placeholder="Sélectionnez votre instructeur" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-paper border-white/10 max-h-60">
+                    {instructors.map((inst) => (
+                      <SelectItem key={inst.id} value={inst.full_name} className="text-text-primary hover:bg-white/5">
+                        {inst.full_name} {inst.club_name ? `(${inst.club_name})` : ''}
+                      </SelectItem>
+                    ))}
+                    <SelectItem value="other" className="text-text-primary hover:bg-white/5">
+                      Autre instructeur (non listé)
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               
               <div>
