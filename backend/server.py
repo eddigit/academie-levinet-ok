@@ -256,6 +256,63 @@ class LeadCreate(BaseModel):
     training_mode: Optional[str] = None  # 'online', 'club', 'both'
     nearest_club_city: Optional[str] = None
 
+# Pending Member (existing members requesting access)
+class PendingMember(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    # From onboarding steps 1-4
+    person_type: str
+    motivations: List[str]
+    full_name: str
+    email: EmailStr
+    phone: str
+    # From existing member form
+    city: str
+    country: str = "France"
+    club_name: str
+    instructor_name: str
+    belt_grade: str
+    training_mode: Optional[str] = None
+    # Status
+    status: PendingMemberStatus = PendingMemberStatus.PENDING
+    admin_notes: Optional[str] = None
+    reviewed_by: Optional[str] = None
+    reviewed_at: Optional[datetime] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class PendingMemberCreate(BaseModel):
+    person_type: str
+    motivations: List[str]
+    full_name: str
+    email: EmailStr
+    phone: str
+    city: str
+    country: str = "France"
+    club_name: str
+    instructor_name: str
+    belt_grade: str
+    training_mode: Optional[str] = None
+
+# Settings model for SMTP configuration
+class SmtpSettings(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = "smtp_settings"
+    smtp_host: str = "smtp.gmail.com"
+    smtp_port: int = 587
+    smtp_user: str = ""
+    smtp_password: str = ""
+    from_email: str = ""
+    from_name: str = "Académie Jacques Levinet"
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class SmtpSettingsUpdate(BaseModel):
+    smtp_host: Optional[str] = None
+    smtp_port: Optional[int] = None
+    smtp_user: Optional[str] = None
+    smtp_password: Optional[str] = None
+    from_email: Optional[str] = None
+    from_name: Optional[str] = None
+
 class News(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
