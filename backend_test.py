@@ -368,10 +368,9 @@ class AcademieLevinetAPITester:
             data=club_data
         )
         
-        # Debug: print the response to see what's returned
+        # Extract club_id from the response structure
         if success:
-            print(f"   Club creation response: {response}")
-            club_id = response.get('id') or response.get('club_id')
+            club_id = response.get('club', {}).get('id')
             return success, club_id
         return success, None
 
