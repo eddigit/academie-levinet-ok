@@ -149,11 +149,11 @@ const DisciplineSFJLPage = () => {
           <div className="bg-gradient-to-br from-secondary/10 to-transparent border border-secondary/20 rounded-lg p-8 md:p-12 text-center">
             <Heart className="w-12 h-12 text-secondary mx-auto mb-6" strokeWidth={1.5} />
             <blockquote className="text-xl md:text-2xl text-text-secondary font-manrope italic leading-relaxed mb-6">
-              "Le SFJL m'a donné bien plus que des techniques de défense. 
-              Il m'a donné la confiance de marcher la tête haute."
+              "Avant, j'avais peur de marcher seule le soir. Aujourd'hui, 
+              je me sens capable de réagir. Ça change tout."
             </blockquote>
             <p className="text-secondary font-oswald uppercase leading-none tracking-wider">
-              — Une pratiquante SFJL
+              — Marie, 34 ans
             </p>
           </div>
         </div>
@@ -163,17 +163,17 @@ const DisciplineSFJLPage = () => {
       <section className="py-20 px-6 bg-gradient-to-b from-background to-secondary/10">
         <div className="container mx-auto max-w-3xl text-center">
           <h2 className="font-oswald text-4xl font-bold text-text-primary uppercase mb-6 tracking-tight">
-            Rejoignez-Nous
+            Faites le Premier Pas
           </h2>
           <p className="text-text-secondary font-manrope text-lg mb-8">
-            Prenez le premier pas vers votre autonomie et votre sécurité.
+            Vous méritez de vous sentir en sécurité. Venez essayer, sans engagement.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/onboarding"
               className="px-8 py-4 bg-secondary hover:bg-secondary/80 text-white font-oswald uppercase leading-none tracking-wider rounded-sm transition-all shadow-[0_0_20px_rgba(239,68,68,0.4)] flex items-center justify-center gap-2"
             >
-              S'inscrire au SFJL
+              Essayer un Cours
               <ChevronRight className="w-5 h-5" strokeWidth={2} />
             </Link>
             <Link
