@@ -54,7 +54,7 @@ const AIConfigPage = () => {
     return (
       <div className="min-h-screen bg-background flex">
         <Sidebar />
-        <main className="flex-1 p-8 flex items-center justify-center">
+        <main className="flex-1 ml-64 p-8 flex items-center justify-center">
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
         </main>
       </div>
@@ -65,7 +65,7 @@ const AIConfigPage = () => {
     <div className="min-h-screen bg-background flex">
       <Sidebar />
       
-      <main className="flex-1 p-8 overflow-y-auto">
+      <main className="flex-1 ml-64 p-8 overflow-y-auto">
         <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">

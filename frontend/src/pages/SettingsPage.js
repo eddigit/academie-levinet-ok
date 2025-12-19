@@ -84,7 +84,7 @@ const SettingsPage = () => {
     return (
       <div className="min-h-screen bg-background flex">
         <Sidebar />
-        <main className="flex-1 p-8 flex items-center justify-center">
+        <main className="flex-1 ml-64 p-8 flex items-center justify-center">
           <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full"></div>
         </main>
       </div>
@@ -95,7 +95,7 @@ const SettingsPage = () => {
     <div className="min-h-screen bg-background flex">
       <Sidebar />
       
-      <main className="flex-1 p-8 overflow-y-auto">
+      <main className="flex-1 ml-64 p-8 overflow-y-auto">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-8">
