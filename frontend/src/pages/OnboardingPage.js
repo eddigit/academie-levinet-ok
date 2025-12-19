@@ -21,6 +21,7 @@ const beltGrades = [
   "Ceinture Verte",
   "Ceinture Bleue",
   "Ceinture Marron",
+  "Ceinture Noire",
   "Ceinture Noire 1er Dan",
   "Ceinture Noire 2ème Dan",
   "Ceinture Noire 3ème Dan",
