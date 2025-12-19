@@ -50,8 +50,8 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="glassmorphism-sidebar w-64 min-h-screen fixed left-0 top-0 z-50 flex flex-col" data-testid="sidebar">
-      <div className="p-6 border-b border-white/5">
+    <aside className="glassmorphism-sidebar w-64 h-screen fixed left-0 top-0 z-50 flex flex-col" data-testid="sidebar">
+      <div className="p-6 border-b border-white/5 flex-shrink-0">
         <div className="flex items-center gap-3">
           <img 
             src="https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg" 
@@ -68,7 +68,7 @@ const Sidebar = () => {
         </div>
       </div>
 
-      <nav className="flex-1 p-4 space-y-2 overflow-y-auto" data-testid="sidebar-nav">
+      <nav className="flex-1 p-4 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent" data-testid="sidebar-nav">
         {menuItems.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.path;
