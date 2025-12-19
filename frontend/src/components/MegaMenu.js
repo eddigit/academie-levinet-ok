@@ -22,23 +22,23 @@ const MegaMenu = () => {
     {
       title: 'Nos Disciplines',
       items: [
-        { name: 'Self-Pro Krav (SPK)', href: '/disciplines/spk', icon: Target, description: 'Méthode phare de self-défense' },
-        { name: 'WKMO - Grand Public', href: '/disciplines/wkmo', icon: Users, description: 'Krav Maga pour tous' },
-        { name: 'SFJL - Défense Féminine', href: '/disciplines/sfjl', icon: Shield, description: 'Empowerment et sécurité' },
-        { name: 'IPC/ROS - Professionnels', href: '/disciplines/ipc', icon: Shield, description: 'Formation forces de l\'ordre' },
+        { name: 'Krav Maga Self-Défense', href: '/disciplines/spk', icon: Target, description: 'Apprenez à vous défendre' },
+        { name: 'Self-Défense Femmes', href: '/disciplines/sfjl', icon: Shield, description: 'Pour vous, mesdames' },
+        { name: 'Self-Défense Enfants', href: '/disciplines/wkmo', icon: Users, description: 'Pour toute la famille' },
+        { name: 'Formation Pro (ROS)', href: '/disciplines/ipc', icon: Shield, description: 'Forces de l\'ordre et sécurité' },
       ]
     },
     {
       title: 'Formation',
       items: [
         { name: 'Pédagogie & Grades', href: '/pedagogy', icon: BookOpen, description: 'Système de certification' },
-        { name: 'Présence Internationale', href: '/international', icon: Globe, description: '50+ pays représentés' },
+        { name: 'Présence Internationale', href: '/international', icon: Globe, description: '40+ pays représentés' },
       ]
     },
     {
       title: 'Rejoindre',
       items: [
-        { name: "Devenir Membre", href: '/join', icon: UserPlus, description: 'Rejoignez l\'élite' },
+        { name: "Je Veux Apprendre", href: '/onboarding', icon: UserPlus, description: 'Commencez maintenant' },
       ]
     }
   ];
