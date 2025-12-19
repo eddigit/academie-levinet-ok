@@ -568,6 +568,62 @@ class AcademieLevinetAPITester:
         
         self.test_smtp_settings()
         
+        print("\n📋 CLUB MANAGEMENT TESTS")
+        print("-" * 30)
+        
+        # Test technical directors list endpoint
+        success, directors_response = self.test_get_technical_directors_list()
+        if not success:
+            print("❌ Failed to get technical directors list")
+            return False
+        
+        # Test instructors list endpoint
+        self.test_get_instructors_list()
+        
+        # Create a club using the first available director
+        directors = directors_response.get('directors', [])
+        if not directors:
+            print("❌ No technical directors available for club creation")
+            return False
+        
+        director_id = directors[0]['id']
+        success, club_id = self.test_create_club(director_id)
+        if not success:
+            print("❌ Failed to create club. Stopping club tests.")
+            return False
+        
+        # Test getting all clubs
+        self.test_get_clubs()
+        
+        # Test getting club details
+        self.test_get_club_details(club_id)
+        
+        # Test updating club
+        self.test_update_club(club_id)
+        
+        # Test club stats
+        self.test_get_club_stats(club_id)
+        
+        # Test member assignment to club (using existing member if available)
+        if member_id:
+            self.test_assign_member_to_club(club_id, member_id)
+            # Test removing member from club
+            self.test_remove_member_from_club(club_id, member_id)
+        
+        print("\n📋 VISIT REQUESTS TESTS")
+        print("-" * 30)
+        
+        # Create a visit request
+        success, visit_request_id = self.test_create_visit_request(club_id)
+        if success and visit_request_id:
+            # Test getting visit requests
+            self.test_get_visit_requests()
+            # Test approving visit request
+            self.test_approve_visit_request(visit_request_id)
+        
+        # Test deleting the club (cleanup)
+        self.test_delete_club(club_id)
+        
         return True
 
     def print_summary(self):
