@@ -140,7 +140,7 @@ const LandingPage = () => {
             </h3>
             <div className="h-1 w-24 bg-accent mb-6" />
             <p className="font-manrope text-lg text-text-secondary">
-              L'Académie Jacques Levinet, organisme certifié, propose des parcours adaptés à chaque profil, du débutant au professionnel aguerri.
+              L'Académie Jacques Levinet, organisme de formation, propose des parcours adaptés à chaque profil, du débutant au professionnel aguerri.
             </p>
           </div>
 
@@ -390,7 +390,7 @@ const LandingPage = () => {
             Pourquoi Choisir Nos Méthodes ?
           </h3>
           <p className="text-center text-text-secondary font-manrope text-lg mb-4 max-w-3xl mx-auto">
-            Des méthodes brevetées, éprouvées par des décennies d'expérience terrain
+            Des méthodes brevetées, éprouvées par des décennies d'expérience de terrain
           </p>
           <p className="text-center text-primary font-manrope text-base mb-16 max-w-3xl mx-auto">
             Organisme de formations professionnelles et reconnaissance Internationale
@@ -440,10 +440,10 @@ const LandingPage = () => {
       >
         <div className="container mx-auto text-center max-w-3xl">
           <h3 className="font-oswald text-4xl md:text-5xl font-bold text-text-primary uppercase mb-6 tracking-wide">
-            Rejoignez l'Académie Jacques Levinet
+            Rejoignez Notre Fédération Internationale
           </h3>
           <p className="text-lg text-text-secondary font-manrope mb-10 leading-relaxed">
-            Rejoignez l'Académie Jacques Levinet et développez votre confiance, votre sécurité et vos capacités
+            Développez votre confiance, votre sécurité et vos capacités avec l'Académie Jacques Levinet
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <Link 
@@ -470,7 +470,7 @@ const LandingPage = () => {
                   className="w-10 h-10 rounded-full object-cover"
                 />
                 <div>
-                  <h3 className="font-oswald text-lg font-bold text-text-primary uppercase">AJL</h3>
+                  <h3 className="font-oswald text-lg font-bold text-text-primary uppercase">Académie Jacques Levinet</h3>
                   <p className="text-xs text-text-muted">Depuis 1998</p>
                 </div>
               </div>
@@ -494,10 +494,14 @@ const LandingPage = () => {
             <div>
               <h4 className="font-oswald text-sm font-bold uppercase tracking-wider text-primary mb-6">Disciplines</h4>
               <ul className="space-y-3">
-                <li><Link to="/disciplines/wkmo" className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">WKMO - Grand Public</Link></li>
-                <li><Link to="/disciplines/sfjl" className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">SFJL - Défense Féminine</Link></li>
-                <li><Link to="/disciplines/ipc" className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">IPC - Professionnels</Link></li>
-                <li><Link to="/international" className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">Présence Internationale</Link></li>
+                <li><Link to="/disciplines/spk" className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">Krav Maga SPK</Link></li>
+                <li><Link to="/disciplines/canne" className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">Canne Défense</Link></li>
+                <li><Link to="/disciplines/baton" className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">Bâton Défense</Link></li>
+                <li><Link to="/disciplines/enfants" className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">Self Défense Enfant</Link></li>
+                <li><Link to="/disciplines/sfjl" className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">Self Défense Femme</Link></li>
+                <li><Link to="/disciplines/ipc" className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">Real Operational System</Link></li>
+                <li><span className="text-text-secondary font-manrope text-sm">Accessibilité</span></li>
+                <li><span className="text-text-secondary font-manrope text-sm">Instinct de survie et réflexes</span></li>
               </ul>
             </div>
 
