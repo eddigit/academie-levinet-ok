@@ -153,6 +153,7 @@ class User(BaseModel):
     club_name: Optional[str] = None
     instructor_name: Optional[str] = None
     bio: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class UserProfileUpdate(BaseModel):
     full_name: Optional[str] = None
