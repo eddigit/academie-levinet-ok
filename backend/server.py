@@ -2168,6 +2168,280 @@ async def get_membership_status(current_user: dict = Depends(get_current_user)):
         "premium_since": user.get("premium_since")
     }
 
+# ==================== PENDING MEMBERS (EXISTING MEMBERS) ENDPOINTS ====================
+
+@api_router.post("/pending-members")
+async def create_pending_member(data: PendingMemberCreate):
+    """Create a pending member request (for existing members)"""
+    # Check if email already exists in users
+    existing_user = await db.users.find_one({"email": data.email})
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Un compte existe déjà avec cet email. Veuillez vous connecter.")
+    
+    # Check if already has a pending request
+    existing_pending = await db.pending_members.find_one({"email": data.email, "status": "En attente"})
+    if existing_pending:
+        raise HTTPException(status_code=400, detail="Une demande est déjà en cours pour cet email.")
+    
+    pending_member = PendingMember(**data.model_dump())
+    doc = pending_member.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    
+    await db.pending_members.insert_one(doc)
+    
+    # Send confirmation email to the pending member
+    asyncio.create_task(send_email(
+        to_email=data.email,
+        subject="Demande reçue - Académie Jacques Levinet",
+        html_content=f"""
+        <h2>Bonjour {data.full_name},</h2>
+        <p>Nous avons bien reçu votre demande d'accès à l'espace membre de l'Académie Jacques Levinet.</p>
+        <p>Votre profil est actuellement <strong>en attente de validation</strong> par notre équipe.</p>
+        <p>Vous recevrez un email de confirmation dès que votre compte sera activé.</p>
+        <br/>
+        <p>Cordialement,<br/>L'équipe de l'Académie Jacques Levinet</p>
+        """,
+        text_content=f"Bonjour {data.full_name}, votre demande d'accès est en attente de validation."
+    ))
+    
+    return {"message": "Votre demande a été enregistrée. Vous recevrez un email une fois votre compte validé.", "id": pending_member.id}
+
+@api_router.get("/admin/pending-members")
+async def get_pending_members(
+    status: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    """Admin: Get all pending member requests"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    query = {}
+    if status:
+        query["status"] = status
+    
+    pending = await db.pending_members.find(query, {"_id": 0}).sort("created_at", -1).to_list(100)
+    
+    for p in pending:
+        if isinstance(p.get('created_at'), str):
+            p['created_at'] = datetime.fromisoformat(p['created_at'])
+    
+    return {"pending_members": pending, "total": len(pending)}
+
+@api_router.post("/admin/pending-members/{pending_id}/approve")
+async def approve_pending_member(pending_id: str, current_user: dict = Depends(get_current_user)):
+    """Admin: Approve a pending member and create their account"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    pending = await db.pending_members.find_one({"id": pending_id}, {"_id": 0})
+    if not pending:
+        raise HTTPException(status_code=404, detail="Demande non trouvée")
+    
+    if pending.get('status') != 'En attente':
+        raise HTTPException(status_code=400, detail="Cette demande a déjà été traitée")
+    
+    # Generate temporary password
+    import secrets
+    import string
+    temp_password = ''.join(secrets.choice(string.ascii_letters + string.digits) for _ in range(12))
+    
+    # Create user account
+    user = User(
+        email=pending['email'],
+        password_hash=hash_password(temp_password),
+        full_name=pending['full_name'],
+        role="member",
+        has_paid_license=True,  # Existing members already paid
+        is_premium=False
+    )
+    
+    user_doc = user.model_dump()
+    user_doc['created_at'] = user_doc['created_at'].isoformat()
+    user_doc['belt_grade'] = pending.get('belt_grade', 'Ceinture Blanche')
+    user_doc['city'] = pending.get('city', '')
+    user_doc['club_name'] = pending.get('club_name', '')
+    user_doc['instructor_name'] = pending.get('instructor_name', '')
+    user_doc['phone'] = pending.get('phone', '')
+    user_doc['motivations'] = pending.get('motivations', [])
+    user_doc['person_type'] = pending.get('person_type', '')
+    user_doc['training_mode'] = pending.get('training_mode', '')
+    
+    await db.users.insert_one(user_doc)
+    
+    # Update pending member status
+    await db.pending_members.update_one(
+        {"id": pending_id},
+        {"$set": {
+            "status": "Approuvé",
+            "reviewed_by": current_user['id'],
+            "reviewed_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    # Send email with temporary password
+    login_url = os.environ.get('FRONTEND_URL', 'https://levinet-crm-1.preview.emergentagent.com')
+    asyncio.create_task(send_email(
+        to_email=pending['email'],
+        subject="🎉 Votre compte est activé - Académie Jacques Levinet",
+        html_content=f"""
+        <h2>Bienvenue {pending['full_name']} !</h2>
+        <p>Votre demande d'accès à l'espace membre de l'Académie Jacques Levinet a été <strong>approuvée</strong> !</p>
+        <p>Voici vos identifiants de connexion :</p>
+        <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0;">
+            <p><strong>Email :</strong> {pending['email']}</p>
+            <p><strong>Mot de passe temporaire :</strong> {temp_password}</p>
+        </div>
+        <p>⚠️ <strong>Important :</strong> Nous vous recommandons de changer votre mot de passe dès votre première connexion.</p>
+        <p><a href="{login_url}/login" style="background: #3B82F6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; margin-top: 10px;">Se connecter</a></p>
+        <br/>
+        <p>Bienvenue dans la communauté SPK !</p>
+        <p>L'équipe de l'Académie Jacques Levinet</p>
+        """,
+        text_content=f"Bienvenue {pending['full_name']} ! Votre compte est activé. Connectez-vous avec: Email: {pending['email']}, Mot de passe: {temp_password}"
+    ))
+    
+    return {"message": "Membre approuvé et compte créé avec succès. Un email a été envoyé.", "user_id": user.id}
+
+@api_router.post("/admin/pending-members/{pending_id}/reject")
+async def reject_pending_member(
+    pending_id: str,
+    reason: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    """Admin: Reject a pending member request"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    pending = await db.pending_members.find_one({"id": pending_id}, {"_id": 0})
+    if not pending:
+        raise HTTPException(status_code=404, detail="Demande non trouvée")
+    
+    await db.pending_members.update_one(
+        {"id": pending_id},
+        {"$set": {
+            "status": "Rejeté",
+            "admin_notes": reason,
+            "reviewed_by": current_user['id'],
+            "reviewed_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    # Send rejection email
+    asyncio.create_task(send_email(
+        to_email=pending['email'],
+        subject="Votre demande - Académie Jacques Levinet",
+        html_content=f"""
+        <h2>Bonjour {pending['full_name']},</h2>
+        <p>Après vérification, nous n'avons pas pu valider votre demande d'accès à l'espace membre.</p>
+        {f'<p>Raison : {reason}</p>' if reason else ''}
+        <p>Si vous pensez qu'il s'agit d'une erreur, veuillez contacter votre instructeur ou l'administration.</p>
+        <br/>
+        <p>Cordialement,<br/>L'équipe de l'Académie Jacques Levinet</p>
+        """,
+        text_content=f"Bonjour {pending['full_name']}, votre demande n'a pas pu être validée."
+    ))
+    
+    return {"message": "Demande rejetée"}
+
+# ==================== SMTP SETTINGS ENDPOINTS ====================
+
+@api_router.get("/admin/settings/smtp")
+async def get_smtp_settings(current_user: dict = Depends(get_current_user)):
+    """Admin: Get SMTP settings (password masked)"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    settings = await db.settings.find_one({"id": "smtp_settings"}, {"_id": 0})
+    if not settings:
+        # Return default settings
+        return {
+            "smtp_host": "smtp.gmail.com",
+            "smtp_port": 587,
+            "smtp_user": "",
+            "smtp_password_set": False,
+            "from_email": "",
+            "from_name": "Académie Jacques Levinet"
+        }
+    
+    # Mask password
+    settings['smtp_password_set'] = bool(settings.get('smtp_password'))
+    settings.pop('smtp_password', None)
+    return settings
+
+@api_router.put("/admin/settings/smtp")
+async def update_smtp_settings(data: SmtpSettingsUpdate, current_user: dict = Depends(get_current_user)):
+    """Admin: Update SMTP settings"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    update_data = {k: v for k, v in data.model_dump().items() if v is not None}
+    update_data['updated_at'] = datetime.now(timezone.utc).isoformat()
+    update_data['id'] = "smtp_settings"
+    
+    await db.settings.update_one(
+        {"id": "smtp_settings"},
+        {"$set": update_data},
+        upsert=True
+    )
+    
+    # Also update environment variables for the email service
+    if data.smtp_user:
+        os.environ['SMTP_USER'] = data.smtp_user
+    if data.smtp_password:
+        os.environ['SMTP_PASSWORD'] = data.smtp_password
+    if data.from_email:
+        os.environ['SMTP_FROM_EMAIL'] = data.from_email
+    
+    return {"message": "Paramètres SMTP mis à jour avec succès"}
+
+@api_router.post("/admin/settings/smtp/test")
+async def test_smtp_settings(current_user: dict = Depends(get_current_user)):
+    """Admin: Send test email to verify SMTP settings"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    try:
+        success = await send_email(
+            to_email=current_user['email'],
+            subject="Test SMTP - Académie Jacques Levinet",
+            html_content="""
+            <h2>Test réussi !</h2>
+            <p>Si vous recevez cet email, la configuration SMTP fonctionne correctement.</p>
+            <p>L'équipe de l'Académie Jacques Levinet</p>
+            """,
+            text_content="Test SMTP réussi ! La configuration fonctionne correctement."
+        )
+        if success:
+            return {"message": f"Email de test envoyé à {current_user['email']}"}
+        else:
+            raise HTTPException(status_code=500, detail="Échec de l'envoi de l'email. Vérifiez vos paramètres SMTP.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erreur: {str(e)}")
+
+# ==================== INSTRUCTORS LIST ENDPOINT ====================
+
+@api_router.get("/instructors")
+async def get_instructors():
+    """Get list of instructors (users with instructor-level grades)"""
+    instructor_grades = [
+        "Instructeur",
+        "Directeur Technique", 
+        "Directeur National",
+        "Ceinture Noire 3ème Dan",
+        "Ceinture Noire 4ème Dan",
+        "Ceinture Noire 5ème Dan"
+    ]
+    
+    instructors = await db.users.find(
+        {"belt_grade": {"$in": instructor_grades}},
+        {"_id": 0, "password_hash": 0}
+    ).to_list(100)
+    
+    # Also check technical directors
+    directors = await db.technical_directors.find({}, {"_id": 0}).to_list(100)
+    
+    return {"instructors": instructors, "technical_directors": directors}
+
 app.include_router(api_router)
 
 app.add_middleware(
