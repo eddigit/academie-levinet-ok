@@ -3849,7 +3849,7 @@ async def chat_visitor_endpoint(message: dict):
             )
         
         chat = chat_sessions[session_id]
-        response = chat.send_message(user_message)
+        response = await chat.send_message(user_message)
         
         return {
             "response": response,
@@ -3896,7 +3896,7 @@ INFORMATIONS SUR CE MEMBRE :
             )
         
         chat = chat_sessions[member_session_key]
-        response = chat.send_message(user_message)
+        response = await chat.send_message(user_message)
         
         return {
             "response": response,
