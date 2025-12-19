@@ -39,6 +39,7 @@ const Sidebar = () => {
   // Admin-only menu items
   const adminItems = [
     { path: '/admin/pending-members', icon: UserCheck, label: 'Validations', testId: 'nav-pending', highlight: true },
+    { path: '/admin/users', icon: Users, label: 'Utilisateurs', testId: 'nav-users' },
     { path: '/admin/products', icon: ShoppingBag, label: 'Boutique', testId: 'nav-products' },
     { path: '/admin/messages', icon: Shield, label: 'Modération', testId: 'nav-moderation' },
     { path: '/admin/settings', icon: Settings, label: 'Paramètres', testId: 'nav-settings' },
