@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, UserCog, CreditCard, LogOut, UserPlus, Newspaper, Calendar, MessageSquare, Shield, ShoppingBag, UserCheck, Settings, Bot, Receipt } from 'lucide-react';
+import { LayoutDashboard, Users, UserCog, CreditCard, LogOut, UserPlus, Newspaper, Calendar, MessageSquare, Shield, ShoppingBag, UserCheck, Settings, Bot, Receipt, Globe } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 
@@ -41,6 +41,7 @@ const Sidebar = () => {
     { path: '/admin/pending-members', icon: UserCheck, label: 'Validations', testId: 'nav-pending', highlight: true },
     { path: '/admin/users', icon: Users, label: 'Utilisateurs', testId: 'nav-users' },
     { path: '/admin/subscriptions', icon: Receipt, label: 'Cotisations', testId: 'nav-admin-subs' },
+    { path: '/admin/site-content', icon: Globe, label: 'Site Internet', testId: 'nav-site' },
     { path: '/admin/products', icon: ShoppingBag, label: 'Boutique', testId: 'nav-products' },
     { path: '/admin/ai-config', icon: Bot, label: 'Config. IA', testId: 'nav-ai-config' },
     { path: '/admin/messages', icon: Shield, label: 'Modération', testId: 'nav-moderation' },
