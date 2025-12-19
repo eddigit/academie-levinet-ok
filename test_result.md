@@ -1,44 +1,27 @@
-# Testing Protocol
+# Test Result Document
 
-## Test Session: Admin Users & Member Profile
+## Current Test Scope
+Testing the new Club Management feature for the Académie Jacques Levinet CRM.
 
-### Features to Test:
-1. Admin user management page (/admin/users)
-2. Create admin/member users
-3. Promote/Demote users
-4. Delete users
-5. Member profile page (/member/profile)
-6. Edit profile fields
-7. Change password
-8. Upload/change profile photo
+## Features to Test
+1. Club CRUD operations (Create, Read, Update, Delete)
+2. Club details display with statistics
+3. Member assignment to clubs
+4. Technical Director assignment
+5. Visit request system (if time permits)
 
-### Test Credentials:
+## Test Credentials
 - Admin: admin@academie-levinet.com / Admin2025!
-- Member: test@academie-levinet.com / test123
+- Member: membre@academie-levinet.com / Membre2025!
 
-### Routes to Test:
-- /admin/users
-- /member/profile
+## Incorporate User Feedback
+- Club must be assigned to a technical director
+- Members are assigned to a "club mère" (home club)
+- Members can request to visit other clubs with DT/admin approval
+- Statistics per club should be displayed
 
-### Backend Endpoints to Test:
-- GET /api/admin/users
-- POST /api/admin/users
-- PUT /api/admin/users/{id}/role
-- DELETE /api/admin/users/{id}
-- GET /api/profile
-- PUT /api/profile
-- PUT /api/profile/password
-- POST /api/profile/photo
+## Previous Issues
+- Frontend was broken due to duplicate Switch import (FIXED)
 
-### Tests Passed:
-- Admin users page loads ✓
-- Create user modal displays ✓
-- Users list with filters (Tous, Admins, Membres) ✓
-- Member profile page loads ✓
-- Profile edit mode works ✓
-- All profile fields editable ✓
-
-### Incorporate User Feedback:
-- Admin can create admin accounts for bureau management
-- Users can update their profile and photo
-
+## Test Status
+- Waiting for testing agent validation
