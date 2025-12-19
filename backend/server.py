@@ -3908,7 +3908,6 @@ INFORMATIONS SUR CE MEMBRE :
             "response": f"👋 Salut {user_name} ! Je suis là pour t'aider. Tu peux consulter ton profil dans /member/profile, voir les événements dans /events, ou envoyer un message à ton instructeur via /messages. Que souhaites-tu faire ? 🥋",
             "session_id": message.get("session_id", str(uuid.uuid4()))
         }
-        return {"response": "Bonjour ! Comment puis-je vous aider ?", "session_id": str(uuid.uuid4())}
 
 # ==================== ONBOARDING DYNAMIC ENDPOINTS ====================
 
