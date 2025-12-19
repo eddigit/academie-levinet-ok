@@ -177,6 +177,22 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/admin/pending-members"
+            element={
+              <ProtectedRoute>
+                <PendingMembersPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/settings"
+            element={
+              <ProtectedRoute>
+                <SettingsPage />
+              </ProtectedRoute>
+            }
+          />
           
           {/* Member Area routes */}
           <Route
