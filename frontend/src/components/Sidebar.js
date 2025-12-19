@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, UserCog, CreditCard, LogOut, UserPlus, Newspaper, Calendar, MessageSquare, Shield, ShoppingBag } from 'lucide-react';
+import { LayoutDashboard, Users, UserCog, CreditCard, LogOut, UserPlus, Newspaper, Calendar, MessageSquare, Shield, ShoppingBag, UserCheck, Settings } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 
@@ -38,8 +38,10 @@ const Sidebar = () => {
 
   // Admin-only menu items
   const adminItems = [
+    { path: '/admin/pending-members', icon: UserCheck, label: 'Validations', testId: 'nav-pending', highlight: true },
     { path: '/admin/products', icon: ShoppingBag, label: 'Boutique', testId: 'nav-products' },
     { path: '/admin/messages', icon: Shield, label: 'Modération', testId: 'nav-moderation' },
+    { path: '/admin/settings', icon: Settings, label: 'Paramètres', testId: 'nav-settings' },
   ];
 
   return (
