@@ -368,7 +368,12 @@ class AcademieLevinetAPITester:
             data=club_data
         )
         
-        return success, response.get('id') if success else None
+        # Debug: print the response to see what's returned
+        if success:
+            print(f"   Club creation response: {response}")
+            club_id = response.get('id') or response.get('club_id')
+            return success, club_id
+        return success, None
 
     def test_get_clubs(self):
         """Test getting all clubs"""
