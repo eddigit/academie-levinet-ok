@@ -1,0 +1,131 @@
+{
+  "summary": {
+    "total_tests": 20,
+    "passed_tests": 16,
+    "failed_tests": 4,
+    "success_rate": 80.0
+  },
+  "detailed_results": [
+    {
+      "test_name": "Admin Login",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-12-19T07:42:39.996743"
+    },
+    {
+      "test_name": "Member Login",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-12-19T07:42:40.260458"
+    },
+    {
+      "test_name": "Admin Get All Users",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-12-19T07:42:40.300370"
+    },
+    {
+      "test_name": "Users List Validation",
+      "success": true,
+      "details": "Found 13 users",
+      "timestamp": "2025-12-19T07:42:40.300947"
+    },
+    {
+      "test_name": "Admin Get Users - Admin Filter",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-12-19T07:42:40.335729"
+    },
+    {
+      "test_name": "Admin Filter Validation",
+      "success": true,
+      "details": "All 2 users are admins",
+      "timestamp": "2025-12-19T07:42:40.336372"
+    },
+    {
+      "test_name": "Admin Get Users - Member Filter",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-12-19T07:42:40.370486"
+    },
+    {
+      "test_name": "Member Filter Validation",
+      "success": true,
+      "details": "All 11 users are members",
+      "timestamp": "2025-12-19T07:42:40.371094"
+    },
+    {
+      "test_name": "Admin Create Admin User",
+      "success": false,
+      "details": "Expected 200, got 520 - Internal Server Error",
+      "timestamp": "2025-12-19T07:42:40.629017"
+    },
+    {
+      "test_name": "Admin Create Member User",
+      "success": false,
+      "details": "Expected 200, got 520 - Internal Server Error",
+      "timestamp": "2025-12-19T07:42:40.886464"
+    },
+    {
+      "test_name": "Role Change Test",
+      "success": false,
+      "details": "No user ID available for testing",
+      "timestamp": "2025-12-19T07:42:40.887078"
+    },
+    {
+      "test_name": "Delete User Test",
+      "success": false,
+      "details": "No user ID available for testing",
+      "timestamp": "2025-12-19T07:42:40.887096"
+    },
+    {
+      "test_name": "Member Get Profile",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-12-19T07:42:40.918874"
+    },
+    {
+      "test_name": "Profile Fields Validation",
+      "success": true,
+      "details": "All required fields present",
+      "timestamp": "2025-12-19T07:42:40.919502"
+    },
+    {
+      "test_name": "Member Update Profile",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-12-19T07:42:40.954901"
+    },
+    {
+      "test_name": "Profile Update Validation",
+      "success": true,
+      "details": "Profile updated successfully",
+      "timestamp": "2025-12-19T07:42:40.955594"
+    },
+    {
+      "test_name": "Member Update Photo",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-12-19T07:42:40.990772"
+    },
+    {
+      "test_name": "Member Change Password",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-12-19T07:42:41.473886"
+    },
+    {
+      "test_name": "Verify New Password Login",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-12-19T07:42:41.728861"
+    },
+    {
+      "test_name": "Reset Password Back",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-12-19T07:42:42.210490"
+    }
+  ],
+  "timestamp": "2025-12-19T07:42:42.211402"
+}
