@@ -387,41 +387,41 @@ const LandingPage = () => {
       <section className="py-20 px-6 bg-paper">
         <div className="container mx-auto max-w-4xl">
           <h3 className="font-oswald text-4xl font-bold text-center text-text-primary uppercase mb-4 tracking-wide">
-            Pourquoi Choisir Nos Méthodes ?
+            Pourquoi Nous Choisir ?
           </h3>
           <p className="text-center text-text-secondary font-manrope text-lg mb-4 max-w-3xl mx-auto">
-            Des méthodes brevetées, éprouvées par des décennies d'expérience de terrain
+            Une méthode de self-défense éprouvée depuis des décennies
           </p>
           <p className="text-center text-primary font-manrope text-base mb-16 max-w-3xl mx-auto">
-            Organisme de formations professionnelles et reconnaissance Internationale
+            Organisme de formation professionnelle à reconnaissance internationale
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex gap-4 p-6 bg-background/50 rounded-lg border border-white/5">
               <CheckCircle className="w-8 h-8 text-primary flex-shrink-0" strokeWidth={1.5} />
               <div>
-                <h5 className="font-oswald text-lg font-bold text-text-primary uppercase mb-2">Méthode Brevetée</h5>
-                <p className="text-text-secondary font-manrope text-sm">SPK - Le Krav Maga amélioré, respectueux des lois françaises et de la légitime défense</p>
+                <h5 className="font-oswald text-lg font-bold text-text-primary uppercase mb-2">100% Légal</h5>
+                <p className="text-text-secondary font-manrope text-sm">Notre méthode Self-Pro Krav respecte les lois françaises sur la légitime défense</p>
               </div>
             </div>
             <div className="flex gap-4 p-6 bg-background/50 rounded-lg border border-white/5">
               <CheckCircle className="w-8 h-8 text-primary flex-shrink-0" strokeWidth={1.5} />
               <div>
-                <h5 className="font-oswald text-lg font-bold text-text-primary uppercase mb-2">Efficacité Réaliste</h5>
-                <p className="text-text-secondary font-manrope text-sm">Basé sur l'instinct de survie et les réflexes innés</p>
+                <h5 className="font-oswald text-lg font-bold text-text-primary uppercase mb-2">Simple & Efficace</h5>
+                <p className="text-text-secondary font-manrope text-sm">Des techniques basées sur vos réflexes naturels, pas besoin d'être sportif</p>
               </div>
             </div>
             <div className="flex gap-4 p-6 bg-background/50 rounded-lg border border-white/5">
               <CheckCircle className="w-8 h-8 text-primary flex-shrink-0" strokeWidth={1.5} />
               <div>
-                <h5 className="font-oswald text-lg font-bold text-text-primary uppercase mb-2">Pratique Sécurisée</h5>
-                <p className="text-text-secondary font-manrope text-sm">Déontologie, Moralité, Professionnalisme</p>
+                <h5 className="font-oswald text-lg font-bold text-text-primary uppercase mb-2">Pour Tous</h5>
+                <p className="text-text-secondary font-manrope text-sm">Hommes, femmes, enfants — chacun progresse à son rythme</p>
               </div>
             </div>
             <div className="flex gap-4 p-6 bg-background/50 rounded-lg border border-white/5">
               <CheckCircle className="w-8 h-8 text-primary flex-shrink-0" strokeWidth={1.5} />
               <div>
-                <h5 className="font-oswald text-lg font-bold text-text-primary uppercase mb-2">Communauté Mondiale</h5>
-                <p className="text-text-secondary font-manrope text-sm">Réseau international de directeurs techniques</p>
+                <h5 className="font-oswald text-lg font-bold text-text-primary uppercase mb-2">Réseau International</h5>
+                <p className="text-text-secondary font-manrope text-sm">Plus de 40 pays, des clubs partout pour s'entraîner près de chez vous</p>
               </div>
             </div>
           </div>
