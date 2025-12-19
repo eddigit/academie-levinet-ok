@@ -43,6 +43,7 @@ import SettingsPage from './pages/SettingsPage';
 import AdminUsersPage from './pages/AdminUsersPage';
 import AIConfigPage from './pages/AIConfigPage';
 import SubscriptionManagementPage from './pages/SubscriptionManagementPage';
+import SiteContentPage from './pages/SiteContentPage';
 // Payment pages
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
 import PaymentCancelPage from './pages/PaymentCancelPage';
@@ -137,6 +138,7 @@ const AppContent = () => {
         <Route path="/admin/users" element={<ProtectedRoute><AdminUsersPage /></ProtectedRoute>} />
         <Route path="/admin/ai-config" element={<ProtectedRoute><AIConfigPage /></ProtectedRoute>} />
         <Route path="/admin/subscriptions" element={<ProtectedRoute><SubscriptionManagementPage /></ProtectedRoute>} />
+        <Route path="/admin/site-content" element={<ProtectedRoute><SiteContentPage /></ProtectedRoute>} />
         
         {/* Member Area routes */}
         <Route path="/member/dashboard" element={<ProtectedRoute><MemberDashboard /></ProtectedRoute>} />
