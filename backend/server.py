@@ -2493,6 +2493,109 @@ async def get_membership_status(current_user: dict = Depends(get_current_user)):
         "premium_since": user.get("premium_since")
     }
 
+# ==================== SITE CONTENT MANAGEMENT ENDPOINTS ====================
+
+# Default site content structure
+DEFAULT_SITE_CONTENT = {
+    "hero": {
+        "title": "ACADÉMIE JACQUES LEVINET",
+        "subtitle": "Self-Pro Krav (SPK)",
+        "description": "Méthode de self-défense réaliste et efficace, adaptée à tous",
+        "cta_text": "Rejoindre l'Académie",
+        "cta_link": "/onboarding"
+    },
+    "about": {
+        "title": "À Propos",
+        "description": "L'Académie Jacques Levinet forme depuis plus de 40 ans des pratiquants et des professionnels à travers le monde.",
+        "image_url": ""
+    },
+    "features": [
+        {"title": "Self-Défense Réaliste", "description": "Techniques éprouvées sur le terrain", "icon": "shield"},
+        {"title": "Réseau International", "description": "Présence dans plus de 30 pays", "icon": "globe"},
+        {"title": "Formation Complète", "description": "Du débutant à l'instructeur", "icon": "award"}
+    ],
+    "testimonials": [],
+    "contact": {
+        "email": "contact@academie-levinet.com",
+        "phone": "",
+        "address": ""
+    },
+    "social_links": {
+        "facebook": "",
+        "instagram": "",
+        "youtube": ""
+    },
+    "footer": {
+        "copyright": "© 2025 Académie Jacques Levinet. Tous droits réservés."
+    }
+}
+
+@api_router.get("/admin/site-content")
+async def get_site_content(current_user: dict = Depends(get_current_user)):
+    """Admin: Get site content for editing"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    content = await db.settings.find_one({"id": "site_content"}, {"_id": 0})
+    if not content:
+        return DEFAULT_SITE_CONTENT
+    
+    # Merge with defaults for any missing keys
+    merged = {**DEFAULT_SITE_CONTENT, **content}
+    return merged
+
+@api_router.put("/admin/site-content")
+async def update_site_content(data: dict, current_user: dict = Depends(get_current_user)):
+    """Admin: Update site content"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    data["id"] = "site_content"
+    data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    data["updated_by"] = current_user["id"]
+    
+    await db.settings.update_one(
+        {"id": "site_content"},
+        {"$set": data},
+        upsert=True
+    )
+    
+    return {"message": "Contenu du site mis à jour"}
+
+@api_router.put("/admin/site-content/{section}")
+async def update_site_section(section: str, data: dict, current_user: dict = Depends(get_current_user)):
+    """Admin: Update a specific section of site content"""
+    if current_user.get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    valid_sections = ['hero', 'about', 'features', 'testimonials', 'contact', 'social_links', 'footer']
+    if section not in valid_sections:
+        raise HTTPException(status_code=400, detail=f"Section invalide. Sections valides: {', '.join(valid_sections)}")
+    
+    await db.settings.update_one(
+        {"id": "site_content"},
+        {
+            "$set": {
+                section: data,
+                "updated_at": datetime.now(timezone.utc).isoformat(),
+                "updated_by": current_user["id"]
+            }
+        },
+        upsert=True
+    )
+    
+    return {"message": f"Section '{section}' mise à jour"}
+
+@api_router.get("/site-content")
+async def get_public_site_content():
+    """Public: Get site content for display"""
+    content = await db.settings.find_one({"id": "site_content"}, {"_id": 0})
+    if not content:
+        return DEFAULT_SITE_CONTENT
+    
+    merged = {**DEFAULT_SITE_CONTENT, **content}
+    return merged
+
 # ==================== PENDING MEMBERS (EXISTING MEMBERS) ENDPOINTS ====================
 
 # ==================== AI ASSISTANT ENDPOINTS ====================
