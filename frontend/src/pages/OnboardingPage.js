@@ -688,7 +688,7 @@ const OnboardingPage = () => {
                     ) : (
                       <>
                         <CreditCard className="w-5 h-5" />
-                        Payer 35€ et rejoindre
+                        Devenir membre - 35€
                       </>
                     )}
                   </button>
