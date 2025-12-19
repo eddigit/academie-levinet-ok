@@ -673,6 +673,9 @@ const OnboardingPage = () => {
                     </SelectContent>
                   </Select>
                 </div>
+              </div>
+            </div>
+          )}
 
           {/* Step 5: Payment */}
           {step === 5 && (
