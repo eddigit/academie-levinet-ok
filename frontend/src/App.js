@@ -135,6 +135,8 @@ const AppContent = () => {
         <Route path="/admin/pending-members" element={<ProtectedRoute><PendingMembersPage /></ProtectedRoute>} />
         <Route path="/admin/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
         <Route path="/admin/users" element={<ProtectedRoute><AdminUsersPage /></ProtectedRoute>} />
+        <Route path="/admin/ai-config" element={<ProtectedRoute><AIConfigPage /></ProtectedRoute>} />
+        <Route path="/admin/subscriptions" element={<ProtectedRoute><SubscriptionManagementPage /></ProtectedRoute>} />
         
         {/* Member Area routes */}
         <Route path="/member/dashboard" element={<ProtectedRoute><MemberDashboard /></ProtectedRoute>} />
