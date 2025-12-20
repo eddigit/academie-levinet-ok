@@ -163,7 +163,7 @@ const DisciplineSFJLPage = () => {
       <section className="py-20 px-6 bg-gradient-to-b from-background to-secondary/10">
         <div className="container mx-auto max-w-3xl text-center">
           <h2 className="font-oswald text-4xl font-bold text-text-primary uppercase mb-6 tracking-tight">
-            Faites le Premier Pas
+            Mesdames, Défendez-Vous
           </h2>
           <p className="text-text-secondary font-manrope text-lg mb-8">
             Vous méritez de vous sentir en sécurité. Venez essayer, sans engagement.
