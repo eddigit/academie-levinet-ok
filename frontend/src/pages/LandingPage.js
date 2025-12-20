@@ -486,7 +486,6 @@ const LandingPage = () => {
               <ul className="space-y-2 md:space-y-3">
                 <li><Link to="/founder" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Le Fondateur</Link></li>
                 <li><Link to="/about" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">À Propos</Link></li>
-                <li><Link to="/disciplines/spk" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Self-Pro Krav</Link></li>
                 <li><Link to="/pedagogy" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Pédagogie</Link></li>
               </ul>
             </div>
@@ -495,7 +494,7 @@ const LandingPage = () => {
             <div>
               <h4 className="font-oswald text-xs md:text-sm font-bold uppercase tracking-wider text-primary mb-3 md:mb-6">Disciplines</h4>
               <ul className="space-y-2 md:space-y-3">
-                <li><Link to="/disciplines/spk" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Krav Maga</Link></li>
+                <li><Link to="/disciplines/spk" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Krav Maga SPK</Link></li>
                 <li><Link to="/disciplines/sfjl" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Self-Défense Femmes</Link></li>
                 <li><Link to="/disciplines/wkmo" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Self-Défense Enfants</Link></li>
                 <li><Link to="/disciplines/ipc" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Formation Pro</Link></li>
