@@ -146,7 +146,7 @@ const LandingPage = () => {
           </div>
 
           <div className="grid gap-4 md:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            {/* Adultes & Enfants Card - Kinetic Shutter Design */}
+            {/* Pour Tout Public Card */}
             <div 
               className="group relative h-[350px] sm:h-[400px] md:h-[500px] w-full overflow-hidden rounded-xl md:rounded-2xl border border-white/10 bg-gray-900 shadow-xl transition-all duration-500 hover:shadow-2xl hover:shadow-accent/20 hover:border-accent/50"
               data-testid="audience-card-public"
@@ -161,7 +161,7 @@ const LandingPage = () => {
                 <div className="relative z-10 transform transition-transform duration-500 group-hover:-translate-y-2">
                   <div className="h-1 w-8 md:w-12 bg-accent mb-3 md:mb-4 transition-all duration-500 group-hover:w-16 md:group-hover:w-24" />
                   <h4 className="font-oswald text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-tight text-white mb-2 md:mb-3 drop-shadow-lg">
-                    Krav Maga Self-Défense
+                    Pour Tout Public
                   </h4>
                   <p className="font-manrope text-sm md:text-base text-gray-300 mb-4 md:mb-6 opacity-90 max-w-xs">
                     Apprenez à vous défendre avec notre méthode Self-Pro Krav, adaptée à tous
@@ -192,7 +192,7 @@ const LandingPage = () => {
                     Pour les Femmes
                   </h4>
                   <p className="font-manrope text-sm md:text-base text-gray-300 mb-4 md:mb-6 opacity-90 max-w-xs">
-                    Apprenez à vous défendre avec des gestes simples. On est là pour vous aider.
+                    Apprenez à vous défendre avec des gestes simples et efficaces. On est là pour vous aider.
                   </p>
                   <div className="flex items-center gap-2 md:gap-3 opacity-80 group-hover:opacity-100 transition-opacity duration-300">
                     <span className="font-oswald text-xs md:text-sm font-bold uppercase tracking-wider text-secondary">Je veux apprendre</span>
