@@ -63,7 +63,7 @@ const LoginPage = () => {
               Académie Jacques Levinet
             </h2>
             <p className="text-xl text-text-secondary font-manrope">
-              L'excellence en Self-Pro Krav
+              École Internationale de Self-Défense
             </p>
           </div>
         </div>
