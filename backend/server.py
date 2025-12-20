@@ -797,7 +797,7 @@ async def create_admin_user(data: AdminUserCreate, current_user: dict = Depends(
         }
         role_label = role_labels.get(data.role, data.role)
         
-        login_url = os.environ.get('FRONTEND_URL', 'https://spk-academy-crm.preview.emergentagent.com')
+        login_url = os.environ.get('FRONTEND_URL', 'https://selfdef-manage.preview.emergentagent.com')
         
         asyncio.create_task(send_email(
             to_email=data.email,
@@ -3269,7 +3269,7 @@ async def approve_pending_member(pending_id: str, current_user: dict = Depends(g
     )
     
     # Send email with temporary password
-    login_url = os.environ.get('FRONTEND_URL', 'https://spk-academy-crm.preview.emergentagent.com')
+    login_url = os.environ.get('FRONTEND_URL', 'https://selfdef-manage.preview.emergentagent.com')
     asyncio.create_task(send_email(
         to_email=pending['email'],
         subject="🎉 Votre compte est activé - Académie Jacques Levinet",

@@ -4,7 +4,7 @@ import json
 from datetime import datetime
 
 class UserManagementAPITester:
-    def __init__(self, base_url="https://spk-academy-crm.preview.emergentagent.com"):
+    def __init__(self, base_url="https://selfdef-manage.preview.emergentagent.com"):
         self.base_url = base_url
         self.admin_token = None
         self.member_token = None
