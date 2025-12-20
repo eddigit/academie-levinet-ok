@@ -37,32 +37,32 @@ const Dashboard = () => {
 
   return (
     <DashboardLayout>
-      <div className="space-y-8" data-testid="dashboard-page">
-        {/* Header */}
-        <div className="flex items-center justify-between">
+      <div className="space-y-6 md:space-y-8" data-testid="dashboard-page">
+        {/* Header - Mobile First */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
-            <h1 className="font-oswald text-4xl font-bold text-text-primary uppercase tracking-wide" data-testid="dashboard-title">
+            <h1 className="font-oswald text-2xl sm:text-3xl md:text-4xl font-bold text-text-primary uppercase tracking-wide" data-testid="dashboard-title">
               Tableau de Bord
             </h1>
-            <p className="text-text-secondary font-manrope mt-2">Statistiques et vue d'ensemble</p>
+            <p className="text-text-secondary font-manrope mt-1 text-sm md:text-base">Statistiques et vue d'ensemble</p>
           </div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" data-testid="stats-cards">
-          <div className="stat-card" data-testid="stat-card-members">
-            <div className="flex items-start justify-between mb-4">
-              <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
-                <Users className="w-6 h-6 text-primary" />
+        {/* Stats Cards - Mobile First Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6" data-testid="stats-cards">
+          <div className="stat-card p-4 md:p-6" data-testid="stat-card-members">
+            <div className="flex items-start justify-between mb-3 md:mb-4">
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/20 rounded-lg flex items-center justify-center">
+                <Users className="w-5 h-5 md:w-6 md:h-6 text-primary" />
               </div>
             </div>
-            <div className="text-3xl font-oswald font-bold text-text-primary mb-2">
+            <div className="text-2xl md:text-3xl font-oswald font-bold text-text-primary mb-1 md:mb-2">
               {stats?.total_members || 0}
             </div>
-            <div className="text-sm text-text-secondary font-manrope">Nombre d'utilisateurs</div>
-            <div className="flex items-center gap-2 mt-3">
-              <TrendingUp className="w-4 h-4 text-primary" />
-              <span className="text-xs text-primary font-manrope">+10% ce mois-ci</span>
+            <div className="text-xs md:text-sm text-text-secondary font-manrope">Nombre d'utilisateurs</div>
+            <div className="flex items-center gap-2 mt-2 md:mt-3">
+              <TrendingUp className="w-3 h-3 md:w-4 md:h-4 text-primary" />
+              <span className="text-[10px] md:text-xs text-primary font-manrope">+10% ce mois-ci</span>
             </div>
           </div>
 
