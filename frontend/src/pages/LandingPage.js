@@ -259,20 +259,16 @@ const LandingPage = () => {
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mt-8 md:mt-12 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mt-8 md:mt-12 max-w-4xl mx-auto">
             <div className="text-center p-3 md:p-4 rounded-lg bg-white/5">
-              <p className="text-2xl md:text-4xl font-oswald font-bold text-primary mb-1 md:mb-2">40+</p>
+              <p className="text-2xl md:text-4xl font-oswald font-bold text-primary mb-1 md:mb-2">50+</p>
               <p className="text-text-secondary font-manrope text-xs md:text-sm">Pays</p>
             </div>
             <div className="text-center p-3 md:p-4 rounded-lg bg-white/5">
-              <p className="text-2xl md:text-4xl font-oswald font-bold text-primary mb-1 md:mb-2">40</p>
+              <p className="text-2xl md:text-4xl font-oswald font-bold text-primary mb-1 md:mb-2">50</p>
               <p className="text-text-secondary font-manrope text-xs md:text-sm">Directeurs Techniques</p>
             </div>
-            <div className="text-center p-3 md:p-4 rounded-lg bg-white/5">
-              <p className="text-2xl md:text-4xl font-oswald font-bold text-primary mb-1 md:mb-2">500+</p>
-              <p className="text-text-secondary font-manrope text-xs md:text-sm">Clubs et Membres</p>
-            </div>
-            <div className="text-center p-3 md:p-4 rounded-lg bg-white/5">
+            <div className="text-center p-3 md:p-4 rounded-lg bg-white/5 col-span-2 md:col-span-1">
               <p className="text-2xl md:text-4xl font-oswald font-bold text-primary mb-1 md:mb-2">50 ans</p>
               <p className="text-text-secondary font-manrope text-xs md:text-sm">d'Expertise</p>
             </div>
