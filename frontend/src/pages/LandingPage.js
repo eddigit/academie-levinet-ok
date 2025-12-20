@@ -241,10 +241,10 @@ const LandingPage = () => {
       <section className="py-12 md:py-20 px-4 md:px-6 bg-background">
         <div className="container mx-auto">
           <h3 className="font-oswald text-2xl sm:text-3xl md:text-4xl font-bold text-center text-text-primary uppercase mb-3 md:mb-4 tracking-wide">
-            Communauté Mondiale
+            Trouvez Votre Club
           </h3>
           <p className="text-center text-text-secondary font-manrope text-sm md:text-lg mb-8 md:mb-12 max-w-3xl mx-auto">
-            Un réseau mondial pour s'entraîner partout - Découvrez tous nos clubs et membres
+            Trouvez votre club partout dans le monde
           </p>
           <div className="max-w-6xl mx-auto">
             <div className="relative w-full rounded-lg border border-white/10 overflow-hidden" style={{ paddingBottom: '75%' }}>
