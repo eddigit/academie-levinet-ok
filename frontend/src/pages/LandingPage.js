@@ -60,22 +60,22 @@ const LandingPage = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80"></div>
         </div>
 
-        {/* Content */}
-        <div className="container mx-auto text-center max-w-4xl relative z-10">
-          <h2 className="font-oswald text-5xl md:text-6xl lg:text-7xl font-bold text-text-primary uppercase mb-10 tracking-wide drop-shadow-2xl leading-tight">
+        {/* Content - Mobile First */}
+        <div className="container mx-auto text-center max-w-4xl relative z-10 px-4">
+          <h2 className="font-oswald text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-primary uppercase mb-6 md:mb-10 tracking-wide drop-shadow-2xl leading-tight">
             La Self-Défense Efficace,<br />Réaliste et Sécurisée
           </h2>
-          <p className="text-xl md:text-2xl text-text-secondary font-manrope mb-8 leading-relaxed drop-shadow-lg">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-text-secondary font-manrope mb-4 md:mb-8 leading-relaxed drop-shadow-lg">
             Validée par l'Expérience d'Élite du Capitaine Jacques Levinet
           </p>
-          <p className="text-lg md:text-xl text-text-primary/90 font-manrope mb-12 leading-relaxed drop-shadow-lg max-w-3xl mx-auto">
+          <p className="text-sm sm:text-base md:text-lg text-text-primary/90 font-manrope mb-8 md:mb-12 leading-relaxed drop-shadow-lg max-w-3xl mx-auto">
             Méthode brevetée par l'ex-capitaine de police et champion de France de karaté.
           </p>
-          <div className="flex gap-6 justify-center flex-wrap">
+          <div className="flex gap-4 md:gap-6 justify-center flex-wrap">
             <Link 
               to="/onboarding" 
               data-testid="hero-cta-button"
-              className="flex items-center justify-center px-8 py-4 bg-primary hover:bg-primary-dark text-white font-oswald uppercase text-lg tracking-wider leading-none rounded-sm transition-smooth glow-effect"
+              className="flex items-center justify-center px-6 md:px-8 py-3 md:py-4 bg-primary hover:bg-primary-dark text-white font-oswald uppercase text-base md:text-lg tracking-wider leading-none rounded-sm transition-smooth glow-effect w-full sm:w-auto"
             >
               Rejoindre l'Académie
             </Link>
@@ -83,48 +83,48 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Features Section - Les 3 Piliers */}
-      <section className="py-20 px-6 bg-paper" data-testid="features-section">
+      {/* Features Section - Les 3 Piliers - Mobile First */}
+      <section className="py-12 md:py-20 px-4 md:px-6 bg-paper" data-testid="features-section">
         <div className="container mx-auto">
-          <h3 className="font-oswald text-4xl font-bold text-center text-text-primary uppercase mb-4 tracking-wide">
+          <h3 className="font-oswald text-2xl sm:text-3xl md:text-4xl font-bold text-center text-text-primary uppercase mb-3 md:mb-4 tracking-wide">
             Les 3 Piliers de Nos Méthodes
           </h3>
-          <p className="text-center text-text-secondary font-manrope text-lg mb-2 max-w-3xl mx-auto">
+          <p className="text-center text-text-secondary font-manrope text-sm md:text-lg mb-2 max-w-3xl mx-auto">
             Krav Maga Self-Défense - Canne Défense - Bâton Défense - Self-Défense Femmes - Self-Défense Enfants
           </p>
-          <p className="text-center text-primary font-manrope text-base mb-16 max-w-3xl mx-auto">
+          <p className="text-center text-primary font-manrope text-xs md:text-base mb-8 md:mb-16 max-w-3xl mx-auto">
             Pour les professionnels de la sécurité et Forces de l'ordre : Real Operational System
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <div className="stat-card text-center" data-testid="feature-card-legitimite">
-              <Award className="w-12 h-12 text-primary mx-auto mb-4" strokeWidth={1} />
-              <h4 className="font-oswald text-xl font-bold text-text-primary uppercase mb-3">Légitimité & Expertise</h4>
-              <p className="text-text-secondary font-manrope leading-relaxed mb-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 max-w-6xl mx-auto">
+            <div className="stat-card text-center p-4 md:p-6" data-testid="feature-card-legitimite">
+              <Award className="w-10 h-10 md:w-12 md:h-12 text-primary mx-auto mb-3 md:mb-4" strokeWidth={1} />
+              <h4 className="font-oswald text-lg md:text-xl font-bold text-text-primary uppercase mb-2 md:mb-3">Légitimité & Expertise</h4>
+              <p className="text-text-secondary font-manrope leading-relaxed mb-2 md:mb-3 text-sm md:text-base">
                 Héritage du Capitaine Jacques Levinet, Champion de France de Karaté
               </p>
-              <p className="text-text-muted font-manrope text-sm">
+              <p className="text-text-muted font-manrope text-xs md:text-sm">
                 Méthode éprouvée et reconnue mondialement (WKMO, IPC)
               </p>
             </div>
 
-            <div className="stat-card text-center" data-testid="feature-card-securite">
-              <Shield className="w-12 h-12 text-secondary mx-auto mb-4" strokeWidth={1} />
-              <h4 className="font-oswald text-xl font-bold text-text-primary uppercase mb-3">Sécurité & Éthique</h4>
-              <p className="text-text-secondary font-manrope leading-relaxed mb-3">
+            <div className="stat-card text-center p-4 md:p-6" data-testid="feature-card-securite">
+              <Shield className="w-10 h-10 md:w-12 md:h-12 text-secondary mx-auto mb-3 md:mb-4" strokeWidth={1} />
+              <h4 className="font-oswald text-lg md:text-xl font-bold text-text-primary uppercase mb-2 md:mb-3">Sécurité & Éthique</h4>
+              <p className="text-text-secondary font-manrope leading-relaxed mb-2 md:mb-3 text-sm md:text-base">
                 Respect de la légitime défense
               </p>
-              <p className="text-text-muted font-manrope text-sm">
+              <p className="text-text-muted font-manrope text-xs md:text-sm">
                 Une pratique simple basée sur l'instinct de survie et réflexes
               </p>
             </div>
 
-            <div className="stat-card text-center" data-testid="feature-card-accessibilite">
-              <Users className="w-12 h-12 text-accent mx-auto mb-4" strokeWidth={1} />
-              <h4 className="font-oswald text-xl font-bold text-text-primary uppercase mb-3">Accessibilité & Communauté</h4>
-              <p className="text-text-secondary font-manrope leading-relaxed mb-3">
+            <div className="stat-card text-center p-4 md:p-6 sm:col-span-2 md:col-span-1" data-testid="feature-card-accessibilite">
+              <Users className="w-10 h-10 md:w-12 md:h-12 text-accent mx-auto mb-3 md:mb-4" strokeWidth={1} />
+              <h4 className="font-oswald text-lg md:text-xl font-bold text-text-primary uppercase mb-2 md:mb-3">Accessibilité & Communauté</h4>
+              <p className="text-text-secondary font-manrope leading-relaxed mb-2 md:mb-3 text-sm md:text-base">
                 Conçue pour tous : hommes, femmes, enfants
               </p>
-              <p className="text-text-muted font-manrope text-sm">
+              <p className="text-text-muted font-manrope text-xs md:text-sm">
                 Esprit familial avec présence internationale forte
               </p>
             </div>
@@ -132,20 +132,20 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Audiences Section - Obsidian Glass Design */}
-      <section className="py-24 px-6 bg-background">
+      {/* Audiences Section - Mobile First */}
+      <section className="py-12 md:py-24 px-4 md:px-6 bg-background">
         <div className="container mx-auto">
-          <div className="mb-16 max-w-3xl">
-            <h3 className="font-oswald text-5xl md:text-6xl font-bold uppercase tracking-tight text-text-primary mb-4">
+          <div className="mb-8 md:mb-16 max-w-3xl">
+            <h3 className="font-oswald text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tight text-text-primary mb-3 md:mb-4">
               Pour <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-light">Qui ?</span>
             </h3>
-            <div className="h-1 w-24 bg-accent mb-6" />
-            <p className="font-manrope text-lg text-text-secondary">
+            <div className="h-1 w-16 md:w-24 bg-accent mb-4 md:mb-6" />
+            <p className="font-manrope text-sm md:text-lg text-text-secondary">
               L'Académie Jacques Levinet, organisme de formation, propose des parcours adaptés à chaque profil, du débutant au professionnel aguerri.
             </p>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 md:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {/* Adultes & Enfants Card - Kinetic Shutter Design */}
             <div 
               className="group relative h-[500px] w-full overflow-hidden rounded-2xl border border-white/10 bg-gray-900 shadow-xl transition-all duration-500 hover:shadow-2xl hover:shadow-accent/20 hover:border-accent/50"
