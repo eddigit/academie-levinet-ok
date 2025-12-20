@@ -16,8 +16,8 @@ const FounderPage = () => {
     { year: 'Années 80', title: 'Champion de Karaté', description: 'Devient Champion de France et atteint le 6ème Dan de Karaté.' },
     { year: 'Années 90', title: 'Recherche Internationale', description: 'Parcourt le monde pour étudier les meilleures techniques de self-défense et d\'entraînement policier.' },
     { year: '1998', title: 'Création de l\'Académie', description: 'Fonde l\'Académie Jacques Levinet et développe la méthode Self-Pro Krav (SPK).' },
-    { year: '2000s', title: 'Expansion Mondiale', description: 'Création de la structure tripartite AJL - WKMO - IPC. Reconnaissance internationale.' },
-    { year: 'Aujourd\'hui', title: 'Héritage Vivant', description: 'Plus de 50 pays représentés, collaboration avec des unités d\'élite mondiales.' },
+    { year: '2000s', title: 'Expansion Mondiale', description: 'Création de la structure tripartite : AJL (Académie Jacques Levinet), WKMO (World Krav Maga Organization) et IPC (International Police Confederation). Reconnaissances internationales.' },
+    { year: 'Aujourd\'hui', title: 'Héritage Vivant', description: 'Plus de 50 pays représentés, 50 directeurs techniques, collaboration avec des unités d\'élite mondiales.' },
   ];
 
   return (
