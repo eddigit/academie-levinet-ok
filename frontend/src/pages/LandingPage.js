@@ -461,9 +461,9 @@ const LandingPage = () => {
       {/* Footer - Mobile First */}
       <footer className="bg-paper py-10 md:py-16 px-4 md:px-6 border-t border-white/5" data-testid="footer">
         <div className="container mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-12 mb-8 md:mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 mb-8 md:mb-12">
             {/* Brand */}
-            <div className="col-span-2 md:col-span-1">
+            <div className="col-span-2 md:col-span-3 lg:col-span-2">
               <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-6">
                 <img 
                   src="https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg" 
@@ -480,7 +480,7 @@ const LandingPage = () => {
               </p>
             </div>
 
-            {/* Quick Links */}
+            {/* Navigation */}
             <div>
               <h4 className="font-oswald text-xs md:text-sm font-bold uppercase tracking-wider text-primary mb-3 md:mb-6">Navigation</h4>
               <ul className="space-y-2 md:space-y-3">
@@ -494,20 +494,30 @@ const LandingPage = () => {
             <div>
               <h4 className="font-oswald text-xs md:text-sm font-bold uppercase tracking-wider text-primary mb-3 md:mb-6">Disciplines</h4>
               <ul className="space-y-2 md:space-y-3">
-                <li><Link to="/disciplines/spk" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Krav Maga SPK</Link></li>
+                <li><Link to="/disciplines/spk" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Self-Pro Krav</Link></li>
                 <li><Link to="/disciplines/sfjl" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Self-Défense Femmes</Link></li>
-                <li><Link to="/disciplines/wkmo" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Self-Défense Enfants</Link></li>
-                <li><Link to="/disciplines/ipc" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Formation Pro</Link></li>
+                <li><Link to="/disciplines/wkmo" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Canne Défense</Link></li>
+                <li><Link to="/disciplines/ipc" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Formation Pro (ROS)</Link></li>
+              </ul>
+            </div>
+
+            {/* Média */}
+            <div>
+              <h4 className="font-oswald text-xs md:text-sm font-bold uppercase tracking-wider text-primary mb-3 md:mb-6">Média</h4>
+              <ul className="space-y-2 md:space-y-3">
+                <li><a href="https://kravmag-ajl.com" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Krav Mag AJL</a></li>
+                <li><a href="https://editions-ajl.com" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Éditions A.J.L.</a></li>
               </ul>
             </div>
 
             {/* Contact */}
             <div>
-              <h4 className="font-oswald text-xs md:text-sm font-bold uppercase tracking-wider text-primary mb-3 md:mb-6">Rejoindre</h4>
+              <h4 className="font-oswald text-xs md:text-sm font-bold uppercase tracking-wider text-primary mb-3 md:mb-6">Contact</h4>
               <ul className="space-y-2 md:space-y-3">
-                <li><Link to="/join" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Devenir Membre</Link></li>
-                <li><Link to="/onboarding" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">S'inscrire</Link></li>
                 <li><Link to="/international" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Trouver un Club</Link></li>
+                <li><Link to="/onboarding" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">S'inscrire</Link></li>
+                <li><a href="tel:+33123456789" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Téléphone</a></li>
+                <li><a href="https://www.linkedin.com/in/worldkravmagaorganization/" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">LinkedIn</a></li>
               </ul>
             </div>
           </div>
