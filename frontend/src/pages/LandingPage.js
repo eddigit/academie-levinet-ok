@@ -38,32 +38,25 @@ const LandingPage = () => {
 
       {/* Hero Section */}
       <section 
-        className="pt-32 pb-20 px-6 relative overflow-hidden" 
+        className="pt-24 md:pt-32 pb-12 md:pb-20 px-4 md:px-6 relative overflow-hidden min-h-[80vh] md:min-h-[90vh] flex items-center" 
         data-testid="hero-section"
       >
-        {/* Dynamic Background with Martial Arts Theme */}
+        {/* YouTube Video Background */}
         <div className="absolute inset-0 w-full h-full overflow-hidden">
-          {/* Base gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"></div>
-          
-          {/* Animated accent lines */}
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-primary to-transparent"></div>
-            <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-primary to-transparent"></div>
-            <div className="absolute top-1/3 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary to-transparent"></div>
-          </div>
-          
-          {/* Geometric shapes for martial arts feel */}
-          <div className="absolute top-20 left-10 w-32 h-32 border border-primary/10 rotate-45 rounded-lg"></div>
-          <div className="absolute bottom-20 right-10 w-48 h-48 border border-primary/10 rotate-12 rounded-lg"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 border border-primary/5 rounded-full"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] border border-primary/5 rounded-full"></div>
-          
-          {/* Radial glow effect */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl"></div>
-          
+          <iframe
+            className="absolute top-1/2 left-1/2 w-[300vw] md:w-[100vw] h-[300vw] md:h-[56.25vw] min-h-[100vh] min-w-[177.77vh]"
+            style={{
+              transform: 'translate(-50%, -50%)',
+              pointerEvents: 'none',
+            }}
+            src="https://www.youtube.com/embed/mX3cGUHUgKo?autoplay=1&mute=1&loop=1&playlist=mX3cGUHUgKo&controls=0&showinfo=0&modestbranding=1&rel=0&enablejsapi=1&playsinline=1"
+            title="Académie Jacques Levinet Video"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
           {/* Dark overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80"></div>
         </div>
 
         {/* Content */}
