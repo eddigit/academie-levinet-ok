@@ -6,18 +6,18 @@ import { BookOpen, Award, Users, CheckCircle, ChevronRight, Star, GraduationCap 
 const PedagogyPage = () => {
   const grades = [
     { level: 'Ceinture Blanche', dan: 'Débutant', description: 'Initiation aux fondamentaux', color: 'white' },
-    { level: 'Ceinture Jaune', dan: '1er Kyu', description: 'Bases techniques maîtrisées', color: 'yellow-400' },
-    { level: 'Ceinture Orange', dan: '2ème Kyu', description: 'Techniques intermédiaires', color: 'orange-400' },
-    { level: 'Ceinture Verte', dan: '3ème Kyu', description: 'Niveau confirmé', color: 'green-500' },
-    { level: 'Ceinture Bleue', dan: '4ème Kyu', description: 'Niveau avancé', color: 'blue-500' },
-    { level: 'Ceinture Marron', dan: '5ème Kyu', description: 'Préparation au Dan', color: 'amber-700' },
+    { level: 'Ceinture Jaune', dan: 'Débutant', description: 'Bases techniques maîtrisées', color: 'yellow-400' },
+    { level: 'Ceinture Orange', dan: 'Débutant', description: 'Techniques intermédiaires', color: 'orange-400' },
+    { level: 'Ceinture Verte', dan: 'Débutant', description: 'Niveau confirmé', color: 'green-500' },
+    { level: 'Ceinture Bleue', dan: 'Débutant', description: 'Niveau avancé', color: 'blue-500' },
+    { level: 'Ceinture Marron', dan: 'Débutant', description: 'Préparation au Dan', color: 'amber-700' },
     { level: 'Ceinture Noire', dan: '1er à 10ème Dan', description: 'Expert certifié', color: 'gray-900' },
   ];
 
   const pedagogyFeatures = [
     { icon: BookOpen, title: 'Programmes Structurés', description: 'Cahiers techniques et pédagogiques définis pour chaque discipline et niveau.' },
-    { icon: GraduationCap, title: 'Supports Pédagogiques', description: 'Bibliothèque complète de supports pédagogiques, vidéos et PDF téléchargeables.' },
-    { icon: Award, title: 'Commission des Grades', description: 'Instance de validation garantissant la crédibilité et la valeur des certifications.' },
+    { icon: GraduationCap, title: 'Supports Pédagogiques', description: 'Supports pédagogiques imprimés (papier), numériques, vidéos et PDF téléchargeables.' },
+    { icon: Award, title: 'Commission des Grades', description: 'Qualifications professionnelles par contrat ou convention. Instance de validation.' },
     { icon: Users, title: 'Instructeurs Certifiés', description: 'Réseau mondial d\'instructeurs formés et validés par l\'Académie.' },
   ];
 
