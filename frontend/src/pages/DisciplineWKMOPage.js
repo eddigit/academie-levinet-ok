@@ -49,7 +49,7 @@ const DisciplineWKMOPage = () => {
             to="/onboarding"
             className="inline-flex items-center gap-2 px-8 py-4 bg-primary hover:bg-primary-dark text-white font-oswald uppercase leading-none tracking-wider rounded-sm transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)]"
           >
-            Rejoindre le WKMO
+            Rejoindre la WKMO
             <ChevronRight className="w-5 h-5" strokeWidth={2} />
           </Link>
         </div>
@@ -155,7 +155,7 @@ const DisciplineWKMOPage = () => {
             Trouvez Votre Club
           </h2>
           <p className="text-text-secondary font-manrope text-lg mb-8">
-            Plus de 500 clubs WKMO dans le monde. Il y en a forcément un près de chez vous.
+            Près de 100 clubs WKMO dans le monde. Il y en a forcément un près de chez vous.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
