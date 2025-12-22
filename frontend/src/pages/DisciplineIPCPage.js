@@ -181,6 +181,30 @@ const DisciplineIPCPage = () => {
         </div>
       </section>
 
+      {/* Certification ROS Section */}
+      <section className="py-20 px-6 bg-paper">
+        <div className="container mx-auto max-w-4xl">
+          <h2 className="font-oswald text-4xl font-bold text-center text-text-primary uppercase mb-4 tracking-tight">
+            Certification <span className="text-primary">ROS</span>
+          </h2>
+          <p className="font-oswald text-xl text-center text-text-secondary uppercase tracking-wide mb-8">
+            Real Operational System
+          </p>
+          
+          <div className="bg-white/5 border border-white/10 rounded-lg p-8">
+            <p className="text-text-secondary font-manrope leading-relaxed mb-6">
+              Certification délivrée dans le cadre de contrats de formation et de conventions avec les 
+              institutions et forces de l'ordre. Les Dan ROS sont reconnus sur le plan international 
+              par l'ensemble des partenaires de l'IPC.
+            </p>
+            <p className="text-text-secondary font-manrope leading-relaxed">
+              Qualifications professionnelles délivrées par contrat ou convention pour les agents des 
+              forces de l'ordre et professionnels de la sécurité.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 px-6 bg-gradient-to-b from-background to-primary/10">
         <div className="container mx-auto max-w-3xl text-center">
