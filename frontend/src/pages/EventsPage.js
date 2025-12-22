@@ -333,14 +333,14 @@ const EventsPage = () => {
 
   const handleAddEvent = async (e) => {
     e.preventDefault();
-    if (!title || !description || !startDate || !endDate || !location || !city || !country) {
+    if (!formData.title || !formData.description || !formData.startDate || !formData.endDate || !formData.location || !formData.city || !formData.country) {
       toast.error('Veuillez remplir tous les champs obligatoires');
       return;
     }
     
     setSaving(true);
     try {
-      await api.post('/events', getFormData());
+      await api.post('/events', getFormDataPayload());
       toast.success('Événement créé avec succès');
       closeAddModal();
       fetchEvents();
@@ -357,7 +357,7 @@ const EventsPage = () => {
     
     setSaving(true);
     try {
-      await api.put(`/events/${currentEvent.id}`, getFormData());
+      await api.put(`/events/${currentEvent.id}`, getFormDataPayload());
       toast.success('Événement mis à jour');
       closeEditModal();
       fetchEvents();
