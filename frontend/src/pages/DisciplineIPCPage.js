@@ -94,13 +94,15 @@ const DisciplineIPCPage = () => {
         <div className="container mx-auto max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="font-oswald text-4xl font-bold text-text-primary uppercase mb-6 tracking-tight">
+              <h2 className="font-oswald text-4xl font-bold text-text-primary uppercase mb-2 tracking-tight">
                 Certification <span className="text-primary">ROS</span>
               </h2>
+              <p className="font-oswald text-lg text-text-secondary uppercase tracking-wide mb-6">
+                Real Operational System
+              </p>
               <p className="text-text-secondary font-manrope text-lg leading-relaxed mb-6">
-                La certification ROS (Realistic Operational System) est une qualification 
-                professionnelle délivrée dans le cadre de contrats de formation avec les 
-                forces de l'ordre et les services de sécurité.
+                Certification délivrée dans le cadre de contrats de formation et de conventions 
+                avec les forces de l'ordre et les services de sécurité.
               </p>
               <p className="text-text-secondary font-manrope text-lg leading-relaxed mb-8">
                 Reconnue internationalement, cette certification atteste d'un niveau d'expertise 
