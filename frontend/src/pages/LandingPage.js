@@ -529,6 +529,9 @@ const LandingPage = () => {
           </div>
 
           <div className="pt-6 md:pt-8 border-t border-white/5 text-center">
+            <p className="text-text-secondary font-oswald text-sm md:text-base uppercase tracking-wide mb-2">
+              Académie Jacques Levinet – World Krav Maga Organization – International Police Confederation
+            </p>
             <p className="text-text-muted font-manrope text-xs md:text-sm">
               © 2025 Académie Jacques Levinet. Tous droits réservés.
             </p>
