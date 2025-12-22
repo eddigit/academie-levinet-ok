@@ -30,7 +30,7 @@ const Dashboard = () => {
     fetchStats();
   }, [isAdmin]);
 
-  if (loading) {
+  if (loading && isAdmin) {
     return (
       <DashboardLayout>
         <div className="flex items-center justify-center h-64" data-testid="loading-spinner">
