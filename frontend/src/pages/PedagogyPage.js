@@ -16,7 +16,7 @@ const PedagogyPage = () => {
 
   const pedagogyFeatures = [
     { icon: BookOpen, title: 'Programmes Structurés', description: 'Cahiers techniques et pédagogiques définis pour chaque discipline et niveau.' },
-    { icon: GraduationCap, title: 'Supports Vidéo', description: 'Bibliothèque complète de cours vidéo HD pour une formation homogène mondiale.' },
+    { icon: GraduationCap, title: 'Supports Pédagogiques', description: 'Bibliothèque complète de supports pédagogiques, vidéos et PDF téléchargeables.' },
     { icon: Award, title: 'Commission des Grades', description: 'Instance de validation garantissant la crédibilité et la valeur des certifications.' },
     { icon: Users, title: 'Instructeurs Certifiés', description: 'Réseau mondial d\'instructeurs formés et validés par l\'Académie.' },
   ];
@@ -148,14 +148,14 @@ const PedagogyPage = () => {
             Formation <span className="text-accent">E-Learning</span>
           </h2>
           <p className="text-text-secondary font-manrope text-lg mb-8 max-w-2xl mx-auto">
-            Accédez à notre bibliothèque complète de cours vidéo HD pour vous former 
+            Accédez à notre bibliothèque complète de supports pédagogiques, vidéos et PDF téléchargeables 
             où que vous soyez, à votre rythme.
           </p>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
             <div className="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
-              <p className="font-oswald text-4xl text-accent font-bold">100+</p>
-              <p className="text-text-muted font-manrope text-sm">Cours Vidéo</p>
+              <p className="font-oswald text-4xl text-accent font-bold">50+</p>
+              <p className="text-text-muted font-manrope text-sm">Ressources</p>
             </div>
             <div className="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
               <p className="font-oswald text-4xl text-accent font-bold">HD</p>
