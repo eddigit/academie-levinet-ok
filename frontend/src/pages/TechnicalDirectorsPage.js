@@ -63,9 +63,11 @@ const TechnicalDirectorsPage = () => {
   const fetchClubs = async () => {
     try {
       const response = await api.get('/clubs');
-      setClubs(response.data || []);
+      const data = response.data || response;
+      setClubs(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching clubs:', error);
+      setClubs([]);
     }
   };
 
