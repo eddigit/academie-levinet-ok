@@ -43,9 +43,11 @@ const InstructorsPage = () => {
     try {
       // Fetch users with instructor role
       const response = await api.get('/admin/users?role=instructor');
-      setInstructors(response.data || []);
+      const data = response.data || response;
+      setInstructors(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching instructors:', error);
+      setInstructors([]);
       toast.error('Erreur lors du chargement des instructeurs');
     } finally {
       setLoading(false);
@@ -55,9 +57,11 @@ const InstructorsPage = () => {
   const fetchClubs = async () => {
     try {
       const response = await api.get('/clubs');
-      setClubs(response.data || []);
+      const data = response.data || response;
+      setClubs(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching clubs:', error);
+      setClubs([]);
     }
   };
 
