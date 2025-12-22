@@ -151,7 +151,7 @@ const AboutPage = () => {
               <h3 className="font-oswald text-2xl font-bold text-white uppercase mt-2 mb-4">La Fondation</h3>
               <p className="text-text-secondary font-manrope leading-relaxed">
                 Le Capitaine Jacques Levinet fonde l'Académie après des années de recherche internationale. 
-                Sa mission : créer une méthode de self-défense efficace, réaliste et adaptée aux législations modernes.
+                Sa mission : créer des méthodes de self-défense efficaces, réalistes et adaptées aux législations modernes.
               </p>
             </div>
             
@@ -168,9 +168,9 @@ const AboutPage = () => {
               <span className="font-mono text-primary text-sm">Aujourd'hui</span>
               <h3 className="font-oswald text-2xl font-bold text-white uppercase mt-2 mb-4">Une Référence Mondiale</h3>
               <p className="text-text-secondary font-manrope leading-relaxed">
-                Plus de 50 pays représentés, 200+ directeurs techniques, et des collaborations avec les 
-                unités d'élite les plus prestigieuses : Spetsnaz, BOPE, ERIS, GAD. L'Académie continue 
-                d'innover et de former l'élite de demain.
+                Plus de 50 pays représentés, 50 directeurs techniques, et des collaborations avec les 
+                unités d'élite les plus prestigieuses : ROTAM (Brésil), OMON (Russie), BOPE, ERIS, GAD (Grupo de Apoyo). 
+                L'Académie continue d'innover et de former l'élite de demain.
               </p>
             </div>
           </div>
