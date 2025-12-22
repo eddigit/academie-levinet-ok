@@ -1,51 +1,42 @@
-# Pre-Deployment Audit - Académie Jacques Levinet CRM
+# Test Result Summary - Académie Jacques Levinet CRM
 
-## Audit Scope
-Complete functional and operational audit before production deployment.
+## Last Updated: December 22, 2025
 
-## Areas to Audit
+## Testing Session - Event Form Fix
 
-### 1. Authentication & Security
-- Login/logout flows
-- JWT token validation
-- Role-based access control (admin, member, instructor, technical_director)
-- Password security
+### Tests to Run:
+1. **Event Creation Form** - PRIORITY 1
+   - Navigate to /events as admin
+   - Click "Nouvel Événement" button
+   - Test that input fields retain focus while typing
+   - Fill all required fields and create event
+   - Verify event appears in list
 
-### 2. Core Features
-- Dashboard statistics
-- Member management (CRUD)
-- Club management (CRUD)
-- Event management (CRUD)
-- News management
-- Messaging system
-- Subscription management
+2. **Event Edit Form** - PRIORITY 2
+   - Click "Modifier" on existing event
+   - Test that input fields retain focus while typing
+   - Modify fields and save
 
-### 3. Onboarding Flows
-- New member registration with Stripe payment
-- Existing member registration with admin approval
+3. **Mobile Navigation** - PRIORITY 3
+   - Test on mobile viewport (375x800)
+   - Verify bottom navigation bar displays
+   - Click "Plus" button to open drawer
+   - Verify drawer opens and closes properly
+   - Test navigation to different pages
 
-### 4. Admin Features
-- User management
-- Pending member approvals
-- Site content management
-- AI configuration
-- SMTP settings
-
-### 5. Public Pages
-- Landing page
-- Discipline pages (SPK, SFJL, WKMO, IPC)
-- Founder page
-- International page
-- About page
-
-### 6. Integrations
-- Stripe payment
-- OpenAI chat assistants
-- Google Maps
-
-## Test Credentials
+### Test Credentials:
 - Admin: admin@academie-levinet.com / Admin2025!
 - Member: membre@academie-levinet.com / Membre2025!
 
-## Audit Status
-Pending full audit by testing agent
+### Known Issues:
+- YouTube video in hero section may not load in headless browser (works in real browser)
+- WebSocket connection warnings (not critical)
+
+### Previous Test Results:
+- Event form focus issue: IDENTIFIED - Component was defined inside parent causing re-renders
+- Fix applied: EventModal component extracted outside of EventsPage component
+- Mobile menu: Working correctly
+
+### Incorporate User Feedback:
+- Focus on testing the event creation/edit flow
+- Verify mobile responsiveness
