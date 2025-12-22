@@ -134,6 +134,7 @@ const AppContent = () => {
         <Route path="/news" element={<ProtectedRoute><NewsPage /></ProtectedRoute>} />
         <Route path="/events" element={<ProtectedRoute><EventsPage /></ProtectedRoute>} />
         <Route path="/admin/products" element={<ProtectedRoute><AdminProductsPage /></ProtectedRoute>} />
+        <Route path="/admin/stats" element={<ProtectedRoute><AdminStatsPage /></ProtectedRoute>} />
         <Route path="/messages" element={<ProtectedRoute><MessagingPage /></ProtectedRoute>} />
         <Route path="/admin/messages" element={<ProtectedRoute><AdminMessagesPage /></ProtectedRoute>} />
         <Route path="/admin/pending-members" element={<ProtectedRoute><PendingMembersPage /></ProtectedRoute>} />
