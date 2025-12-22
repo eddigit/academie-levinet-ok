@@ -134,18 +134,18 @@ const LandingPage = () => {
       >
         {/* Background with Video and Fallback Image */}
         <div className="absolute inset-0 w-full h-full overflow-hidden">
-          {/* Fallback background image (always present, covered by video when loaded) */}
+          {/* Fallback background image (always visible as base layer) */}
           <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
             style={{
               backgroundImage: `url(${backgroundImage})`,
               filter: 'brightness(0.4)'
             }}
           />
-          {/* YouTube Video Background - only show if video URL exists and showVideo is true */}
-          {showVideo && hero.video_url && (
+          {/* YouTube Video Background - positioned above image, will cover it if playing */}
+          {hero.video_url && (
             <iframe
-              className="absolute top-1/2 left-1/2 w-[300vw] md:w-[100vw] h-[300vw] md:h-[56.25vw] min-h-[100vh] min-w-[177.77vh] z-10"
+              className="absolute top-1/2 left-1/2 w-[300vw] md:w-[100vw] h-[300vw] md:h-[56.25vw] min-h-[100vh] min-w-[177.77vh] z-[5]"
               style={{
                 transform: 'translate(-50%, -50%)',
                 pointerEvents: 'none',
@@ -155,7 +155,6 @@ const LandingPage = () => {
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-              onLoad={() => setVideoLoaded(true)}
             />
           )}
           {/* Dark overlay for text readability */}
