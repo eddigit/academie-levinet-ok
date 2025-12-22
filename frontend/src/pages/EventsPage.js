@@ -8,6 +8,222 @@ import { Input } from '../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { toast } from 'sonner';
 
+// Event Modal Component - Extracted outside to prevent re-renders
+const EventModal = ({ 
+  isOpen, 
+  onClose, 
+  onSubmit, 
+  isEdit, 
+  saving,
+  formData,
+  onFieldChange
+}) => {
+  if (!isOpen) return null;
+  
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-paper rounded-xl border border-white/10 w-full max-w-2xl max-h-[90vh] overflow-hidden">
+        <div className="p-4 md:p-6 border-b border-white/10 flex justify-between items-center">
+          <h2 className="font-oswald text-xl text-text-primary uppercase">
+            {isEdit ? 'Modifier l\'Événement' : 'Nouvel Événement'}
+          </h2>
+          <button onClick={onClose} className="text-text-muted hover:text-text-primary">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+        
+        <form onSubmit={onSubmit} className="p-4 md:p-6 space-y-4 overflow-y-auto max-h-[calc(90vh-140px)]">
+          <div>
+            <Label className="text-text-secondary">Titre *</Label>
+            <Input
+              value={formData.title}
+              onChange={(e) => onFieldChange('title', e.target.value)}
+              required
+              className="mt-1 bg-background border-white/10 text-text-primary"
+              placeholder="Nom de l'événement"
+            />
+          </div>
+
+          <div>
+            <Label className="text-text-secondary">Description *</Label>
+            <textarea
+              value={formData.description}
+              onChange={(e) => onFieldChange('description', e.target.value)}
+              required
+              rows={3}
+              className="w-full mt-1 px-4 py-3 bg-background border border-white/10 rounded-md text-text-primary font-manrope resize-none focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder="Description de l'événement..."
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label className="text-text-secondary">Type d'événement</Label>
+              <Select value={formData.eventType} onValueChange={(val) => onFieldChange('eventType', val)}>
+                <SelectTrigger className="mt-1 bg-background border-white/10 text-text-primary">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-paper border-white/10">
+                  <SelectItem value="Stage" className="text-text-primary">Stage</SelectItem>
+                  <SelectItem value="Cours" className="text-text-primary">Cours</SelectItem>
+                  <SelectItem value="Compétition" className="text-text-primary">Compétition</SelectItem>
+                  <SelectItem value="Examen de Grade" className="text-text-primary">Examen de Grade</SelectItem>
+                  <SelectItem value="Séminaire" className="text-text-primary">Séminaire</SelectItem>
+                  <SelectItem value="Workshop" className="text-text-primary">Workshop</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label className="text-text-secondary">Instructeur</Label>
+              <Input
+                value={formData.instructor}
+                onChange={(e) => onFieldChange('instructor', e.target.value)}
+                className="mt-1 bg-background border-white/10 text-text-primary"
+                placeholder="Nom de l'instructeur"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label className="text-text-secondary">Date début *</Label>
+              <Input
+                type="date"
+                value={formData.startDate}
+                onChange={(e) => onFieldChange('startDate', e.target.value)}
+                required
+                className="mt-1 bg-background border-white/10 text-text-primary"
+              />
+            </div>
+            <div>
+              <Label className="text-text-secondary">Date fin *</Label>
+              <Input
+                type="date"
+                value={formData.endDate}
+                onChange={(e) => onFieldChange('endDate', e.target.value)}
+                required
+                className="mt-1 bg-background border-white/10 text-text-primary"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label className="text-text-secondary">Heure début</Label>
+              <Input
+                type="time"
+                value={formData.startTime}
+                onChange={(e) => onFieldChange('startTime', e.target.value)}
+                className="mt-1 bg-background border-white/10 text-text-primary"
+              />
+            </div>
+            <div>
+              <Label className="text-text-secondary">Heure fin</Label>
+              <Input
+                type="time"
+                value={formData.endTime}
+                onChange={(e) => onFieldChange('endTime', e.target.value)}
+                className="mt-1 bg-background border-white/10 text-text-primary"
+              />
+            </div>
+          </div>
+
+          <div>
+            <Label className="text-text-secondary">Lieu *</Label>
+            <Input
+              value={formData.location}
+              onChange={(e) => onFieldChange('location', e.target.value)}
+              required
+              className="mt-1 bg-background border-white/10 text-text-primary"
+              placeholder="Nom de la salle ou adresse"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label className="text-text-secondary">Ville *</Label>
+              <Input
+                value={formData.city}
+                onChange={(e) => onFieldChange('city', e.target.value)}
+                required
+                className="mt-1 bg-background border-white/10 text-text-primary"
+                placeholder="Paris"
+              />
+            </div>
+            <div>
+              <Label className="text-text-secondary">Pays *</Label>
+              <Input
+                value={formData.country}
+                onChange={(e) => onFieldChange('country', e.target.value)}
+                required
+                className="mt-1 bg-background border-white/10 text-text-primary"
+                placeholder="France"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label className="text-text-secondary">Participants max</Label>
+              <Input
+                type="number"
+                value={formData.maxParticipants}
+                onChange={(e) => onFieldChange('maxParticipants', e.target.value)}
+                className="mt-1 bg-background border-white/10 text-text-primary"
+                placeholder="Illimité si vide"
+              />
+            </div>
+            <div>
+              <Label className="text-text-secondary">Prix (€)</Label>
+              <Input
+                type="number"
+                step="0.01"
+                value={formData.price}
+                onChange={(e) => onFieldChange('price', e.target.value)}
+                className="mt-1 bg-background border-white/10 text-text-primary"
+                placeholder="0.00"
+              />
+            </div>
+          </div>
+
+          <div>
+            <Label className="text-text-secondary">URL de l'image</Label>
+            <Input
+              type="url"
+              value={formData.imageUrl}
+              onChange={(e) => onFieldChange('imageUrl', e.target.value)}
+              className="mt-1 bg-background border-white/10 text-text-primary"
+              placeholder="https://..."
+            />
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <Button 
+              type="button"
+              variant="outline"
+              onClick={onClose}
+              className="flex-1 border-white/10"
+            >
+              Annuler
+            </Button>
+            <Button 
+              type="submit" 
+              disabled={saving}
+              className="flex-1 bg-primary hover:bg-primary-dark text-white font-oswald uppercase"
+            >
+              {saving ? (
+                <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Enregistrement...</>
+              ) : (
+                isEdit ? 'Mettre à jour' : 'Créer l\'événement'
+              )}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 const EventsPage = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
