@@ -182,12 +182,16 @@ class AdminUserCreate(BaseModel):
     email: EmailStr
     password: Optional[str] = None  # If None, generate random password
     full_name: str
-    role: str = "admin"  # admin, member, instructor, technical_director
+    role: str = "member"  # Primary role: admin, member, instructor, technical_director
+    roles: List[str] = []  # Additional roles (can be multiple)
     phone: Optional[str] = None
     city: Optional[str] = None
     country: str = "France"
+    country_code: str = "FR"  # ISO country code for flag display
     belt_grade: Optional[str] = None
-    club_name: Optional[str] = None
+    dan_grade: Optional[str] = None  # Dan grade (1er Dan, 2ème Dan, etc.)
+    club_ids: List[str] = []  # Clubs this person is associated with
+    photo_url: Optional[str] = None
     send_email: bool = True  # Send credentials by email
 
 class UserCreate(BaseModel):
