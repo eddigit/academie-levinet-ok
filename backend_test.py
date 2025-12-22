@@ -757,6 +757,132 @@ class AcademieLevinetAPITester:
         )
         return success
 
+    # ==================== SITE CONTENT CMS TESTS ====================
+    
+    def test_get_public_site_content(self):
+        """Test getting public site content (no auth required)"""
+        success, response = self.run_test(
+            "Get Public Site Content",
+            "GET",
+            "site-content",
+            200
+        )
+        
+        if success:
+            # Verify required sections exist
+            required_sections = ['hero', 'about', 'contact', 'footer']
+            missing_sections = [section for section in required_sections if section not in response]
+            if missing_sections:
+                self.log_test("Site Content Structure Validation", False, f"Missing sections: {missing_sections}")
+                return False
+            else:
+                self.log_test("Site Content Structure Validation", True, "All required sections present")
+        
+        return success, response
+
+    def test_get_admin_site_content(self):
+        """Test getting site content for admin editing"""
+        success, response = self.run_test(
+            "Get Admin Site Content",
+            "GET",
+            "admin/site-content",
+            200
+        )
+        return success, response
+
+    def test_update_site_content(self):
+        """Test updating site content"""
+        # First get current content
+        success, current_content = self.test_get_admin_site_content()
+        if not success:
+            return False
+        
+        # Update hero section with test data
+        updated_content = current_content.copy()
+        updated_content['hero'] = {
+            **updated_content.get('hero', {}),
+            'title': f'TEST TITLE {datetime.now().strftime("%H%M%S")}',
+            'subtitle': 'Test subtitle updated by API test',
+            'description': 'This is a test description updated via API'
+        }
+        
+        success, response = self.run_test(
+            "Update Site Content",
+            "PUT",
+            "admin/site-content",
+            200,
+            data=updated_content
+        )
+        
+        return success
+
+    def test_update_site_section(self):
+        """Test updating a specific site section"""
+        test_hero_data = {
+            'title': f'SECTION TEST {datetime.now().strftime("%H%M%S")}',
+            'subtitle': 'Section-specific update test',
+            'description': 'Testing section-specific update endpoint'
+        }
+        
+        success, response = self.run_test(
+            "Update Site Section (Hero)",
+            "PUT",
+            "admin/site-content/hero",
+            200,
+            data=test_hero_data
+        )
+        
+        return success
+
+    def test_site_content_workflow(self):
+        """Test complete site content workflow: get public -> get admin -> update -> verify"""
+        print("\n🔄 Testing Site Content Workflow...")
+        
+        # Step 1: Get public content (baseline)
+        success, public_content = self.test_get_public_site_content()
+        if not success:
+            return False
+        
+        original_title = public_content.get('hero', {}).get('title', '')
+        
+        # Step 2: Get admin content
+        success, admin_content = self.test_get_admin_site_content()
+        if not success:
+            return False
+        
+        # Step 3: Update content
+        test_title = f'WORKFLOW TEST {datetime.now().strftime("%H%M%S")}'
+        admin_content['hero']['title'] = test_title
+        
+        success, _ = self.run_test(
+            "Workflow: Update Content",
+            "PUT",
+            "admin/site-content",
+            200,
+            data=admin_content
+        )
+        if not success:
+            return False
+        
+        # Step 4: Verify update on public endpoint
+        success, updated_public = self.run_test(
+            "Workflow: Verify Public Update",
+            "GET",
+            "site-content",
+            200
+        )
+        
+        if success:
+            new_title = updated_public.get('hero', {}).get('title', '')
+            if new_title == test_title:
+                self.log_test("Site Content Workflow Validation", True, f"Title successfully updated: {test_title}")
+                return True
+            else:
+                self.log_test("Site Content Workflow Validation", False, f"Title not updated. Expected: {test_title}, Got: {new_title}")
+                return False
+        
+        return False
+
     def run_all_tests(self):
         """Run comprehensive API tests"""
         print("🚀 Starting Académie Jacques Levinet API Tests")
