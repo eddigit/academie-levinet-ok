@@ -580,6 +580,9 @@ const EventsPage = () => {
           onClose={closeAddModal} 
           onSubmit={handleAddEvent}
           isEdit={false}
+          saving={saving}
+          formData={formData}
+          onFieldChange={handleFieldChange}
         />
 
         {/* Edit Modal */}
@@ -588,6 +591,9 @@ const EventsPage = () => {
           onClose={closeEditModal} 
           onSubmit={handleEditEvent}
           isEdit={true}
+          saving={saving}
+          formData={formData}
+          onFieldChange={handleFieldChange}
         />
       </div>
     </DashboardLayout>
