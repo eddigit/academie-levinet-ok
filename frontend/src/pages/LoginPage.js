@@ -30,12 +30,8 @@ const LoginPage = () => {
       }
 
       if (result.success) {
-        // Redirect based on user role
-        if (result.user?.role === 'admin') {
-          navigate('/dashboard');
-        } else {
-          navigate('/member/dashboard');
-        }
+        // All users go to the same dashboard with the social wall
+        navigate('/dashboard');
       } else {
         setError(result.error);
       }
