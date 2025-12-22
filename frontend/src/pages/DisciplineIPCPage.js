@@ -7,8 +7,8 @@ const DisciplineIPCPage = () => {
   const features = [
     { icon: Target, title: 'Efficacité Opérationnelle', description: 'Techniques validées sur le terrain par des unités d\'élite.' },
     { icon: Shield, title: 'Cadre Légal', description: 'Formation conforme aux règlementations de chaque pays.' },
-    { icon: Award, title: 'Certification ROS', description: 'Qualifications professionnelles reconnues internationalement.' },
-    { icon: Users, title: 'Partenariats Élite', description: 'Collaborations avec Spetsnaz, BOPE, ERIS, GAD...' },
+    { icon: Award, title: 'Certification ROS', description: 'Certification délivrée dans le cadre de contrats de formation et de conventions.' },
+    { icon: Users, title: 'Partenariats Élite', description: 'Collaborations avec OMON, ROTAM, BOPE, ERIS, GAD...' },
   ];
 
   const eliteUnits = [
