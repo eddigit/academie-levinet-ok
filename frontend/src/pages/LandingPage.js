@@ -42,10 +42,19 @@ const LandingPage = () => {
         className="pt-24 md:pt-32 pb-12 md:pb-20 px-4 md:px-6 relative overflow-hidden min-h-[80vh] md:min-h-[90vh] flex items-center" 
         data-testid="hero-section"
       >
-        {/* YouTube Video Background */}
+        {/* Background with Video and Fallback Image */}
         <div className="absolute inset-0 w-full h-full overflow-hidden">
+          {/* Fallback background image (shows if video doesn't load) */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1920&q=80)',
+              filter: 'brightness(0.4)'
+            }}
+          />
+          {/* YouTube Video Background */}
           <iframe
-            className="absolute top-1/2 left-1/2 w-[300vw] md:w-[100vw] h-[300vw] md:h-[56.25vw] min-h-[100vh] min-w-[177.77vh]"
+            className="absolute top-1/2 left-1/2 w-[300vw] md:w-[100vw] h-[300vw] md:h-[56.25vw] min-h-[100vh] min-w-[177.77vh] z-10"
             style={{
               transform: 'translate(-50%, -50%)',
               pointerEvents: 'none',
@@ -57,7 +66,7 @@ const LandingPage = () => {
             allowFullScreen
           />
           {/* Dark overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80 z-20"></div>
         </div>
 
         {/* Content - Mobile First */}
