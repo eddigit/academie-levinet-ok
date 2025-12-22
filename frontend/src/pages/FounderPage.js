@@ -12,12 +12,12 @@ const FounderPage = () => {
   ];
 
   const timeline = [
-    { year: 'Années 70-80', title: 'Carrière Policière', description: 'Intègre la Police Nationale, développe une expertise terrain en situations de crise.' },
-    { year: 'Années 80', title: 'Champion de Karaté', description: 'Devient Champion de France et atteint le 6ème Dan de Karaté.' },
+    { year: 'Années 70-80', title: 'Carrière Policière', description: 'Intègre la Police Nationale comme officier et acquiert une expertise terrain en situations de crise et d\'intervention.' },
+    { year: 'Années 80', title: 'Champion de Karaté', description: 'Devient Champion de France de Karaté et atteint le 6ème Dan FEKAMT de Karaté.' },
     { year: 'Années 90', title: 'Recherche Internationale', description: 'Parcourt le monde pour étudier les meilleures techniques de self-défense et d\'entraînement policier.' },
-    { year: '1998', title: 'Création de l\'Académie', description: 'Fonde l\'Académie Jacques Levinet et développe la méthode Self-Pro Krav (SPK).' },
+    { year: '1998', title: 'Création de l\'Académie', description: 'Fonde l\'Académie Jacques Levinet et met au point plusieurs méthodes de self-défense et d\'entraînement police, dont le Self-Pro Krav (SPK).' },
     { year: '2000s', title: 'Expansion Mondiale', description: 'Création de la structure tripartite : AJL (Académie Jacques Levinet), WKMO (World Krav Maga Organization) et IPC (International Police Confederation). Reconnaissances internationales multiples.' },
-    { year: 'Aujourd\'hui', title: 'Héritage Vivant', description: 'Plus de 50 pays représentés, 50 directeurs techniques, collaboration avec des unités d\'élite mondiales.' },
+    { year: 'Aujourd\'hui', title: 'Héritage Vivant', description: 'Plus de 50 pays représentés, 50 directeurs techniques, collaboration avec des unités d\'élite mondiales comme la ROTAM (Brésil) et l\'OMON (Russie).' },
   ];
 
   return (
