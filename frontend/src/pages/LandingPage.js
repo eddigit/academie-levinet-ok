@@ -311,8 +311,8 @@ const LandingPage = () => {
                   <li className="flex items-start gap-2 md:gap-3">
                     <span className="text-primary text-lg md:text-xl">✓</span>
                     <div>
-                      <h5 className="font-oswald text-base md:text-lg font-bold text-text-primary uppercase mb-1">Manuels Numériques</h5>
-                      <p className="text-text-secondary font-manrope text-xs md:text-sm">PDF téléchargeables</p>
+                      <h5 className="font-oswald text-base md:text-lg font-bold text-text-primary uppercase mb-1">Manuels</h5>
+                      <p className="text-text-secondary font-manrope text-xs md:text-sm">Supports pédagogiques imprimés et numériques</p>
                     </div>
                   </li>
                 </ul>
@@ -499,10 +499,11 @@ const LandingPage = () => {
             <div>
               <h4 className="font-oswald text-xs md:text-sm font-bold uppercase tracking-wider text-primary mb-3 md:mb-6">Disciplines</h4>
               <ul className="space-y-2 md:space-y-3">
+                <li><Link to="/disciplines/wkmo" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">WKMO</Link></li>
+                <li><Link to="/disciplines/ipc" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">IPC / ROS</Link></li>
                 <li><Link to="/disciplines/spk" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Self-Pro Krav</Link></li>
-                <li><Link to="/disciplines/sfjl" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Self-Défense Femmes</Link></li>
-                <li><Link to="/disciplines/wkmo" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Canne Défense</Link></li>
-                <li><Link to="/disciplines/ipc" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Formation Pro (ROS)</Link></li>
+                <li><Link to="/disciplines/canne" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Canne Défense</Link></li>
+                <li><Link to="/disciplines/sfjl" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Self Féminine</Link></li>
               </ul>
             </div>
 
