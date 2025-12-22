@@ -1076,6 +1076,18 @@ class AcademieLevinetAPITester:
         if instructor_user_id:
             self.test_delete_user(instructor_user_id)
         
+        print("\n📋 SITE CONTENT CMS TESTS")
+        print("-" * 30)
+        
+        # Test site content endpoints
+        self.test_get_public_site_content()
+        self.test_get_admin_site_content()
+        self.test_update_site_content()
+        self.test_update_site_section()
+        
+        # Test complete workflow
+        self.test_site_content_workflow()
+        
         return True
 
     def print_summary(self):
