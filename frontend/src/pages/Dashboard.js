@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
 import SocialWall from '../components/SocialWall';
+import { useAuth } from '../context/AuthContext';
 import { api } from '../utils/api';
-import { Users, DollarSign, TrendingUp, UserCheck, ArrowUp, ArrowDown } from 'lucide-react';
+import { Users, DollarSign, TrendingUp, UserCheck, ArrowUp, ArrowDown, BarChart3 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 const Dashboard = () => {
