@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import MembersPage from './pages/MembersPage';
 import MemberDetailPage from './pages/MemberDetailPage';
 import TechnicalDirectorsPage from './pages/TechnicalDirectorsPage';
+import InstructorsPage from './pages/InstructorsPage';
 import SubscriptionsPage from './pages/SubscriptionsPage';
 import LeadsPage from './pages/LeadsPage';
 import NewsPage from './pages/NewsPage';
