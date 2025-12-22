@@ -34,17 +34,19 @@ const MegaMenu = () => {
     {
       title: 'Nos Disciplines',
       items: [
-        { name: 'Krav Maga SPK', href: '/disciplines/spk', icon: Target, description: 'Apprenez à vous défendre' },
-        { name: 'Self-Défense Femmes', href: '/disciplines/sfjl', icon: Shield, description: 'Pour vous, mesdames' },
-        { name: 'Self-Défense Enfants', href: '/disciplines/wkmo', icon: Users, description: 'Pour toute la famille' },
-        { name: 'Formation Pro (ROS)', href: '/disciplines/ipc', icon: Shield, description: 'Forces de l\'ordre et sécurité' },
+        { name: 'WKMO', href: '/disciplines/wkmo', icon: Users, description: 'World Krav Maga Organization' },
+        { name: 'IPC / ROS', href: '/disciplines/ipc', icon: Shield, description: 'Formation professionnelle' },
+        { name: 'Self Pro Krav', href: '/disciplines/spk', icon: Target, description: 'Apprenez à vous défendre' },
+        { name: 'Canne Défense', href: '/disciplines/canne', icon: Shield, description: 'Art de la canne' },
+        { name: 'Self Féminine', href: '/disciplines/sfjl', icon: Shield, description: 'Pour vous, mesdames' },
+        { name: 'Self Enfant', href: '/disciplines/enfant', icon: Users, description: 'Pour les plus jeunes' },
       ]
     },
     {
       title: 'Formation',
       items: [
         { name: 'Pédagogie & Grades', href: '/pedagogy', icon: BookOpen, description: 'Système de certification' },
-        { name: 'Présence Internationale', href: '/international', icon: Globe, description: '40+ pays représentés' },
+        { name: 'Présence Internationale', href: '/international', icon: Globe, description: '50+ pays représentés' },
       ]
     },
     {
