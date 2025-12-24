@@ -1618,8 +1618,11 @@ async def get_news_comments(news_id: str):
     ).sort("created_at", 1).to_list(100)
     return {"comments": comments}
 
+class NewsCommentCreate(BaseModel):
+    content: str
+
 @api_router.post("/news/{news_id}/comments")
-async def add_news_comment(news_id: str, comment_data: dict, current_user: dict = Depends(get_current_user)):
+async def add_news_comment(news_id: str, comment_data: NewsCommentCreate, current_user: dict = Depends(get_current_user)):
     """Add a comment to a news article"""
     # Verify news exists
     news = await db.news.find_one({"id": news_id})
@@ -1632,7 +1635,7 @@ async def add_news_comment(news_id: str, comment_data: dict, current_user: dict 
         "author_id": current_user["id"],
         "author_name": current_user.get("full_name", "Membre"),
         "author_photo": current_user.get("photo_url"),
-        "content": comment_data.get("content", ""),
+        "content": comment_data.content,
         "created_at": datetime.now(timezone.utc).isoformat()
     }
     

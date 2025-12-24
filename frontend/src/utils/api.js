@@ -74,22 +74,24 @@ export const api = {
   // ==================== USERS UNIFIED API ====================
   // Tous les utilisateurs sont dans la table 'users' avec un champ 'role'
 
-  // Membres (role=membre)
+  // Membres (role=membre) - accessible à tous les utilisateurs connectés
   getMembers: async (filters = {}) => {
-    const params = new URLSearchParams({ ...filters, role: 'membre' }).toString();
-    const response = await axios.get(`${API}/admin/users?${params}`, {
+    const params = new URLSearchParams(filters).toString();
+    const response = await axios.get(`${API}/members${params ? '?' + params : ''}`, {
       headers: getAuthHeader()
     });
-    return response.data?.users || [];
+    // L'endpoint /members retourne directement un array
+    return Array.isArray(response.data) ? response.data : (response.data?.users || []);
   },
 
   getMember: async (id) => {
-    const response = await axios.get(`${API}/admin/users/${id}`, {
+    const response = await axios.get(`${API}/members/${id}`, {
       headers: getAuthHeader()
     });
     return response.data;
   },
 
+  // Admin operations - requires admin role
   createMember: async (data) => {
     const userData = {
       ...data,
