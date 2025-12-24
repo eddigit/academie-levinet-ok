@@ -24,6 +24,8 @@ import DisciplineIPCPage from './pages/DisciplineIPCPage';
 import PedagogyPage from './pages/PedagogyPage';
 import InternationalPage from './pages/InternationalPage';
 import JoinPage from './pages/JoinPage';
+import FindClubPage from './pages/FindClubPage';
+import ClubDetailPage from './pages/ClubDetailPage';
 import MessagingPage from './pages/MessagingPage';
 import AdminMessagesPage from './pages/AdminMessagesPage';
 // Member Area pages
@@ -122,6 +124,8 @@ const AppContent = () => {
         <Route path="/international" element={<InternationalPage />} />
         <Route path="/join" element={<JoinPage />} />
         <Route path="/onboarding" element={<OnboardingPage />} />
+        <Route path="/trouver-club" element={<FindClubPage />} />
+        <Route path="/club/:clubId" element={<ClubDetailPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/boutique" element={<ShopPage />} />
         
