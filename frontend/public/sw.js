@@ -1,9 +1,7 @@
-const CACHE_NAME = 'academie-levinet-v1';
+const CACHE_NAME = 'academie-levinet-v2';
 const urlsToCache = [
   '/',
-  '/index.html',
-  '/static/js/bundle.js',
-  '/static/css/main.css'
+  '/index.html'
 ];
 
 // Install event
@@ -20,19 +18,29 @@ self.addEventListener('install', (event) => {
 });
 
 // Fetch event - Network first, fallback to cache
+// Skip API requests - let them go directly to the network
 self.addEventListener('fetch', (event) => {
+  const url = new URL(event.request.url);
+  
+  // Don't intercept API requests
+  if (url.pathname.startsWith('/api') || event.request.method !== 'GET') {
+    return;
+  }
+  
   event.respondWith(
     fetch(event.request)
       .then((response) => {
+        // Only cache successful responses
+        if (!response || response.status !== 200 || response.type !== 'basic') {
+          return response;
+        }
+        
         // Clone the response
         const responseToCache = response.clone();
         
         caches.open(CACHE_NAME)
           .then((cache) => {
-            // Only cache GET requests
-            if (event.request.method === 'GET') {
-              cache.put(event.request, responseToCache);
-            }
+            cache.put(event.request, responseToCache);
           });
         
         return response;
