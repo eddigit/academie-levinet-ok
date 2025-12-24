@@ -27,10 +27,33 @@ const LandingPage = () => {
   const heroSubtitle = content?.hero?.subtitle || "Validée par l'Expérience d'Élite du Capitaine Jacques Levinet";
   const heroDescription = content?.hero?.description || "Méthode brevetée par l'ex-capitaine de police et champion de France de karaté.";
   const heroImage = content?.hero?.background_image || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1920&q=80';
-  const heroVideoUrl = content?.hero?.video_url || 'https://www.youtube.com/embed/mX3cGUHUgKo?autoplay=1&mute=1&loop=1&playlist=mX3cGUHUgKo&controls=0&showinfo=0&modestbranding=1&rel=0&enablejsapi=1&playsinline=1';
   const logoUrl = content?.images?.logo || 'https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg';
   const footerTagline = content?.footer?.tagline || 'Académie Jacques Levinet – World Krav Maga Organization – International Police Confederation';
   const footerCopyright = content?.footer?.copyright || '© 2025 Académie Jacques Levinet. Tous droits réservés.';
+
+  // Vidéo YouTube - utiliser l'URL du CMS hero.video_url ou la vidéo par défaut
+  // L'URL doit être au format embed avec les paramètres autoplay
+  const getVideoUrl = () => {
+    const cmsUrl = content?.hero?.video_url;
+    const defaultVideoId = 'mX3cGUHUgKo';
+    
+    if (!cmsUrl) {
+      return `https://www.youtube.com/embed/${defaultVideoId}?autoplay=1&mute=1&loop=1&playlist=${defaultVideoId}&controls=0&showinfo=0&modestbranding=1&rel=0&enablejsapi=1&playsinline=1`;
+    }
+    
+    // Extraire l'ID vidéo de l'URL du CMS
+    let videoId = defaultVideoId;
+    if (cmsUrl.includes('youtube.com/embed/')) {
+      videoId = cmsUrl.split('youtube.com/embed/')[1]?.split('?')[0] || defaultVideoId;
+    } else if (cmsUrl.includes('youtube.com/watch?v=')) {
+      videoId = cmsUrl.split('v=')[1]?.split('&')[0] || defaultVideoId;
+    } else if (cmsUrl.includes('youtu.be/')) {
+      videoId = cmsUrl.split('youtu.be/')[1]?.split('?')[0] || defaultVideoId;
+    }
+    
+    return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&modestbranding=1&rel=0&enablejsapi=1&playsinline=1`;
+  };
+  const heroVideoUrl = getVideoUrl();
 
   if (loading) {
     return (
