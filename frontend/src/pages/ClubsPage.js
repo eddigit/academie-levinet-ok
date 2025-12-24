@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Building2, Plus, Search, MapPin, Phone, Mail,
-  Edit, Trash2, Loader2, X, UserCog, Users
+  Edit, Trash2, Loader2, X, UserCog, Users, Shield, RefreshCw
 } from 'lucide-react';
 import DashboardLayout from '../components/DashboardLayout';
 import { Button } from '../components/ui/button';
@@ -26,6 +26,12 @@ const ClubsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingClub, setEditingClub] = useState(null);
   const [saving, setSaving] = useState(false);
+
+  // Role management
+  const [isRoleModalOpen, setIsRoleModalOpen] = useState(false);
+  const [allUsers, setAllUsers] = useState([]);
+  const [loadingUsers, setLoadingUsers] = useState(false);
+  const [updatingRole, setUpdatingRole] = useState(null);
 
   const [formData, setFormData] = useState({
     name: '', address: '', city: '', country: 'France', country_code: 'FR',
@@ -83,6 +89,68 @@ const ClubsPage = () => {
       setInstructorsList([]);
     }
   };
+
+  const fetchAllUsers = async () => {
+    setLoadingUsers(true);
+    try {
+      const response = await api.get('/admin/users');
+      const data = response.data?.users || response.data || [];
+      setAllUsers(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error('Error fetching all users:', error);
+      toast.error('Erreur lors du chargement des utilisateurs');
+      setAllUsers([]);
+    }
+    setLoadingUsers(false);
+  };
+
+  const updateUserRole = async (userId, newRole) => {
+    setUpdatingRole(userId);
+    try {
+      await api.put(`/admin/users/${userId}/role?role=${newRole}`);
+      toast.success('Rôle mis à jour');
+      // Refresh lists
+      await Promise.all([
+        fetchAllUsers(),
+        fetchTechnicalDirectors(),
+        fetchNationalDirectors(),
+        fetchInstructors()
+      ]);
+    } catch (error) {
+      toast.error(getErrorMessage(error, 'Erreur lors de la mise à jour du rôle'));
+    }
+    setUpdatingRole(null);
+  };
+
+  const deleteUser = async (userId, userName) => {
+    if (!window.confirm(`Supprimer l'utilisateur "${userName}" ?`)) return;
+    try {
+      await api.delete(`/admin/users/${userId}`);
+      toast.success('Utilisateur supprimé');
+      await Promise.all([
+        fetchAllUsers(),
+        fetchTechnicalDirectors(),
+        fetchNationalDirectors(),
+        fetchInstructors()
+      ]);
+    } catch (error) {
+      toast.error(getErrorMessage(error, 'Erreur lors de la suppression'));
+    }
+  };
+
+  const openRoleModal = () => {
+    fetchAllUsers();
+    setIsRoleModalOpen(true);
+  };
+
+  const VALID_ROLES = [
+    { value: 'membre', label: 'Membre', color: 'gray' },
+    { value: 'instructeur', label: 'Instructeur', color: 'primary' },
+    { value: 'directeur_technique', label: 'Directeur Technique', color: 'accent' },
+    { value: 'directeur_national', label: 'Directeur National', color: 'purple' },
+    { value: 'admin', label: 'Administrateur', color: 'red' },
+    { value: 'fondateur', label: 'Fondateur', color: 'yellow' }
+  ];
 
   const resetForm = () => {
     setFormData({
@@ -203,9 +271,14 @@ const ClubsPage = () => {
             <h1 className="font-oswald text-2xl sm:text-3xl font-bold text-text-primary uppercase tracking-wide">Clubs</h1>
             <p className="text-text-secondary font-manrope mt-1 text-sm">{clubs.length} club(s)</p>
           </div>
-          <Button onClick={openAddModal} className="bg-primary hover:bg-primary-dark">
-            <Plus className="w-4 h-4 mr-2" />Nouveau Club
-          </Button>
+          <div className="flex gap-2">
+            <Button onClick={openRoleModal} variant="outline" className="border-accent text-accent hover:bg-accent/10">
+              <Shield className="w-4 h-4 mr-2" />Gérer les rôles
+            </Button>
+            <Button onClick={openAddModal} className="bg-primary hover:bg-primary-dark">
+              <Plus className="w-4 h-4 mr-2" />Nouveau Club
+            </Button>
+          </div>
         </div>
 
         {/* Filters */}
@@ -488,6 +561,141 @@ const ClubsPage = () => {
                 </Button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Role Management Modal */}
+      {isRoleModalOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-paper rounded-xl border border-white/10 w-full max-w-4xl max-h-[90vh] overflow-hidden">
+            <div className="p-6 border-b border-white/10 flex justify-between items-center">
+              <div>
+                <h2 className="font-oswald text-xl text-text-primary uppercase flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-accent" />
+                  Gestion des Rôles
+                </h2>
+                <p className="text-text-muted text-sm mt-1">
+                  Assignez les rôles aux utilisateurs pour qu'ils apparaissent dans les listes de sélection
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={() => fetchAllUsers()} disabled={loadingUsers} className="border-white/10">
+                  <RefreshCw className={`w-4 h-4 ${loadingUsers ? 'animate-spin' : ''}`} />
+                </Button>
+                <button onClick={() => setIsRoleModalOpen(false)} className="text-text-muted hover:text-text-primary">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            <div className="p-4 border-b border-white/10 bg-background/50">
+              <div className="flex flex-wrap gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full bg-primary"></span>
+                  <span className="text-text-secondary">Instructeurs: {instructorsList.length}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full bg-accent"></span>
+                  <span className="text-text-secondary">Dir. Techniques: {technicalDirectors.length}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full bg-purple-500"></span>
+                  <span className="text-text-secondary">Dir. Nationaux: {nationalDirectors.length}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="overflow-y-auto max-h-[calc(90vh-200px)]">
+              {loadingUsers ? (
+                <div className="flex items-center justify-center py-12">
+                  <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                </div>
+              ) : allUsers.length === 0 ? (
+                <div className="text-center py-12">
+                  <Users className="w-12 h-12 text-text-muted mx-auto mb-4" />
+                  <p className="text-text-muted">Aucun utilisateur trouvé</p>
+                </div>
+              ) : (
+                <table className="w-full">
+                  <thead className="bg-background/50 sticky top-0">
+                    <tr>
+                      <th className="text-left p-4 text-text-muted text-sm font-medium">Utilisateur</th>
+                      <th className="text-left p-4 text-text-muted text-sm font-medium">Email</th>
+                      <th className="text-left p-4 text-text-muted text-sm font-medium">Rôle actuel</th>
+                      <th className="text-left p-4 text-text-muted text-sm font-medium">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5">
+                    {allUsers.map(user => (
+                      <tr key={user.id} className="hover:bg-white/5">
+                        <td className="p-4">
+                          <div className="flex items-center gap-3">
+                            <UserAvatar user={user} size="sm" />
+                            <div>
+                              <p className="text-text-primary font-medium">{user.full_name || 'Sans nom'}</p>
+                              <p className="text-text-muted text-xs">{user.city || 'Ville non définie'}</p>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="p-4 text-text-secondary text-sm">{user.email}</td>
+                        <td className="p-4">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            user.role === 'admin' ? 'bg-red-500/20 text-red-400' :
+                            user.role === 'fondateur' ? 'bg-yellow-500/20 text-yellow-400' :
+                            user.role === 'directeur_national' ? 'bg-purple-500/20 text-purple-400' :
+                            user.role === 'directeur_technique' ? 'bg-accent/20 text-accent' :
+                            user.role === 'instructeur' ? 'bg-primary/20 text-primary' :
+                            'bg-gray-500/20 text-gray-400'
+                          }`}>
+                            {VALID_ROLES.find(r => r.value === user.role)?.label || user.role || 'Non défini'}
+                          </span>
+                        </td>
+                        <td className="p-4">
+                          <div className="flex items-center gap-2">
+                            <Select
+                              value={user.role || 'membre'}
+                              onValueChange={(newRole) => updateUserRole(user.id, newRole)}
+                              disabled={updatingRole === user.id}
+                            >
+                              <SelectTrigger className="w-40 bg-background border-white/10 text-sm h-8">
+                                {updatingRole === user.id ? (
+                                  <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                  <SelectValue />
+                                )}
+                              </SelectTrigger>
+                              <SelectContent className="bg-paper border-white/10">
+                                {VALID_ROLES.map(role => (
+                                  <SelectItem key={role.value} value={role.value}>
+                                    {role.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => deleteUser(user.id, user.full_name)}
+                              className="border-secondary/50 text-secondary hover:bg-secondary/10 h-8 w-8 p-0"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+
+            <div className="p-4 border-t border-white/10 bg-background/50">
+              <p className="text-text-muted text-xs">
+                <strong>Astuce:</strong> Les utilisateurs avec le rôle "Instructeur" apparaîtront dans la liste des instructeurs,
+                "Directeur Technique" dans les directeurs techniques, etc.
+              </p>
+            </div>
           </div>
         </div>
       )}

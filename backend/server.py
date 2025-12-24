@@ -1088,20 +1088,21 @@ async def create_admin_user(data: AdminUserCreate, current_user: dict = Depends(
 @api_router.put("/admin/users/{user_id}/role")
 async def update_user_role(user_id: str, role: str, current_user: dict = Depends(get_current_user)):
     """Admin: Update user role"""
-    if current_user.get('role') != 'admin':
+    if current_user.get('role') not in ['admin', 'fondateur']:
         raise HTTPException(status_code=403, detail="Admin access required")
-    
-    if role not in ['admin', 'member']:
-        raise HTTPException(status_code=400, detail="Rôle invalide")
-    
+
+    valid_roles = ['admin', 'fondateur', 'directeur_national', 'directeur_technique', 'instructeur', 'membre']
+    if role not in valid_roles:
+        raise HTTPException(status_code=400, detail=f"Rôle invalide. Rôles valides: {', '.join(valid_roles)}")
+
     result = await db.users.update_one(
         {"id": user_id},
         {"$set": {"role": role}}
     )
-    
+
     if result.modified_count == 0:
         raise HTTPException(status_code=404, detail="Utilisateur non trouvé")
-    
+
     return {"message": f"Rôle mis à jour en '{role}'"}
 
 @api_router.delete("/admin/users/{user_id}")
@@ -4120,6 +4121,20 @@ async def get_instructors_list():
         {"_id": 0, "id": 1, "full_name": 1, "email": 1, "city": 1, "country": 1, "photo_url": 1, "club_id": 1, "dan_grade": 1}
     ).to_list(1000)
     return {"instructors": instructors}
+
+@api_router.get("/debug/user-roles")
+async def debug_user_roles():
+    """DEBUG: Get all user roles - À SUPPRIMER EN PRODUCTION"""
+    users = await db.users.find({}, {"_id": 0, "id": 1, "full_name": 1, "email": 1, "role": 1, "roles": 1}).to_list(100)
+    roles_count = {}
+    for u in users:
+        role = u.get('role', 'UNDEFINED')
+        roles_count[role] = roles_count.get(role, 0) + 1
+    return {
+        "total_users": len(users),
+        "roles_count": roles_count,
+        "users": users
+    }
 
 # ==================== CHAT ENDPOINTS (Real AI Integration) ====================
 

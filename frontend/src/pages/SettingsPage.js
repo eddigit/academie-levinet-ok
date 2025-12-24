@@ -6,7 +6,7 @@ import Sidebar from '../components/Sidebar';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
-import api from '../utils/api';
+import api, { getErrorMessage } from '../utils/api';
 import { toast } from 'sonner';
 
 const SettingsPage = () => {
@@ -75,7 +75,7 @@ const SettingsPage = () => {
       toast.success('Email de test envoyé ! Vérifiez votre boîte de réception.');
     } catch (error) {
       console.error('Error testing SMTP:', error);
-      toast.error(error.response?.data?.detail || 'Échec du test SMTP');
+      toast.error(getErrorMessage(error, 'Échec du test SMTP'));
     }
     setTesting(false);
   };

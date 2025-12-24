@@ -1,11 +1,51 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL;
+// En mode unifié (production), utiliser des URLs relatives
+// En développement local, REACT_APP_BACKEND_URL peut pointer vers le backend séparé
+const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${API_URL}/api`;
 
 const getAuthHeader = () => {
   const token = localStorage.getItem('token');
   return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
+/**
+ * Extract error message from API error response
+ * Handles both string and Pydantic validation error objects
+ */
+export const getErrorMessage = (error, defaultMessage = 'Une erreur est survenue') => {
+  const detail = error?.response?.data?.detail;
+  
+  if (!detail) {
+    return error?.message || defaultMessage;
+  }
+  
+  // If detail is a string, return it directly
+  if (typeof detail === 'string') {
+    return detail;
+  }
+  
+  // If detail is an array (Pydantic validation errors)
+  if (Array.isArray(detail)) {
+    return detail.map(err => {
+      if (typeof err === 'string') return err;
+      if (err.msg) return err.msg;
+      return JSON.stringify(err);
+    }).join(', ');
+  }
+  
+  // If detail is an object with msg property (single Pydantic error)
+  if (typeof detail === 'object' && detail.msg) {
+    return detail.msg;
+  }
+  
+  // Fallback: stringify the object
+  try {
+    return JSON.stringify(detail);
+  } catch {
+    return defaultMessage;
+  }
 };
 
 // Create axios instance for direct calls
@@ -31,67 +71,118 @@ export const api = {
     return response.data;
   },
 
-  // Members
+  // ==================== USERS UNIFIED API ====================
+  // Tous les utilisateurs sont dans la table 'users' avec un champ 'role'
+
+  // Membres (role=membre)
   getMembers: async (filters = {}) => {
-    const params = new URLSearchParams(filters).toString();
-    const response = await axios.get(`${API}/members?${params}`, {
+    const params = new URLSearchParams({ ...filters, role: 'membre' }).toString();
+    const response = await axios.get(`${API}/admin/users?${params}`, {
       headers: getAuthHeader()
     });
-    return response.data;
+    return response.data?.users || [];
   },
 
   getMember: async (id) => {
-    const response = await axios.get(`${API}/members/${id}`, {
+    const response = await axios.get(`${API}/admin/users/${id}`, {
       headers: getAuthHeader()
     });
     return response.data;
   },
 
   createMember: async (data) => {
-    const response = await axios.post(`${API}/members`, data, {
+    const userData = {
+      ...data,
+      full_name: `${data.first_name || ''} ${data.last_name || ''}`.trim(),
+      role: 'membre'
+    };
+    const response = await axios.post(`${API}/admin/users`, userData, {
       headers: getAuthHeader()
     });
     return response.data;
   },
 
   updateMember: async (id, data) => {
-    const response = await axios.put(`${API}/members/${id}`, data, {
+    const userData = { ...data };
+    if (data.first_name || data.last_name) {
+      userData.full_name = `${data.first_name || ''} ${data.last_name || ''}`.trim();
+    }
+    const response = await axios.put(`${API}/admin/users/${id}`, userData, {
       headers: getAuthHeader()
     });
     return response.data;
   },
 
   deleteMember: async (id) => {
-    const response = await axios.delete(`${API}/members/${id}`, {
+    const response = await axios.delete(`${API}/admin/users/${id}`, {
       headers: getAuthHeader()
     });
     return response.data;
   },
 
-  // Technical Directors
+  // Directeurs Techniques (role=directeur_technique)
   getTechnicalDirectors: async () => {
-    const response = await axios.get(`${API}/technical-directors`, {
+    const response = await axios.get(`${API}/admin/users?role=directeur_technique`, {
       headers: getAuthHeader()
     });
-    return response.data;
+    return response.data?.users || [];
   },
 
   createTechnicalDirector: async (data) => {
-    const response = await axios.post(`${API}/technical-directors`, data, {
+    const userData = {
+      ...data,
+      full_name: data.full_name || `${data.first_name || ''} ${data.last_name || ''}`.trim(),
+      role: 'directeur_technique'
+    };
+    const response = await axios.post(`${API}/admin/users`, userData, {
       headers: getAuthHeader()
     });
     return response.data;
   },
 
   updateTechnicalDirector: async (id, data) => {
-    const response = await axios.put(`${API}/technical-directors/${id}`, data, {
+    const response = await axios.put(`${API}/admin/users/${id}`, data, {
       headers: getAuthHeader()
     });
     return response.data;
   },
 
   deleteTechnicalDirector: async (id) => {
-    const response = await axios.delete(`${API}/technical-directors/${id}`, {
+    const response = await axios.delete(`${API}/admin/users/${id}`, {
+      headers: getAuthHeader()
+    });
+    return response.data;
+  },
+
+  // Instructeurs (role=instructeur)
+  getInstructors: async () => {
+    const response = await axios.get(`${API}/admin/users?role=instructeur`, {
+      headers: getAuthHeader()
+    });
+    return response.data?.users || [];
+  },
+
+  createInstructor: async (data) => {
+    const userData = {
+      ...data,
+      full_name: data.full_name || `${data.first_name || ''} ${data.last_name || ''}`.trim(),
+      role: 'instructeur'
+    };
+    const response = await axios.post(`${API}/admin/users`, userData, {
+      headers: getAuthHeader()
+    });
+    return response.data;
+  },
+
+  updateInstructor: async (id, data) => {
+    const response = await axios.put(`${API}/admin/users/${id}`, data, {
+      headers: getAuthHeader()
+    });
+    return response.data;
+  },
+
+  deleteInstructor: async (id) => {
+    const response = await axios.delete(`${API}/admin/users/${id}`, {
       headers: getAuthHeader()
     });
     return response.data;

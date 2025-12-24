@@ -6,7 +6,7 @@ import {
 import Sidebar from '../components/Sidebar';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
-import api from '../utils/api';
+import api, { getErrorMessage } from '../utils/api';
 import { toast } from 'sonner';
 
 const PendingMembersPage = () => {
@@ -42,7 +42,7 @@ const PendingMembersPage = () => {
       fetchPendingMembers();
     } catch (error) {
       console.error('Error approving member:', error);
-      toast.error(error.response?.data?.detail || 'Erreur lors de l\'approbation');
+      toast.error(getErrorMessage(error, 'Erreur lors de l\'approbation'));
     }
     setProcessingId(null);
   };

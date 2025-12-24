@@ -10,7 +10,7 @@ import { Label } from '../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
 import { Switch } from '../components/ui/switch';
-import api from '../utils/api';
+import api, { getErrorMessage } from '../utils/api';
 import { toast } from 'sonner';
 
 const beltGrades = [
@@ -20,11 +20,14 @@ const beltGrades = [
   "Ceinture Noire 5ème Dan", "Instructeur", "Directeur Technique", "Directeur National"
 ];
 
+// Rôles unifiés en français
 const roleLabels = {
   'admin': { label: 'Administrateur', icon: Crown, color: 'text-amber-500', bg: 'bg-amber-500/20' },
-  'technical_director': { label: 'Directeur Technique', icon: Shield, color: 'text-purple-500', bg: 'bg-purple-500/20' },
-  'instructor': { label: 'Instructeur', icon: GraduationCap, color: 'text-red-500', bg: 'bg-red-500/20' },
-  'member': { label: 'Membre', icon: User, color: 'text-primary', bg: 'bg-primary/20' }
+  'fondateur': { label: 'Fondateur', icon: Crown, color: 'text-yellow-500', bg: 'bg-yellow-500/20' },
+  'directeur_national': { label: 'Directeur National', icon: Shield, color: 'text-blue-500', bg: 'bg-blue-500/20' },
+  'directeur_technique': { label: 'Directeur Technique', icon: Shield, color: 'text-purple-500', bg: 'bg-purple-500/20' },
+  'instructeur': { label: 'Instructeur', icon: GraduationCap, color: 'text-red-500', bg: 'bg-red-500/20' },
+  'membre': { label: 'Membre', icon: User, color: 'text-primary', bg: 'bg-primary/20' }
 };
 
 const AdminUsersPage = () => {
@@ -32,37 +35,64 @@ const AdminUsersPage = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
-  
+
+  // Listes pour les affectations
+  const [clubs, setClubs] = useState([]);
+  const [instructors, setInstructors] = useState([]);
+  const [technicalDirectors, setTechnicalDirectors] = useState([]);
+
   // Create user modal
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [creating, setCreating] = useState(false);
   const [newUser, setNewUser] = useState({
-    email: '', password: '', full_name: '', role: 'member', phone: '', city: '', 
-    country: 'France', belt_grade: '', send_email: true
+    email: '', password: '', full_name: '', role: 'membre', phone: '', city: '',
+    country: 'France', belt_grade: '', send_email: true, club_id: '', instructor_id: '', technical_director_id: ''
   });
   const [newUserPhoto, setNewUserPhoto] = useState(null);
   const [newUserPhotoPreview, setNewUserPhotoPreview] = useState(null);
-  
+
   // Edit user modal
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [saving, setSaving] = useState(false);
   const [editPhotoFile, setEditPhotoFile] = useState(null);
   const [editPhotoPreview, setEditPhotoPreview] = useState(null);
-  
+
   // Password change modal
   const [isPasswordOpen, setIsPasswordOpen] = useState(false);
   const [passwordUserId, setPasswordUserId] = useState(null);
   const [newPassword, setNewPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [changingPassword, setChangingPassword] = useState(false);
-  
+
   const fileInputRef = useRef(null);
   const editFileInputRef = useRef(null);
 
   useEffect(() => {
     fetchUsers();
   }, [roleFilter]);
+
+  // Charger les clubs, instructeurs et DT au montage
+  useEffect(() => {
+    const fetchAffectations = async () => {
+      try {
+        // Charger les clubs
+        const clubsResponse = await api.get('/clubs');
+        setClubs(clubsResponse.data?.clubs || []);
+
+        // Charger les instructeurs
+        const instructorsResponse = await api.get('/admin/users?role=instructeur');
+        setInstructors(instructorsResponse.data?.users || []);
+
+        // Charger les directeurs techniques
+        const dtResponse = await api.get('/admin/users?role=directeur_technique');
+        setTechnicalDirectors(dtResponse.data?.users || []);
+      } catch (error) {
+        console.error('Error fetching affectations:', error);
+      }
+    };
+    fetchAffectations();
+  }, []);
 
   const fetchUsers = async () => {
     try {
@@ -148,13 +178,13 @@ const AdminUsersPage = () => {
       
       toast.success(`${roleLabels[newUser.role]?.label || 'Utilisateur'} créé avec succès`);
       setIsCreateOpen(false);
-      setNewUser({ email: '', password: '', full_name: '', role: 'member', phone: '', city: '', country: 'France', belt_grade: '', send_email: true });
+      setNewUser({ email: '', password: '', full_name: '', role: 'membre', phone: '', city: '', country: 'France', belt_grade: '', send_email: true, club_id: '', instructor_id: '', technical_director_id: '' });
       setNewUserPhoto(null);
       setNewUserPhotoPreview(null);
       fetchUsers();
     } catch (error) {
       console.error('Error creating user:', error);
-      toast.error(error.response?.data?.detail || 'Erreur lors de la création');
+      toast.error(getErrorMessage(error, 'Erreur lors de la création'));
     }
     setCreating(false);
   };
@@ -190,7 +220,7 @@ const AdminUsersPage = () => {
       fetchUsers();
     } catch (error) {
       console.error('Error updating user:', error);
-      toast.error(error.response?.data?.detail || 'Erreur lors de la mise à jour');
+      toast.error(getErrorMessage(error, 'Erreur lors de la mise à jour'));
     }
     setSaving(false);
   };
@@ -218,7 +248,7 @@ const AdminUsersPage = () => {
       setNewPassword('');
     } catch (error) {
       console.error('Error changing password:', error);
-      toast.error(error.response?.data?.detail || 'Erreur lors du changement de mot de passe');
+      toast.error(getErrorMessage(error, 'Erreur lors du changement de mot de passe'));
     }
     setChangingPassword(false);
   };
@@ -232,7 +262,7 @@ const AdminUsersPage = () => {
       fetchUsers();
     } catch (error) {
       console.error('Error deleting user:', error);
-      toast.error(error.response?.data?.detail || 'Erreur lors de la suppression');
+      toast.error(getErrorMessage(error, 'Erreur lors de la suppression'));
     }
   };
 
@@ -244,17 +274,17 @@ const AdminUsersPage = () => {
   const getCounts = () => {
     return {
       total: users.length,
-      admin: users.filter(u => u.role === 'admin').length,
-      technical_director: users.filter(u => u.role === 'technical_director').length,
-      instructor: users.filter(u => u.role === 'instructor').length,
-      member: users.filter(u => u.role === 'member').length
+      admin: users.filter(u => u.role === 'admin' || u.role === 'fondateur').length,
+      directeur_technique: users.filter(u => u.role === 'directeur_technique').length,
+      instructeur: users.filter(u => u.role === 'instructeur').length,
+      membre: users.filter(u => u.role === 'membre').length
     };
   };
   
   const counts = getCounts();
 
   const getRoleDisplay = (role) => {
-    const config = roleLabels[role] || roleLabels.member;
+    const config = roleLabels[role] || roleLabels.membre;
     const Icon = config.icon;
     return (
       <span className={`px-2 py-1 text-xs rounded-full flex items-center gap-1 w-fit ${config.bg} ${config.color}`}>
@@ -275,7 +305,7 @@ const AdminUsersPage = () => {
               Gestion des Utilisateurs
             </h1>
             <p className="text-text-muted font-manrope mt-1 text-sm md:text-base">
-              {counts.total} utilisateurs • {counts.admin} admin(s) • {counts.instructor} instructeur(s) • {counts.member} membre(s)
+              {counts.total} utilisateurs • {counts.admin} admin(s) • {counts.instructeur} instructeur(s) • {counts.membre} membre(s)
             </p>
           </div>
           
@@ -353,7 +383,7 @@ const AdminUsersPage = () => {
                     <Label className="text-text-secondary">Type de compte *</Label>
                     <Select
                       value={newUser.role}
-                      onValueChange={(value) => setNewUser({ ...newUser, role: value })}
+                      onValueChange={(value) => setNewUser({ ...newUser, role: value, club_id: '', instructor_id: '', technical_director_id: '' })}
                     >
                       <SelectTrigger className="mt-1 bg-background border-white/10">
                         <SelectValue />
@@ -364,17 +394,27 @@ const AdminUsersPage = () => {
                             <Crown className="w-4 h-4 text-amber-500" /> Administrateur
                           </div>
                         </SelectItem>
-                        <SelectItem value="technical_director" className="text-text-primary">
+                        <SelectItem value="fondateur" className="text-text-primary">
+                          <div className="flex items-center gap-2">
+                            <Crown className="w-4 h-4 text-yellow-500" /> Fondateur
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="directeur_national" className="text-text-primary">
+                          <div className="flex items-center gap-2">
+                            <Shield className="w-4 h-4 text-blue-500" /> Directeur National
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="directeur_technique" className="text-text-primary">
                           <div className="flex items-center gap-2">
                             <Shield className="w-4 h-4 text-purple-500" /> Directeur Technique
                           </div>
                         </SelectItem>
-                        <SelectItem value="instructor" className="text-text-primary">
+                        <SelectItem value="instructeur" className="text-text-primary">
                           <div className="flex items-center gap-2">
                             <GraduationCap className="w-4 h-4 text-red-500" /> Instructeur
                           </div>
                         </SelectItem>
-                        <SelectItem value="member" className="text-text-primary">
+                        <SelectItem value="membre" className="text-text-primary">
                           <div className="flex items-center gap-2">
                             <User className="w-4 h-4 text-primary" /> Membre
                           </div>
@@ -382,6 +422,73 @@ const AdminUsersPage = () => {
                       </SelectContent>
                     </Select>
                   </div>
+
+                  {/* Affectations conditionnelles selon le rôle */}
+                  {(newUser.role === 'membre' || newUser.role === 'instructeur') && (
+                    <div className="md:col-span-2">
+                      <Label className="text-text-secondary">Club</Label>
+                      <Select
+                        value={newUser.club_id}
+                        onValueChange={(value) => setNewUser({ ...newUser, club_id: value })}
+                      >
+                        <SelectTrigger className="mt-1 bg-background border-white/10">
+                          <SelectValue placeholder="Sélectionner un club" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-paper border-white/10 max-h-60">
+                          <SelectItem value="" className="text-text-muted">Aucun</SelectItem>
+                          {clubs.map((club) => (
+                            <SelectItem key={club.id || club._id} value={club.id || club._id} className="text-text-primary">
+                              {club.name} {club.city && `(${club.city})`}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+
+                  {newUser.role === 'membre' && (
+                    <div className="md:col-span-2">
+                      <Label className="text-text-secondary">Instructeur référent</Label>
+                      <Select
+                        value={newUser.instructor_id}
+                        onValueChange={(value) => setNewUser({ ...newUser, instructor_id: value })}
+                      >
+                        <SelectTrigger className="mt-1 bg-background border-white/10">
+                          <SelectValue placeholder="Sélectionner un instructeur" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-paper border-white/10 max-h-60">
+                          <SelectItem value="" className="text-text-muted">Aucun</SelectItem>
+                          {instructors.map((instr) => (
+                            <SelectItem key={instr.id || instr._id} value={instr.id || instr._id} className="text-text-primary">
+                              {instr.full_name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+
+                  {newUser.role === 'instructeur' && (
+                    <div className="md:col-span-2">
+                      <Label className="text-text-secondary">Directeur Technique référent</Label>
+                      <Select
+                        value={newUser.technical_director_id}
+                        onValueChange={(value) => setNewUser({ ...newUser, technical_director_id: value })}
+                      >
+                        <SelectTrigger className="mt-1 bg-background border-white/10">
+                          <SelectValue placeholder="Sélectionner un DT" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-paper border-white/10 max-h-60">
+                          <SelectItem value="" className="text-text-muted">Aucun</SelectItem>
+                          {technicalDirectors.map((dt) => (
+                            <SelectItem key={dt.id || dt._id} value={dt.id || dt._id} className="text-text-primary">
+                              {dt.full_name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
                   <div>
                     <Label className="text-text-secondary">Téléphone</Label>
                     <Input
@@ -484,28 +591,28 @@ const AdminUsersPage = () => {
               <Crown className="w-3 h-3 mr-1" /> Admins ({counts.admin})
             </Button>
             <Button
-              variant={roleFilter === 'technical_director' ? 'default' : 'outline'}
-              onClick={() => setRoleFilter('technical_director')}
-              className={`${roleFilter === 'technical_director' ? 'bg-purple-500 hover:bg-purple-600' : 'border-white/10'} text-xs md:text-sm`}
+              variant={roleFilter === 'directeur_technique' ? 'default' : 'outline'}
+              onClick={() => setRoleFilter('directeur_technique')}
+              className={`${roleFilter === 'directeur_technique' ? 'bg-purple-500 hover:bg-purple-600' : 'border-white/10'} text-xs md:text-sm`}
               size="sm"
             >
-              <Shield className="w-3 h-3 mr-1" /> DT ({counts.technical_director})
+              <Shield className="w-3 h-3 mr-1" /> DT ({counts.directeur_technique})
             </Button>
             <Button
-              variant={roleFilter === 'instructor' ? 'default' : 'outline'}
-              onClick={() => setRoleFilter('instructor')}
-              className={`${roleFilter === 'instructor' ? 'bg-red-500 hover:bg-red-600' : 'border-white/10'} text-xs md:text-sm`}
+              variant={roleFilter === 'instructeur' ? 'default' : 'outline'}
+              onClick={() => setRoleFilter('instructeur')}
+              className={`${roleFilter === 'instructeur' ? 'bg-red-500 hover:bg-red-600' : 'border-white/10'} text-xs md:text-sm`}
               size="sm"
             >
-              <GraduationCap className="w-3 h-3 mr-1" /> Instr. ({counts.instructor})
+              <GraduationCap className="w-3 h-3 mr-1" /> Instr. ({counts.instructeur})
             </Button>
             <Button
-              variant={roleFilter === 'member' ? 'default' : 'outline'}
-              onClick={() => setRoleFilter('member')}
-              className={`${roleFilter === 'member' ? 'bg-primary' : 'border-white/10'} text-xs md:text-sm`}
+              variant={roleFilter === 'membre' ? 'default' : 'outline'}
+              onClick={() => setRoleFilter('membre')}
+              className={`${roleFilter === 'membre' ? 'bg-primary' : 'border-white/10'} text-xs md:text-sm`}
               size="sm"
             >
-              <User className="w-3 h-3 mr-1" /> Membres ({counts.member})
+              <User className="w-3 h-3 mr-1" /> Membres ({counts.membre})
             </Button>
           </div>
         </div>
@@ -722,7 +829,7 @@ const AdminUsersPage = () => {
                   <div>
                     <Label className="text-text-secondary">Rôle</Label>
                     <Select
-                      value={editingUser.role || 'member'}
+                      value={editingUser.role || 'membre'}
                       onValueChange={(value) => setEditingUser({ ...editingUser, role: value })}
                     >
                       <SelectTrigger className="mt-1 bg-background border-white/10 text-text-primary">
@@ -730,9 +837,11 @@ const AdminUsersPage = () => {
                       </SelectTrigger>
                       <SelectContent className="bg-paper border-white/10">
                         <SelectItem value="admin" className="text-text-primary">Administrateur</SelectItem>
-                        <SelectItem value="technical_director" className="text-text-primary">Directeur Technique</SelectItem>
-                        <SelectItem value="instructor" className="text-text-primary">Instructeur</SelectItem>
-                        <SelectItem value="member" className="text-text-primary">Membre</SelectItem>
+                        <SelectItem value="fondateur" className="text-text-primary">Fondateur</SelectItem>
+                        <SelectItem value="directeur_national" className="text-text-primary">Directeur National</SelectItem>
+                        <SelectItem value="directeur_technique" className="text-text-primary">Directeur Technique</SelectItem>
+                        <SelectItem value="instructeur" className="text-text-primary">Instructeur</SelectItem>
+                        <SelectItem value="membre" className="text-text-primary">Membre</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -752,15 +861,74 @@ const AdminUsersPage = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div>
-                    <Label className="text-text-secondary">Club</Label>
-                    <Input
-                      value={editingUser.club_name || ''}
-                      onChange={(e) => setEditingUser({ ...editingUser, club_name: e.target.value })}
-                      className="mt-1 bg-background border-white/10 text-text-primary"
-                    />
-                  </div>
                 </div>
+
+                {/* Affectations conditionnelles selon le rôle */}
+                {(editingUser.role === 'membre' || editingUser.role === 'instructeur') && (
+                  <div className="mt-4">
+                    <Label className="text-text-secondary">Club</Label>
+                    <Select
+                      value={editingUser.club_id || ''}
+                      onValueChange={(value) => setEditingUser({ ...editingUser, club_id: value })}
+                    >
+                      <SelectTrigger className="mt-1 bg-background border-white/10 text-text-primary">
+                        <SelectValue placeholder="Sélectionner un club" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-paper border-white/10 max-h-60">
+                        <SelectItem value="" className="text-text-muted">Aucun</SelectItem>
+                        {clubs.map((club) => (
+                          <SelectItem key={club.id || club._id} value={club.id || club._id} className="text-text-primary">
+                            {club.name} {club.city && `(${club.city})`}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+
+                {editingUser.role === 'membre' && (
+                  <div className="mt-4">
+                    <Label className="text-text-secondary">Instructeur référent</Label>
+                    <Select
+                      value={editingUser.instructor_id || ''}
+                      onValueChange={(value) => setEditingUser({ ...editingUser, instructor_id: value })}
+                    >
+                      <SelectTrigger className="mt-1 bg-background border-white/10 text-text-primary">
+                        <SelectValue placeholder="Sélectionner un instructeur" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-paper border-white/10 max-h-60">
+                        <SelectItem value="" className="text-text-muted">Aucun</SelectItem>
+                        {instructors.map((instr) => (
+                          <SelectItem key={instr.id || instr._id} value={instr.id || instr._id} className="text-text-primary">
+                            {instr.full_name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+
+                {editingUser.role === 'instructeur' && (
+                  <div className="mt-4">
+                    <Label className="text-text-secondary">Directeur Technique référent</Label>
+                    <Select
+                      value={editingUser.technical_director_id || ''}
+                      onValueChange={(value) => setEditingUser({ ...editingUser, technical_director_id: value })}
+                    >
+                      <SelectTrigger className="mt-1 bg-background border-white/10 text-text-primary">
+                        <SelectValue placeholder="Sélectionner un DT" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-paper border-white/10 max-h-60">
+                        <SelectItem value="" className="text-text-muted">Aucun</SelectItem>
+                        {technicalDirectors.map((dt) => (
+                          <SelectItem key={dt.id || dt._id} value={dt.id || dt._id} className="text-text-primary">
+                            {dt.full_name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
                 
                 <div className="flex flex-wrap gap-4 pt-4 border-t border-white/10">
                   <div className="flex items-center gap-3">

@@ -9,7 +9,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import api from '../utils/api';
+import api, { getErrorMessage } from '../utils/api';
 import { toast } from 'sonner';
 
 const TOTAL_STEPS = 5;
@@ -179,7 +179,7 @@ const OnboardingPage = () => {
       }
     } catch (error) {
       console.error('Error:', error);
-      const errorMessage = error.response?.data?.detail || 'Erreur lors de l\'inscription';
+      const errorMessage = getErrorMessage(error, 'Erreur lors de l\'inscription');
       toast.error(errorMessage);
       
       // If user already exists, suggest login
@@ -212,7 +212,7 @@ const OnboardingPage = () => {
       setShowPendingConfirmation(true);
     } catch (error) {
       console.error('Error:', error);
-      const errorMessage = error.response?.data?.detail || 'Erreur lors de l\'envoi de votre demande';
+      const errorMessage = getErrorMessage(error, 'Erreur lors de l\'envoi de votre demande');
       toast.error(errorMessage);
     }
     

@@ -1,23 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { 
-  LayoutDashboard, Users, UserCog, CreditCard, LogOut, UserPlus, 
-  Newspaper, Calendar, MessageSquare, Shield, ShoppingBag, UserCheck, 
-  Settings, Bot, Receipt, Globe, Building2, X, Menu, Home, User, BarChart3
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import {
+  LayoutDashboard, Users, UserCog, CreditCard, LogOut, UserPlus,
+  Newspaper, Calendar, MessageSquare, Shield, ShoppingBag, UserCheck,
+  Settings, Bot, Receipt, Globe, Building2, X, Menu, Home, User, BarChart3,
+  ChevronDown, UserCircle
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 
 const Sidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { logout, user } = useAuth();
   const [unreadCount, setUnreadCount] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const userMenuRef = useRef(null);
 
   useEffect(() => {
     fetchUnreadCount();
     const interval = setInterval(fetchUnreadCount, 30000);
     return () => clearInterval(interval);
+  }, []);
+
+  // Close user menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   // Close mobile menu on route change
@@ -143,15 +158,72 @@ const Sidebar = () => {
         )}
       </nav>
 
-      <div className="p-4 border-t border-white/5 flex-shrink-0">
-        <button
-          onClick={logout}
-          data-testid="logout-button"
-          className="flex items-center gap-3 px-4 py-3 rounded-md text-sm font-manrope text-text-secondary hover:text-secondary hover:bg-secondary/10 w-full transition-all"
-        >
-          <LogOut className="w-5 h-5" strokeWidth={1.5} />
-          <span>Déconnexion</span>
-        </button>
+      {/* User Profile Section */}
+      <div className="p-4 border-t border-white/5 flex-shrink-0" ref={userMenuRef}>
+        <div className="relative">
+          <button
+            onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+            className="flex items-center gap-3 w-full px-3 py-2 rounded-lg hover:bg-white/5 transition-all"
+            data-testid="user-menu-toggle"
+          >
+            {/* Avatar */}
+            {user?.photo_url ? (
+              <img
+                src={user.photo_url}
+                alt={user.full_name || user.name}
+                className="w-10 h-10 rounded-full object-cover border-2 border-primary/30"
+              />
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center border-2 border-primary/30">
+                <span className="font-oswald text-sm text-primary font-bold">
+                  {(user?.full_name || user?.name || user?.email || 'U').charAt(0).toUpperCase()}
+                </span>
+              </div>
+            )}
+            <div className="flex-1 text-left min-w-0">
+              <p className="text-sm font-medium text-text-primary truncate">
+                {user?.full_name || user?.name || 'Utilisateur'}
+              </p>
+              <p className="text-xs text-text-muted truncate">{user?.email}</p>
+            </div>
+            <ChevronDown className={`w-4 h-4 text-text-muted transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`} />
+          </button>
+
+          {/* Dropdown Menu */}
+          {isUserMenuOpen && (
+            <div className="absolute bottom-full left-0 right-0 mb-2 bg-paper border border-white/10 rounded-lg shadow-xl overflow-hidden z-50">
+              <Link
+                to="/profile"
+                onClick={() => setIsUserMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 text-sm text-text-secondary hover:text-text-primary hover:bg-white/5 transition-all"
+              >
+                <UserCircle className="w-5 h-5" strokeWidth={1.5} />
+                <span>Mon compte</span>
+              </Link>
+              <Link
+                to="/admin/settings"
+                onClick={() => setIsUserMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 text-sm text-text-secondary hover:text-text-primary hover:bg-white/5 transition-all"
+              >
+                <Settings className="w-5 h-5" strokeWidth={1.5} />
+                <span>Paramètres</span>
+              </Link>
+              <div className="border-t border-white/5">
+                <button
+                  onClick={() => {
+                    setIsUserMenuOpen(false);
+                    logout();
+                  }}
+                  data-testid="logout-button"
+                  className="flex items-center gap-3 px-4 py-3 text-sm text-secondary hover:bg-secondary/10 w-full transition-all"
+                >
+                  <LogOut className="w-5 h-5" strokeWidth={1.5} />
+                  <span>Déconnexion</span>
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </aside>
   );
@@ -213,19 +285,33 @@ const Sidebar = () => {
           isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        {/* Header */}
+        {/* Header with User Avatar */}
         <div className="flex items-center justify-between p-4 border-b border-white/10 safe-top">
-          <div className="flex items-center gap-3">
-            <img 
-              src="https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg" 
-              alt="Logo" 
-              className="w-10 h-10 rounded-full object-cover"
-            />
+          <Link
+            to="/profile"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="flex items-center gap-3"
+          >
+            {user?.photo_url ? (
+              <img
+                src={user.photo_url}
+                alt={user.full_name || user.name}
+                className="w-12 h-12 rounded-full object-cover border-2 border-primary/30"
+              />
+            ) : (
+              <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center border-2 border-primary/30">
+                <span className="font-oswald text-lg text-primary font-bold">
+                  {(user?.full_name || user?.name || user?.email || 'U').charAt(0).toUpperCase()}
+                </span>
+              </div>
+            )}
             <div>
-              <h2 className="font-oswald text-base font-bold text-white uppercase">Académie Levinet</h2>
-              <p className="text-xs text-gray-400">{user?.name || user?.email}</p>
+              <h2 className="font-oswald text-base font-bold text-white">
+                {user?.full_name || user?.name || 'Utilisateur'}
+              </h2>
+              <p className="text-xs text-gray-400">{user?.email}</p>
             </div>
-          </div>
+          </Link>
           <button
             onClick={() => setIsMobileMenuOpen(false)}
             className="p-2 rounded-lg hover:bg-white/10 transition-colors"

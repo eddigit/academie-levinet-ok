@@ -47,6 +47,7 @@ import SubscriptionManagementPage from './pages/SubscriptionManagementPage';
 import SiteContentPage from './pages/SiteContentPage';
 import ClubsPage from './pages/ClubsPage';
 import AdminStatsPage from './pages/admin/AdminStatsPage';
+import ProfilePage from './pages/ProfilePage';
 // Payment pages
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
 import PaymentCancelPage from './pages/PaymentCancelPage';
@@ -126,6 +127,7 @@ const AppContent = () => {
         
         {/* Protected admin routes */}
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         <Route path="/members" element={<ProtectedRoute><MembersPage /></ProtectedRoute>} />
         <Route path="/members/:memberId" element={<ProtectedRoute><MemberDetailPage /></ProtectedRoute>} />
         <Route path="/technical-directors" element={<ProtectedRoute><TechnicalDirectorsPage /></ProtectedRoute>} />
