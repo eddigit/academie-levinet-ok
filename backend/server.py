@@ -194,6 +194,7 @@ class EventType(str, Enum):
 
 class EventStatus(str, Enum):
     UPCOMING = "À venir"
+    UPCOMING_NO_ACCENT = "A venir"  # Compatibilité données existantes
     ONGOING = "En cours"
     COMPLETED = "Terminé"
     CANCELLED = "Annulé"
