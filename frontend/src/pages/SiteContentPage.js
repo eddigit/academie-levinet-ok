@@ -25,25 +25,49 @@ const ImageUploader = ({ label, value, onChange, placeholder }) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Veuillez sélectionner une image (JPG, PNG, GIF, WebP)');
+      return;
+    }
+
+    // Validate file size (max 10MB)
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      toast.error(`L'image est trop volumineuse. Maximum: 10 Mo`);
+      return;
+    }
+
     setUploading(true);
     try {
       const reader = new FileReader();
       reader.onloadend = async () => {
         try {
           const response = await api.post('/upload/image', { image_data: reader.result });
-          const url = response.data?.url || response.url;
-          setPreview(url);
-          onChange(url);
-          toast.success('Image uploadée');
+          // Handle response - could be response.data.url or response.url
+          const url = response.data?.url || response.data?.photo_url || response.url || reader.result;
+          if (url) {
+            setPreview(url);
+            onChange(url);
+            toast.success('Image uploadée');
+          } else {
+            toast.error('Erreur: URL non reçue');
+          }
         } catch (error) {
-          toast.error('Erreur lors de l\'upload');
+          console.error('Upload error:', error);
+          // Fallback: use the data URL directly
+          const dataUrl = reader.result;
+          setPreview(dataUrl);
+          onChange(dataUrl);
+          toast.success('Image enregistrée localement');
         }
         setUploading(false);
       };
       reader.readAsDataURL(file);
     } catch (error) {
       setUploading(false);
-      toast.error('Erreur');
+      console.error('File read error:', error);
+      toast.error('Erreur lors de la lecture du fichier');
     }
   };
 
@@ -335,11 +359,48 @@ const SiteContentPage = () => {
                 </div>
               </div>
               
-              <ImageUploader
-                label="Image de fond (côté gauche)"
-                value={content.login?.background_image || ''}
-                onChange={(url) => updateField('login', 'background_image', url)}
-              />
+              <div className="space-y-4">
+                <ImageUploader
+                  label="Image de fond (côté gauche)"
+                  value={content.login?.background_image || ''}
+                  onChange={(url) => updateField('login', 'background_image', url)}
+                />
+                
+                <div>
+                  <Label className="text-text-secondary">Couleur de l'overlay</Label>
+                  <div className="flex gap-2 mt-1">
+                    <Input
+                      type="color"
+                      value={content.login?.overlay_color || '#0B1120'}
+                      onChange={(e) => updateField('login', 'overlay_color', e.target.value)}
+                      className="w-16 h-10 p-1 bg-background border-white/10 cursor-pointer"
+                    />
+                    <Input
+                      value={content.login?.overlay_color || '#0B1120'}
+                      onChange={(e) => updateField('login', 'overlay_color', e.target.value)}
+                      className="flex-1 bg-background border-white/10"
+                      placeholder="#0B1120"
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <Label className="text-text-secondary">Opacité de l'overlay ({Math.round((content.login?.overlay_opacity || 0.7) * 100)}%)</Label>
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.05"
+                    value={content.login?.overlay_opacity || 0.7}
+                    onChange={(e) => updateField('login', 'overlay_opacity', parseFloat(e.target.value))}
+                    className="w-full mt-2 accent-primary"
+                  />
+                  <div className="flex justify-between text-xs text-text-muted mt-1">
+                    <span>Transparent</span>
+                    <span>Opaque</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}

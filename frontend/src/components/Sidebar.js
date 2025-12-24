@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
+import { formatFullName, getInitials } from '../lib/utils';
 
 const Sidebar = () => {
   const location = useLocation();
@@ -170,19 +171,19 @@ const Sidebar = () => {
             {user?.photo_url ? (
               <img
                 src={user.photo_url}
-                alt={user.full_name || user.name}
+                alt={formatFullName(user.full_name || user.name)}
                 className="w-10 h-10 rounded-full object-cover border-2 border-primary/30"
               />
             ) : (
               <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center border-2 border-primary/30">
                 <span className="font-oswald text-sm text-primary font-bold">
-                  {(user?.full_name || user?.name || user?.email || 'U').charAt(0).toUpperCase()}
+                  {getInitials(user?.full_name || user?.name || user?.email || 'U')}
                 </span>
               </div>
             )}
             <div className="flex-1 text-left min-w-0">
               <p className="text-sm font-medium text-text-primary truncate">
-                {user?.full_name || user?.name || 'Utilisateur'}
+                {formatFullName(user?.full_name || user?.name) || 'Utilisateur'}
               </p>
               <p className="text-xs text-text-muted truncate">{user?.email}</p>
             </div>
@@ -295,19 +296,19 @@ const Sidebar = () => {
             {user?.photo_url ? (
               <img
                 src={user.photo_url}
-                alt={user.full_name || user.name}
+                alt={formatFullName(user.full_name || user.name)}
                 className="w-12 h-12 rounded-full object-cover border-2 border-primary/30"
               />
             ) : (
               <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center border-2 border-primary/30">
                 <span className="font-oswald text-lg text-primary font-bold">
-                  {(user?.full_name || user?.name || user?.email || 'U').charAt(0).toUpperCase()}
+                  {getInitials(user?.full_name || user?.name || user?.email || 'U')}
                 </span>
               </div>
             )}
             <div>
               <h2 className="font-oswald text-base font-bold text-white">
-                {user?.full_name || user?.name || 'Utilisateur'}
+                {formatFullName(user?.full_name || user?.name) || 'Utilisateur'}
               </h2>
               <p className="text-xs text-gray-400">{user?.email}</p>
             </div>

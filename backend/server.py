@@ -881,6 +881,31 @@ class PhotoUploadRequest(BaseModel):
     photo_base64: str  # Base64 encoded image data
     filename: str = "photo.jpg"
 
+class ImageUploadRequest(BaseModel):
+    image_data: str  # Full data URL (data:image/...;base64,...)
+
+@api_router.post("/upload/image")
+async def upload_image(data: ImageUploadRequest, current_user: dict = Depends(get_current_user)):
+    """Upload an image for site content (CMS) and return the URL"""
+    try:
+        # Validate data URL
+        if not data.image_data:
+            raise HTTPException(status_code=400, detail="Image data required")
+        
+        # If it's already a data URL, just return it
+        if data.image_data.startswith('data:image/'):
+            return {"url": data.image_data, "message": "Image uploadée avec succès"}
+        
+        # If it's a regular URL, validate and return
+        if data.image_data.startswith('http://') or data.image_data.startswith('https://'):
+            return {"url": data.image_data, "message": "URL d'image enregistrée"}
+        
+        raise HTTPException(status_code=400, detail="Format d'image invalide. Utilisez une URL ou un fichier image.")
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erreur lors de l'upload: {str(e)}")
+
 @api_router.post("/upload/photo")
 async def upload_photo(data: PhotoUploadRequest, current_user: dict = Depends(get_current_user)):
     """Upload a photo and return the URL (stores as base64 data URL)"""
@@ -3004,12 +3029,30 @@ DEFAULT_SITE_CONTENT = {
         "subtitle": "Self-Pro Krav (SPK)",
         "description": "Méthode de self-défense réaliste et efficace, adaptée à tous",
         "cta_text": "Rejoindre l'Académie",
-        "cta_link": "/onboarding"
+        "cta_link": "/onboarding",
+        "background_image": "",
+        "video_url": ""
+    },
+    "login": {
+        "title": "Académie Jacques Levinet",
+        "subtitle": "École Internationale de Self-Défense",
+        "tagline": "L'excellence en self-défense",
+        "background_image": "https://images.unsplash.com/photo-1644594570589-ef85bd03169f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njd8MHwxfHNlYXJjaHwyfHxrcmF2JTIwbWFnYSUyMHRyYWluaW5nJTIwY2xhc3N8ZW58MHx8fHwxNzY1NzM2Njg0fDA&ixlib=rb-4.1.0&q=85",
+        "overlay_color": "#0B1120",
+        "overlay_opacity": 0.7
+    },
+    "founder": {
+        "name": "",
+        "title": "",
+        "bio": "",
+        "quote": "",
+        "photo": ""
     },
     "about": {
         "title": "À Propos",
         "description": "L'Académie Jacques Levinet forme depuis plus de 40 ans des pratiquants et des professionnels à travers le monde.",
-        "image_url": ""
+        "image_url": "",
+        "image": ""
     },
     "features": [
         {"title": "Self-Défense Réaliste", "description": "Techniques éprouvées sur le terrain", "icon": "shield"},
@@ -3026,6 +3069,12 @@ DEFAULT_SITE_CONTENT = {
         "facebook": "",
         "instagram": "",
         "youtube": ""
+    },
+    "images": {
+        "logo": "",
+        "logo_white": "",
+        "favicon": "",
+        "og_image": ""
     },
     "footer": {
         "copyright": "© 2025 Académie Jacques Levinet. Tous droits réservés."

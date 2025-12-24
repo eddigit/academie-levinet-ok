@@ -14,6 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Switch } from '../components/ui/switch';
 import api, { getErrorMessage } from '../utils/api';
 import { toast } from 'sonner';
+import { formatFullName, getInitials } from '../lib/utils';
 
 const beltGrades = [
   "Ceinture Blanche", "Ceinture Jaune", "Ceinture Orange", "Ceinture Verte",
@@ -475,7 +476,7 @@ const AdminUsersPage = () => {
                           <SelectItem value="" className="text-text-muted">Aucun</SelectItem>
                           {instructors.map((instr) => (
                             <SelectItem key={instr.id || instr._id} value={instr.id || instr._id} className="text-text-primary">
-                              {instr.full_name}
+                              {formatFullName(instr.full_name)}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -497,7 +498,7 @@ const AdminUsersPage = () => {
                           <SelectItem value="" className="text-text-muted">Aucun</SelectItem>
                           {technicalDirectors.map((dt) => (
                             <SelectItem key={dt.id || dt._id} value={dt.id || dt._id} className="text-text-primary">
-                              {dt.full_name}
+                              {formatFullName(dt.full_name)}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -652,14 +653,14 @@ const AdminUsersPage = () => {
                 <div key={user.id} className="bg-paper rounded-xl border border-white/10 p-4">
                   <div className="flex items-start gap-3 mb-3">
                     {user.photo_url ? (
-                      <img src={user.photo_url} alt={user.full_name} className="w-14 h-14 rounded-full object-cover" />
+                      <img src={user.photo_url} alt={formatFullName(user.full_name)} className="w-14 h-14 rounded-full object-cover" />
                     ) : (
                       <div className="w-14 h-14 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
-                        <span className="font-oswald text-xl text-primary">{user.full_name?.charAt(0)?.toUpperCase()}</span>
+                        <span className="font-oswald text-xl text-primary">{getInitials(user.full_name)}</span>
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
-                      <p className="font-oswald text-text-primary truncate">{user.full_name}</p>
+                      <p className="font-oswald text-text-primary truncate">{formatFullName(user.full_name)}</p>
                       <p className="text-text-muted text-xs truncate">{user.email}</p>
                       <div className="mt-1">{getRoleDisplay(user.role)}</div>
                     </div>
@@ -714,14 +715,14 @@ const AdminUsersPage = () => {
                       <td className="p-4">
                         <div className="flex items-center gap-3">
                           {user.photo_url ? (
-                            <img src={user.photo_url} alt={user.full_name} className="w-10 h-10 rounded-full object-cover" />
+                            <img src={user.photo_url} alt={formatFullName(user.full_name)} className="w-10 h-10 rounded-full object-cover" />
                           ) : (
                             <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
-                              <span className="font-oswald text-primary">{user.full_name?.charAt(0)?.toUpperCase()}</span>
+                              <span className="font-oswald text-primary">{getInitials(user.full_name)}</span>
                             </div>
                           )}
                           <div>
-                            <p className="font-oswald text-text-primary">{user.full_name}</p>
+                            <p className="font-oswald text-text-primary">{formatFullName(user.full_name)}</p>
                             <p className="text-text-muted text-xs">{user.email}</p>
                           </div>
                         </div>
@@ -965,7 +966,7 @@ const AdminUsersPage = () => {
                         <SelectItem value="" className="text-text-muted">Aucun</SelectItem>
                         {technicalDirectors.map((dt) => (
                           <SelectItem key={dt.id || dt._id} value={dt.id || dt._id} className="text-text-primary">
-                            {dt.full_name}
+                            {formatFullName(dt.full_name)}
                           </SelectItem>
                         ))}
                       </SelectContent>

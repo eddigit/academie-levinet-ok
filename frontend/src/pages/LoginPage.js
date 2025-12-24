@@ -1,7 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Eye, EyeOff } from 'lucide-react';
+import api from '../utils/api';
+
+// Default fallback values
+const DEFAULT_LOGIN_CONTENT = {
+  title: 'Académie Jacques Levinet',
+  subtitle: 'École Internationale de Self-Défense',
+  tagline: "L'excellence en self-défense",
+  background_image: 'https://images.unsplash.com/photo-1644594570589-ef85bd03169f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njd8MHwxfHNlYXJjaHwyfHxrcmF2JTIwbWFnYSUyMHRyYWluaW5nJTIwY2xhc3N8ZW58MHx8fHwxNzY1NzM2Njg0fDA&ixlib=rb-4.1.0&q=85',
+  overlay_color: '#0B1120',
+  overlay_opacity: 0.7
+};
 
 const LoginPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -13,8 +24,31 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [siteContent, setSiteContent] = useState({ login: DEFAULT_LOGIN_CONTENT });
   const { login, register } = useAuth();
   const navigate = useNavigate();
+
+  // Fetch site content on mount
+  useEffect(() => {
+    const fetchSiteContent = async () => {
+      try {
+        const response = await api.get('/site-content');
+        const data = response.data || response;
+        if (data && data.login) {
+          setSiteContent(data);
+        }
+      } catch (error) {
+        console.log('Using default login content');
+      }
+    };
+    fetchSiteContent();
+  }, []);
+
+  // Get login content with fallbacks
+  const loginContent = {
+    ...DEFAULT_LOGIN_CONTENT,
+    ...(siteContent?.login || {})
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,13 +76,26 @@ const LoginPage = () => {
     }
   };
 
+  // Convert hex color to rgba
+  const hexToRgba = (hex, alpha) => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  };
+
+  const overlayColor = loginContent.overlay_color || '#0B1120';
+  const overlayOpacity = loginContent.overlay_opacity ?? 0.7;
+  const overlayRgba = hexToRgba(overlayColor, overlayOpacity);
+  const overlayRgba2 = hexToRgba(overlayColor, Math.min(overlayOpacity + 0.1, 1));
+
   return (
     <div className="min-h-screen flex" data-testid="login-page">
       {/* Left Side - Image */}
       <div 
         className="hidden lg:block lg:w-1/2 relative"
         style={{
-          backgroundImage: `linear-gradient(rgba(11, 17, 32, 0.7), rgba(11, 17, 32, 0.8)), url('https://images.unsplash.com/photo-1644594570589-ef85bd03169f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njd8MHwxfHNlYXJjaHwyfHxrcmF2JTIwbWFnYSUyMHRyYWluaW5nJTIwY2xhc3N8ZW58MHx8fHwxNzY1NzM2Njg0fDA&ixlib=rb-4.1.0&q=85')`,
+          backgroundImage: `linear-gradient(${overlayRgba}, ${overlayRgba2}), url('${loginContent.background_image}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
@@ -56,11 +103,16 @@ const LoginPage = () => {
         <div className="absolute inset-0 flex items-center justify-center p-12">
           <div className="text-center">
             <h2 className="font-oswald text-5xl font-bold text-text-primary uppercase mb-6 tracking-wide">
-              Académie Jacques Levinet
+              {loginContent.title}
             </h2>
             <p className="text-xl text-text-secondary font-manrope">
-              École Internationale de Self-Défense
+              {loginContent.subtitle}
             </p>
+            {loginContent.tagline && (
+              <p className="text-lg text-text-muted font-manrope mt-4 italic">
+                {loginContent.tagline}
+              </p>
+            )}
           </div>
         </div>
       </div>

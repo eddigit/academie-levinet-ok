@@ -9,6 +9,7 @@ import { Label } from '../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { toast } from 'sonner';
 import UserAvatar from '../components/UserAvatar';
+import { formatFullName } from '../lib/utils';
 
 const TechnicalDirectorsPage = () => {
   const [directors, setDirectors] = useState([]);
@@ -306,7 +307,7 @@ const TechnicalDirectorsPage = () => {
                   {/* Info */}
                   <div className="flex-1 min-w-0">
                     <h3 className="font-oswald text-lg text-white uppercase truncate">
-                      {director.full_name || director.name}
+                      {formatFullName(director.full_name || director.name)}
                     </h3>
                     
                     <div className="space-y-1 mt-2">

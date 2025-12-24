@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 import UserAvatar from './UserAvatar';
+import { formatFullName } from '../lib/utils';
 import {
   Heart, MessageCircle, Send, MoreHorizontal, Trash2,
   Flame, ThumbsUp, Award, Users, TrendingUp, Clock,
@@ -84,7 +85,7 @@ const PostCard = ({ post, onReact, onComment, onDelete, currentUserId }) => {
         <div className="flex items-center gap-3">
           <UserAvatar user={post.author} size="md" />
           <div>
-            <p className="font-semibold text-text-primary">{post.author?.full_name || 'Membre'}</p>
+            <p className="font-semibold text-text-primary">{formatFullName(post.author?.full_name) || 'Membre'}</p>
             <p className="text-xs text-text-muted flex items-center gap-1">
               <Clock className="w-3 h-3" />
               {formatTimeAgo(post.created_at)}
@@ -196,7 +197,7 @@ const PostCard = ({ post, onReact, onComment, onDelete, currentUserId }) => {
                   <div key={comment.id} className="p-3 flex gap-3">
                     <UserAvatar user={comment.author} size="sm" />
                     <div className="flex-1 bg-paper rounded-lg px-3 py-2">
-                      <p className="text-sm font-semibold text-text-primary">{comment.author?.full_name}</p>
+                      <p className="text-sm font-semibold text-text-primary">{formatFullName(comment.author?.full_name)}</p>
                       <p className="text-sm text-text-secondary">{comment.content}</p>
                       <p className="text-xs text-text-muted mt-1">{formatTimeAgo(comment.created_at)}</p>
                     </div>
@@ -392,7 +393,7 @@ const SocialWall = ({ variant = 'full' }) => {
             {posts.slice(0, 5).map(post => (
               <div key={post.id} className="p-3 bg-background/50 rounded-lg border border-white/5">
                 <p className="text-sm text-text-primary line-clamp-2">{post.content}</p>
-                <p className="text-xs text-text-muted mt-1">{post.author?.full_name} · {formatTimeAgo(post.created_at)}</p>
+                <p className="text-xs text-text-muted mt-1">{formatFullName(post.author?.full_name)} · {formatTimeAgo(post.created_at)}</p>
               </div>
             ))}
           </div>
@@ -410,7 +411,7 @@ const SocialWall = ({ variant = 'full' }) => {
           <div className="flex items-center gap-3 mb-4">
             <UserAvatar user={user} size="lg" />
             <div>
-              <p className="font-semibold text-text-primary">{user?.full_name}</p>
+              <p className="font-semibold text-text-primary">{formatFullName(user?.full_name)}</p>
               <p className="text-xs text-text-muted capitalize">{user?.role}</p>
             </div>
           </div>
@@ -500,7 +501,7 @@ const SocialWall = ({ variant = 'full' }) => {
             {onlineUsers.slice(0, 10).map(u => (
               <div key={u.id} className="flex items-center gap-2 p-2 rounded-lg hover:bg-white/5 transition-colors">
                 <UserAvatar user={u} size="sm" showOnlineIndicator isOnline />
-                <span className="text-sm text-text-primary truncate">{u.full_name}</span>
+                <span className="text-sm text-text-primary truncate">{formatFullName(u.full_name)}</span>
               </div>
             ))}
             {onlineUsers.length === 0 && (

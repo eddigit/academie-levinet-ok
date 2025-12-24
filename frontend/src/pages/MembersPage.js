@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { toast } from 'sonner';
 import { getFlag, getFlagByName } from '../utils/countries';
 import UserAvatar from '../components/UserAvatar';
+import { formatFullName, formatFirstName, formatLastName } from '../lib/utils';
 
 const MembersPage = () => {
   const [members, setMembers] = useState([]);
@@ -369,7 +370,7 @@ const MembersPage = () => {
                             </span>
                           </div>
                           <span className="text-text-primary font-manrope">
-                            {member.first_name} {member.last_name}
+                            {formatFirstName(member.first_name)} {formatLastName(member.last_name)}
                           </span>
                         </div>
                       </td>
