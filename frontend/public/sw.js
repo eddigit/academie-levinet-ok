@@ -22,8 +22,11 @@ self.addEventListener('install', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   
-  // Don't intercept API requests
-  if (url.pathname.startsWith('/api') || event.request.method !== 'GET') {
+  // Don't intercept API requests (both relative /api and absolute localhost:8001/api)
+  if (url.pathname.startsWith('/api') || 
+      url.href.includes('/api') || 
+      url.hostname !== self.location.hostname ||
+      event.request.method !== 'GET') {
     return;
   }
   
