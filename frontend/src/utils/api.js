@@ -122,12 +122,13 @@ export const api = {
     return response.data;
   },
 
-  // Directeurs Techniques (role=directeur_technique)
+  // Directeurs Techniques (accessible à tous les utilisateurs connectés)
   getTechnicalDirectors: async () => {
-    const response = await axios.get(`${API}/admin/users?role=directeur_technique`, {
+    const response = await axios.get(`${API}/technical-directors`, {
       headers: getAuthHeader()
     });
-    return response.data?.users || [];
+    // Backend returns array directly
+    return Array.isArray(response.data) ? response.data : (response.data?.users || []);
   },
 
   createTechnicalDirector: async (data) => {
@@ -156,12 +157,13 @@ export const api = {
     return response.data;
   },
 
-  // Instructeurs (role=instructeur)
+  // Instructeurs (accessible à tous les utilisateurs connectés)
   getInstructors: async () => {
-    const response = await axios.get(`${API}/admin/users?role=instructeur`, {
+    const response = await axios.get(`${API}/instructors`, {
       headers: getAuthHeader()
     });
-    return response.data?.users || [];
+    // Backend returns array directly
+    return Array.isArray(response.data) ? response.data : (response.data?.users || []);
   },
 
   createInstructor: async (data) => {

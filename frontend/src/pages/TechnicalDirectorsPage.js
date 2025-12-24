@@ -10,8 +10,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { toast } from 'sonner';
 import UserAvatar from '../components/UserAvatar';
 import { formatFullName } from '../lib/utils';
+import { useAuth } from '../context/AuthContext';
 
 const TechnicalDirectorsPage = () => {
+  const { user: currentUser } = useAuth();
+  const isAdmin = currentUser?.role === 'admin' || currentUser?.role === 'fondateur';
   const [directors, setDirectors] = useState([]);
   const [clubs, setClubs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -43,10 +46,10 @@ const TechnicalDirectorsPage = () => {
 
   const fetchDirectors = async () => {
     try {
-      // Fetch users with role=directeur_technique
-      const response = await api.get('/admin/users?role=directeur_technique');
-      // Backend returns {users: [...], total: n}
-      const users = response.data?.users || [];
+      // Utiliser /technical-directors accessible à tous les utilisateurs connectés
+      const response = await api.get('/technical-directors');
+      // Backend returns array directly
+      const users = Array.isArray(response.data) ? response.data : (response.data?.users || []);
       setDirectors(users);
     } catch (error) {
       console.error('Error fetching directors:', error);
@@ -247,10 +250,12 @@ const TechnicalDirectorsPage = () => {
               {directors.length} directeur(s) • Responsables de clubs
             </p>
           </div>
-          <Button onClick={openAddModal} className="bg-primary hover:bg-primary-dark">
-            <Plus className="w-4 h-4 mr-2" />
-            Nouveau DT
-          </Button>
+          {isAdmin && (
+            <Button onClick={openAddModal} className="bg-primary hover:bg-primary-dark">
+              <Plus className="w-4 h-4 mr-2" />
+              Nouveau DT
+            </Button>
+          )}
         </div>
 
         {/* Filters */}
@@ -364,26 +369,28 @@ const TechnicalDirectorsPage = () => {
                   </div>
                 )}
 
-                {/* Actions */}
-                <div className="flex gap-2 mt-4 pt-4 border-t border-white/5">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => openEditModal(director)}
-                    className="flex-1 border-white/10"
-                  >
-                    <Edit className="w-4 h-4 mr-1" />
-                    Modifier
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleDelete(director)}
-                    className="border-secondary/50 text-secondary hover:bg-secondary/10"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
+                {/* Actions - Admin only */}
+                {isAdmin && (
+                  <div className="flex gap-2 mt-4 pt-4 border-t border-white/5">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => openEditModal(director)}
+                      className="flex-1 border-white/10"
+                    >
+                      <Edit className="w-4 h-4 mr-1" />
+                      Modifier
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleDelete(director)}
+                      className="border-secondary/50 text-secondary hover:bg-secondary/10"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                )}
               </div>
             );
           })}

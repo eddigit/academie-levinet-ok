@@ -1293,6 +1293,48 @@ async def get_members_alias(
             user['created_at'] = datetime.fromisoformat(user['created_at'])
     return users
 
+@api_router.get("/instructors")
+async def get_instructors(
+    country: Optional[str] = None,
+    city: Optional[str] = None,
+    club_id: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    """Get all instructors - accessible to all authenticated users"""
+    query = {"role": "instructeur"}
+    if country:
+        query["country"] = country
+    if city:
+        query["city"] = city
+    if club_id:
+        query["club_id"] = club_id
+    
+    instructors = await db.users.find(query, {"_id": 0, "password_hash": 0}).sort("full_name", 1).to_list(500)
+    for user in instructors:
+        if user.get('full_name') and not user.get('first_name'):
+            parts = user['full_name'].split(' ', 1)
+            user['first_name'] = parts[0]
+            user['last_name'] = parts[1] if len(parts) > 1 else ''
+    return instructors
+
+@api_router.get("/technical-directors")
+async def get_technical_directors(
+    country: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    """Get all technical directors - accessible to all authenticated users"""
+    query = {"role": "directeur_technique"}
+    if country:
+        query["country"] = country
+    
+    directors = await db.users.find(query, {"_id": 0, "password_hash": 0}).sort("full_name", 1).to_list(500)
+    for user in directors:
+        if user.get('full_name') and not user.get('first_name'):
+            parts = user['full_name'].split(' ', 1)
+            user['first_name'] = parts[0]
+            user['last_name'] = parts[1] if len(parts) > 1 else ''
+    return directors
+
 @api_router.get("/members/{member_id}")
 async def get_member_alias(member_id: str, current_user: dict = Depends(get_current_user)):
     """Alias: Récupère un utilisateur par ID"""

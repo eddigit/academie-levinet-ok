@@ -9,8 +9,11 @@ import { Label } from '../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { toast } from 'sonner';
 import UserAvatar from '../components/UserAvatar';
+import { useAuth } from '../context/AuthContext';
 
 const InstructorsPage = () => {
+  const { user: currentUser } = useAuth();
+  const isAdmin = currentUser?.role === 'admin' || currentUser?.role === 'fondateur';
   const [instructors, setInstructors] = useState([]);
   const [clubs, setClubs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -42,10 +45,10 @@ const InstructorsPage = () => {
 
   const fetchInstructors = async () => {
     try {
-      // Fetch users with role=instructeur
-      const response = await api.get('/admin/users?role=instructeur');
-      // Backend returns {users: [...], total: n}
-      const users = response.data?.users || [];
+      // Utiliser /instructors accessible à tous les utilisateurs connectés
+      const response = await api.get('/instructors');
+      // Backend returns array directly
+      const users = Array.isArray(response.data) ? response.data : (response.data?.users || []);
       setInstructors(users);
     } catch (error) {
       console.error('Error fetching instructors:', error);

@@ -86,6 +86,8 @@ const MemberDetailPage = () => {
   }, [memberId]);
 
   const fetchAffectations = async () => {
+    // Seulement pour les admins (pour l'édition)
+    if (!isAdmin) return;
     try {
       const [clubsRes, instructorsRes, dtRes] = await Promise.all([
         api.get('/clubs'),
@@ -102,7 +104,8 @@ const MemberDetailPage = () => {
 
   const fetchMember = async () => {
     try {
-      const response = await api.get(`/admin/users/${memberId}`);
+      // Utiliser /members/ qui est accessible à tous les utilisateurs connectés
+      const response = await api.get(`/members/${memberId}`);
       const userData = response.data;
       // Extraire first_name/last_name de full_name si absent
       if (userData.full_name && !userData.first_name) {
