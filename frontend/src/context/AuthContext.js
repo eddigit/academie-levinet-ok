@@ -3,7 +3,8 @@ import axios from 'axios';
 
 const AuthContext = createContext();
 
-const API_URL = process.env.REACT_APP_BACKEND_URL;
+// En mode unifié (production), URL vide pour utiliser des URLs relatives
+const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${API_URL}/api`;
 
 export const AuthProvider = ({ children }) => {
