@@ -1578,7 +1578,131 @@ async def delete_news(news_id: str, current_user: dict = Depends(get_current_use
     result = await db.news.delete_one({"id": news_id})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="News not found")
+    # Also delete related comments and reactions
+    await db.news_comments.delete_many({"news_id": news_id})
+    await db.news_reactions.delete_many({"news_id": news_id})
     return {"message": "News deleted successfully"}
+
+# News Comments and Reactions
+@api_router.get("/news/{news_id}/comments")
+async def get_news_comments(news_id: str):
+    """Get all comments for a news article"""
+    comments = await db.news_comments.find(
+        {"news_id": news_id},
+        {"_id": 0}
+    ).sort("created_at", 1).to_list(100)
+    return {"comments": comments}
+
+@api_router.post("/news/{news_id}/comments")
+async def add_news_comment(news_id: str, comment_data: dict, current_user: dict = Depends(get_current_user)):
+    """Add a comment to a news article"""
+    # Verify news exists
+    news = await db.news.find_one({"id": news_id})
+    if not news:
+        raise HTTPException(status_code=404, detail="News not found")
+    
+    comment = {
+        "id": str(uuid.uuid4()),
+        "news_id": news_id,
+        "author_id": current_user["id"],
+        "author_name": current_user.get("full_name", "Membre"),
+        "author_photo": current_user.get("photo_url"),
+        "content": comment_data.get("content", ""),
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.news_comments.insert_one(comment)
+    
+    # Increment comment count on news
+    await db.news.update_one({"id": news_id}, {"$inc": {"comments_count": 1}})
+    
+    return comment
+
+@api_router.delete("/news/{news_id}/comments/{comment_id}")
+async def delete_news_comment(news_id: str, comment_id: str, current_user: dict = Depends(get_current_user)):
+    """Delete a comment from a news article"""
+    comment = await db.news_comments.find_one({"id": comment_id, "news_id": news_id})
+    if not comment:
+        raise HTTPException(status_code=404, detail="Comment not found")
+    
+    # Only author or admin can delete
+    if comment["author_id"] != current_user["id"] and current_user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    await db.news_comments.delete_one({"id": comment_id})
+    await db.news.update_one({"id": news_id}, {"$inc": {"comments_count": -1}})
+    
+    return {"message": "Comment deleted"}
+
+@api_router.post("/news/{news_id}/reactions")
+async def toggle_news_reaction(news_id: str, reaction_data: dict, current_user: dict = Depends(get_current_user)):
+    """Toggle a reaction on a news article"""
+    # Verify news exists
+    news = await db.news.find_one({"id": news_id})
+    if not news:
+        raise HTTPException(status_code=404, detail="News not found")
+    
+    reaction_type = reaction_data.get("reaction_type", "like")
+    user_id = current_user["id"]
+    
+    # Check if user already has a reaction
+    existing = await db.news_reactions.find_one({"news_id": news_id, "user_id": user_id})
+    
+    if existing:
+        if existing["reaction_type"] == reaction_type:
+            # Same reaction - remove it
+            await db.news_reactions.delete_one({"id": existing["id"]})
+            await db.news.update_one({"id": news_id}, {"$inc": {"reactions_count": -1}})
+            return {"action": "removed", "reaction_type": reaction_type}
+        else:
+            # Different reaction - update it
+            await db.news_reactions.update_one(
+                {"id": existing["id"]},
+                {"$set": {"reaction_type": reaction_type}}
+            )
+            return {"action": "updated", "reaction_type": reaction_type}
+    else:
+        # New reaction
+        reaction = {
+            "id": str(uuid.uuid4()),
+            "news_id": news_id,
+            "user_id": user_id,
+            "user_name": current_user.get("full_name", "Membre"),
+            "reaction_type": reaction_type,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        await db.news_reactions.insert_one(reaction)
+        await db.news.update_one({"id": news_id}, {"$inc": {"reactions_count": 1}})
+        return {"action": "added", "reaction_type": reaction_type}
+
+@api_router.get("/news/{news_id}/reactions")
+async def get_news_reactions(news_id: str):
+    """Get all reactions for a news article"""
+    reactions = await db.news_reactions.find(
+        {"news_id": news_id},
+        {"_id": 0}
+    ).to_list(500)
+    
+    # Group by reaction type
+    reaction_counts = {}
+    for r in reactions:
+        rt = r.get("reaction_type", "like")
+        reaction_counts[rt] = reaction_counts.get(rt, 0) + 1
+    
+    return {
+        "reactions": reactions,
+        "counts": reaction_counts,
+        "total": len(reactions)
+    }
+
+@api_router.get("/news/{news_id}/user-reaction")
+async def get_user_news_reaction(news_id: str, current_user: dict = Depends(get_current_user)):
+    """Get current user's reaction on a news article"""
+    reaction = await db.news_reactions.find_one(
+        {"news_id": news_id, "user_id": current_user["id"]},
+        {"_id": 0}
+    )
+    return {"reaction": reaction}
 
 # Events Routes
 

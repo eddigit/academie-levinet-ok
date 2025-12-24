@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
 import axios from 'axios';
-import { Plus, Edit, Trash2, Eye, Calendar, User, X, Loader2 } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, Calendar, User, X, Loader2, MessageCircle, ThumbsUp } from 'lucide-react';
 import { Button } from '../components/ui/button';
+import NewsDetailModal from '../components/NewsDetailModal';
 import { Label } from '../components/ui/label';
 import { Input } from '../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
@@ -166,7 +167,9 @@ const NewsPage = () => {
   const [loading, setLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [currentNews, setCurrentNews] = useState(null);
+  const [selectedNews, setSelectedNews] = useState(null);
   const [saving, setSaving] = useState(false);
 
   // Single form state object to prevent re-renders
@@ -224,6 +227,16 @@ const NewsPage = () => {
   const closeEditModal = () => {
     setIsEditModalOpen(false);
     resetForm();
+  };
+
+  const openDetailModal = (news) => {
+    setSelectedNews(news);
+    setIsDetailModalOpen(true);
+  };
+
+  const closeDetailModal = () => {
+    setIsDetailModalOpen(false);
+    setSelectedNews(null);
   };
 
   const handleAddNews = async (e) => {
@@ -418,9 +431,19 @@ const NewsPage = () => {
                   {news.excerpt}
                 </p>
                 <div className="flex items-center justify-between text-xs text-text-muted font-manrope mb-4">
-                  <div className="flex items-center gap-1">
-                    <User className="w-3 h-3" strokeWidth={1.5} />
-                    <span>{news.author_name || 'Anonyme'}</span>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1">
+                      <User className="w-3 h-3" strokeWidth={1.5} />
+                      <span>{news.author_name || 'Anonyme'}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <ThumbsUp className="w-3 h-3" strokeWidth={1.5} />
+                      <span>{news.reactions_count || 0}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <MessageCircle className="w-3 h-3" strokeWidth={1.5} />
+                      <span>{news.comments_count || 0}</span>
+                    </div>
                   </div>
                   <div className="flex items-center gap-1">
                     <Eye className="w-3 h-3" strokeWidth={1.5} />
@@ -429,14 +452,21 @@ const NewsPage = () => {
                 </div>
                 <div className="flex gap-2">
                   <Button
+                    onClick={() => openDetailModal(news)}
+                    size="sm"
+                    className="flex-1 bg-primary hover:bg-primary-dark text-white"
+                  >
+                    <Eye className="w-4 h-4 mr-1 md:mr-2" strokeWidth={1.5} />
+                    <span className="hidden sm:inline">Voir</span>
+                  </Button>
+                  <Button
                     data-testid={`edit-news-${index}`}
                     onClick={() => openEditModal(news)}
                     variant="outline"
                     size="sm"
-                    className="flex-1 border-white/10 text-text-secondary hover:text-text-primary"
+                    className="border-white/10 text-text-secondary hover:text-text-primary"
                   >
-                    <Edit className="w-4 h-4 mr-1 md:mr-2" strokeWidth={1.5} />
-                    <span className="hidden sm:inline">Modifier</span>
+                    <Edit className="w-4 h-4" strokeWidth={1.5} />
                   </Button>
                   <Button
                     data-testid={`delete-news-${index}`}
@@ -473,6 +503,14 @@ const NewsPage = () => {
           saving={saving}
           formData={formData}
           onFieldChange={handleFieldChange}
+        />
+
+        {/* Detail Modal */}
+        <NewsDetailModal
+          news={selectedNews}
+          isOpen={isDetailModalOpen}
+          onClose={closeDetailModal}
+          onUpdate={fetchNews}
         />
       </div>
     </DashboardLayout>
