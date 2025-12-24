@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
 import api, { getErrorMessage } from '../utils/api';
 import { useAuth } from '../context/AuthContext';
-import { Plus, Edit, Trash2, Users, Calendar, MapPin, Clock, Euro, X, Loader2, Eye } from 'lucide-react';
+import { Plus, Edit, Trash2, Users, Calendar, MapPin, Clock, Euro, X, Loader2, Eye, User } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Label } from '../components/ui/label';
 import { Input } from '../components/ui/input';
@@ -10,6 +10,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { toast } from 'sonner';
 import UserAvatar, { UserAvatarGroup } from '../components/UserAvatar';
 import EventDetailModal from '../components/EventDetailModal';
+
+// Rôles autorisés à organiser des événements
+const ORGANIZER_ROLES = ['instructeur', 'directeur_technique', 'directeur_national', 'admin', 'fondateur'];
+
+// Labels des rôles pour l'affichage
+const ROLE_LABELS = {
+  instructeur: 'Instructeur',
+  directeur_technique: 'Directeur Technique',
+  directeur_national: 'Directeur National',
+  admin: 'Administrateur',
+  fondateur: 'Fondateur'
+};
 
 // Event Modal Component - Extracted outside to prevent re-renders
 const EventModal = ({ 
@@ -19,7 +31,8 @@ const EventModal = ({
   isEdit, 
   saving,
   formData,
-  onFieldChange
+  onFieldChange,
+  organizers = []
 }) => {
   if (!isOpen) return null;
   
@@ -77,13 +90,28 @@ const EventModal = ({
               </Select>
             </div>
             <div>
-              <Label className="text-text-secondary">Instructeur</Label>
-              <Input
-                value={formData.instructor}
-                onChange={(e) => onFieldChange('instructor', e.target.value)}
-                className="mt-1 bg-background border-white/10 text-text-primary"
-                placeholder="Nom de l'instructeur"
-              />
+              <Label className="text-text-secondary flex items-center gap-2">
+                <User className="w-4 h-4" /> Organisateur / Instructeur
+              </Label>
+              <Select 
+                value={formData.instructor || '_none'} 
+                onValueChange={(val) => onFieldChange('instructor', val === '_none' ? '' : val)}
+              >
+                <SelectTrigger className="mt-1 bg-background border-white/10 text-text-primary">
+                  <SelectValue placeholder="Sélectionner un organisateur" />
+                </SelectTrigger>
+                <SelectContent className="bg-paper border-white/10 max-h-60">
+                  <SelectItem value="_none" className="text-text-muted">Aucun</SelectItem>
+                  {organizers.map((org) => (
+                    <SelectItem key={org.id} value={org.full_name} className="text-text-primary">
+                      <span className="flex items-center gap-2">
+                        {org.full_name}
+                        <span className="text-xs text-text-muted">({ROLE_LABELS[org.role] || org.role})</span>
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
@@ -254,6 +282,7 @@ const EventsPage = () => {
   const [currentEvent, setCurrentEvent] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [organizers, setOrganizers] = useState([]);
 
   // Single form state object to prevent re-renders
   const [formData, setFormData] = useState(initialFormData);
@@ -265,7 +294,22 @@ const EventsPage = () => {
 
   useEffect(() => {
     fetchEvents();
+    fetchOrganizers();
   }, []);
+
+  const fetchOrganizers = async () => {
+    try {
+      // Récupérer les utilisateurs avec les rôles autorisés à organiser des événements
+      const response = await api.get('/admin/users');
+      const allUsers = response.data?.users || [];
+      // Filtrer les utilisateurs avec les rôles autorisés
+      const eligibleOrganizers = allUsers.filter(u => ORGANIZER_ROLES.includes(u.role));
+      setOrganizers(eligibleOrganizers);
+    } catch (error) {
+      console.error('Error fetching organizers:', error);
+      setOrganizers([]);
+    }
+  };
 
   const fetchEvents = async () => {
     try {
@@ -607,6 +651,7 @@ const EventsPage = () => {
           saving={saving}
           formData={formData}
           onFieldChange={handleFieldChange}
+          organizers={organizers}
         />
 
         {/* Edit Modal */}
@@ -618,6 +663,7 @@ const EventsPage = () => {
           saving={saving}
           formData={formData}
           onFieldChange={handleFieldChange}
+          organizers={organizers}
         />
 
         {/* Detail Modal with Participants */}
