@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
+import { useAuth } from '../context/AuthContext';
 import api, { getErrorMessage } from '../utils/api';
 import { ArrowLeft, Mail, Phone, MapPin, Calendar, Award, User, MessageSquare, RefreshCw, Trash2, Edit, X, Save, Loader2, Upload, Link } from 'lucide-react';
 import { Button } from '../components/ui/button';
@@ -59,9 +60,13 @@ const roleLabels = {
 const MemberDetailPage = () => {
   const { memberId } = useParams();
   const navigate = useNavigate();
+  const { user: currentUser } = useAuth();
   const [member, setMember] = useState(null);
   const [loading, setLoading] = useState(true);
   const [startingConversation, setStartingConversation] = useState(false);
+
+  // Vérifier si l'utilisateur courant est admin
+  const isAdmin = currentUser?.role === 'admin' || currentUser?.role === 'fondateur';
 
   // Listes pour les affectations
   const [clubs, setClubs] = useState([]);
@@ -324,21 +329,25 @@ const MemberDetailPage = () => {
             </h1>
           </div>
           <div className="flex items-center gap-2">
-            <Button 
-              variant="ghost" 
-              className="text-text-secondary hover:text-text-primary"
-              onClick={handleEditMember}
-            >
-              <Edit className="w-5 h-5" strokeWidth={1.5} />
-            </Button>
-            <Button 
-              variant="ghost" 
-              className="text-red-400 hover:text-red-500 hover:bg-red-500/10"
-              onClick={handleDelete}
-              data-testid="delete-button"
-            >
-              <Trash2 className="w-5 h-5" strokeWidth={1.5} />
-            </Button>
+            {isAdmin && (
+              <>
+                <Button 
+                  variant="ghost" 
+                  className="text-text-secondary hover:text-text-primary"
+                  onClick={handleEditMember}
+                >
+                  <Edit className="w-5 h-5" strokeWidth={1.5} />
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  className="text-red-400 hover:text-red-500 hover:bg-red-500/10"
+                  onClick={handleDelete}
+                  data-testid="delete-button"
+                >
+                  <Trash2 className="w-5 h-5" strokeWidth={1.5} />
+                </Button>
+              </>
+            )}
           </div>
         </div>
 

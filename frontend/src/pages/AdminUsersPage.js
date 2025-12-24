@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { 
   Users, UserPlus, Shield, User, Search, Filter, 
-  Trash2, Edit, Mail, Phone, MapPin, Crown, Loader2, Key, Eye, EyeOff, X, Save, Award, Camera, Upload, GraduationCap
+  Trash2, Edit, Mail, Phone, MapPin, Crown, Loader2, Key, Eye, EyeOff, X, Save, Award, Camera, Upload, GraduationCap, Building2
 } from 'lucide-react';
 import DashboardLayout from '../components/DashboardLayout';
+import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
@@ -31,6 +33,8 @@ const roleLabels = {
 };
 
 const AdminUsersPage = () => {
+  const { user: currentUser } = useAuth();
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -271,6 +275,16 @@ const AdminUsersPage = () => {
     user.email?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Helper pour obtenir le nom d'un club par son ID
+  const getClubName = (clubId) => {
+    if (!clubId) return null;
+    const club = clubs.find(c => (c.id || c._id) === clubId);
+    return club ? club.name : null;
+  };
+
+  // Vérifier si l'utilisateur courant est admin
+  const isAdmin = currentUser?.role === 'admin' || currentUser?.role === 'fondateur';
+
   const getCounts = () => {
     return {
       total: users.length,
@@ -309,11 +323,12 @@ const AdminUsersPage = () => {
             </p>
           </div>
           
-          {/* Create User Button */}
-          <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-            <DialogTrigger asChild>
-              <Button className="bg-primary hover:bg-primary-dark w-full md:w-auto">
-                <UserPlus className="w-4 h-4 mr-2" /> Nouvel Utilisateur
+          {/* Create User Button - Admin only */}
+          {isAdmin && (
+            <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-primary hover:bg-primary-dark w-full md:w-auto">
+                  <UserPlus className="w-4 h-4 mr-2" /> Nouvel Utilisateur
               </Button>
             </DialogTrigger>
             <DialogContent className="bg-paper border-white/10 text-text-primary max-w-lg max-h-[90vh] overflow-y-auto">
@@ -559,6 +574,7 @@ const AdminUsersPage = () => {
               </div>
             </DialogContent>
           </Dialog>
+          )}
         </div>
 
         {/* Filters */}
@@ -652,17 +668,27 @@ const AdminUsersPage = () => {
                     {user.phone && <p className="flex items-center gap-1"><Phone className="w-3 h-3" /> {user.phone}</p>}
                     {user.city && <p className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {user.city}, {user.country || 'France'}</p>}
                     {user.belt_grade && <p className="flex items-center gap-1"><Award className="w-3 h-3" /> {user.belt_grade}</p>}
+                    {getClubName(user.club_id) && <p className="flex items-center gap-1"><Building2 className="w-3 h-3" /> {getClubName(user.club_id)}</p>}
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm" onClick={() => handleEditUser(user)} className="flex-1 border-white/10 text-xs">
-                      <Edit className="w-3 h-3 mr-1" /> Modifier
-                    </Button>
-                    <Button variant="outline" size="sm" onClick={() => handleOpenPasswordModal(user.id)} className="border-white/10">
-                      <Key className="w-3 h-3" />
-                    </Button>
-                    <Button variant="outline" size="sm" onClick={() => handleDeleteUser(user.id, user.full_name)} className="border-red-500/30 text-red-500">
-                      <Trash2 className="w-3 h-3" />
-                    </Button>
+                    <Link to={`/members/${user.id}`} className="flex-1">
+                      <Button variant="outline" size="sm" className="w-full border-primary/30 text-primary text-xs">
+                        <Eye className="w-3 h-3 mr-1" /> Voir
+                      </Button>
+                    </Link>
+                    {isAdmin && (
+                      <>
+                        <Button variant="outline" size="sm" onClick={() => handleEditUser(user)} className="border-white/10 text-xs">
+                          <Edit className="w-3 h-3" />
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={() => handleOpenPasswordModal(user.id)} className="border-white/10">
+                          <Key className="w-3 h-3" />
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={() => handleDeleteUser(user.id, user.full_name)} className="border-red-500/30 text-red-500">
+                          <Trash2 className="w-3 h-3" />
+                        </Button>
+                      </>
+                    )}
                   </div>
                 </div>
               ))}
@@ -676,6 +702,7 @@ const AdminUsersPage = () => {
                     <th className="text-left p-4 text-text-muted font-manrope text-sm">Utilisateur</th>
                     <th className="text-left p-4 text-text-muted font-manrope text-sm">Contact</th>
                     <th className="text-left p-4 text-text-muted font-manrope text-sm">Rôle</th>
+                    <th className="text-left p-4 text-text-muted font-manrope text-sm">Club</th>
                     <th className="text-left p-4 text-text-muted font-manrope text-sm">Grade</th>
                     <th className="text-left p-4 text-text-muted font-manrope text-sm">Statut</th>
                     <th className="text-right p-4 text-text-muted font-manrope text-sm">Actions</th>
@@ -707,6 +734,13 @@ const AdminUsersPage = () => {
                       </td>
                       <td className="p-4">{getRoleDisplay(user.role)}</td>
                       <td className="p-4">
+                        <span className="text-text-secondary text-sm flex items-center gap-1">
+                          {getClubName(user.club_id) ? (
+                            <><Building2 className="w-3 h-3" /> {getClubName(user.club_id)}</>
+                          ) : '-'}
+                        </span>
+                      </td>
+                      <td className="p-4">
                         <span className="text-text-secondary text-sm">{user.belt_grade || '-'}</span>
                       </td>
                       <td className="p-4">
@@ -721,15 +755,24 @@ const AdminUsersPage = () => {
                       </td>
                       <td className="p-4">
                         <div className="flex justify-end gap-2">
-                          <Button variant="outline" size="sm" onClick={() => handleEditUser(user)} className="border-white/10 text-text-secondary hover:text-text-primary">
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button variant="outline" size="sm" onClick={() => handleOpenPasswordModal(user.id)} className="border-white/10 text-text-secondary hover:text-text-primary" title="Changer le mot de passe">
-                            <Key className="w-4 h-4" />
-                          </Button>
-                          <Button variant="outline" size="sm" onClick={() => handleDeleteUser(user.id, user.full_name)} className="border-red-500/30 text-red-500 hover:bg-red-500/10">
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
+                          <Link to={`/members/${user.id}`}>
+                            <Button variant="outline" size="sm" className="border-primary/30 text-primary hover:bg-primary/10" title="Voir la fiche">
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                          </Link>
+                          {isAdmin && (
+                            <>
+                              <Button variant="outline" size="sm" onClick={() => handleEditUser(user)} className="border-white/10 text-text-secondary hover:text-text-primary">
+                                <Edit className="w-4 h-4" />
+                              </Button>
+                              <Button variant="outline" size="sm" onClick={() => handleOpenPasswordModal(user.id)} className="border-white/10 text-text-secondary hover:text-text-primary" title="Changer le mot de passe">
+                                <Key className="w-4 h-4" />
+                              </Button>
+                              <Button variant="outline" size="sm" onClick={() => handleDeleteUser(user.id, user.full_name)} className="border-red-500/30 text-red-500 hover:bg-red-500/10">
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </>
+                          )}
                         </div>
                       </td>
                     </tr>
