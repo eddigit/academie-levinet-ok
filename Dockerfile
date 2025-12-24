@@ -11,8 +11,8 @@ WORKDIR /app/frontend
 # Copy frontend files
 COPY frontend/package*.json frontend/yarn.lock* ./
 
-# Install dependencies
-RUN npm install
+# Install dependencies (with legacy-peer-deps to resolve date-fns conflict)
+RUN npm install --legacy-peer-deps
 
 # Copy source code
 COPY frontend/ ./
