@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import DashboardLayout from '../components/DashboardLayout';
 import { api } from '../utils/api';
-import { Plus, Search, Filter, User } from 'lucide-react';
+import { Plus, Search, Filter } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
 import { Label } from '../components/ui/label';
@@ -10,6 +10,7 @@ import { Input } from '../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { toast } from 'sonner';
 import { getFlag, getFlagByName } from '../utils/countries';
+import UserAvatar from '../components/UserAvatar';
 
 const MembersPage = () => {
   const [members, setMembers] = useState([]);
@@ -355,13 +356,13 @@ const MembersPage = () => {
                         <div className="flex items-center gap-3">
                           {/* Photo */}
                           <div className="relative flex-shrink-0">
-                            {member.photo_url ? (
-                              <img src={member.photo_url} alt={`${member.first_name} ${member.last_name}`} className="w-10 h-10 rounded-lg object-cover" />
-                            ) : (
-                              <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center">
-                                <User className="w-5 h-5 text-primary" />
-                              </div>
-                            )}
+                            <UserAvatar
+                              user={{
+                                full_name: `${member.first_name} ${member.last_name}`,
+                                photo_url: member.photo_url
+                              }}
+                              size="md"
+                            />
                             {/* Flag badge */}
                             <span className="absolute -bottom-1 -right-1 text-sm">
                               {member.country_code ? getFlag(member.country_code) : getFlagByName(member.country)}

@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 import Sidebar from '../components/Sidebar';
-import { MessageSquare, Search, Send, User, ChevronLeft, Plus, X } from 'lucide-react';
+import UserAvatar from '../components/UserAvatar';
+import { MessageSquare, Search, Send, ChevronLeft, Plus, X } from 'lucide-react';
 
 const MessagingPage = () => {
   const { user } = useAuth();
@@ -180,9 +181,10 @@ const MessagingPage = () => {
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-                      <User className="w-6 h-6 text-primary" strokeWidth={1.5} />
-                    </div>
+                    <UserAvatar
+                      user={{ full_name: conv.other_participant_name, photo_url: conv.other_participant_photo }}
+                      size="lg"
+                    />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
                         <h3 className="font-oswald text-text-primary truncate">
@@ -225,9 +227,10 @@ const MessagingPage = () => {
                 >
                   <ChevronLeft className="w-5 h-5 text-text-secondary" strokeWidth={1.5} />
                 </button>
-                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                  <User className="w-5 h-5 text-primary" strokeWidth={1.5} />
-                </div>
+                <UserAvatar
+                  user={{ full_name: selectedConversation.other_participant_name, photo_url: selectedConversation.other_participant_photo }}
+                  size="md"
+                />
                 <div>
                   <h2 className="font-oswald text-lg text-text-primary">
                     {selectedConversation.other_participant_name}
@@ -331,9 +334,7 @@ const MessagingPage = () => {
                       onClick={() => startConversation(result.id)}
                       className="p-3 hover:bg-white/5 rounded-lg cursor-pointer transition-colors flex items-center gap-3"
                     >
-                      <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                        <User className="w-5 h-5 text-primary" strokeWidth={1.5} />
-                      </div>
+                      <UserAvatar user={{ full_name: result.name, photo_url: result.photo_url }} size="md" />
                       <div>
                         <p className="font-oswald text-text-primary">{result.name}</p>
                         <p className="text-xs text-text-muted">{result.type} • {result.email}</p>

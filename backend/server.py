@@ -1,5 +1,7 @@
 from fastapi import FastAPI, APIRouter, HTTPException, Depends, status, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse, HTMLResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -95,6 +97,8 @@ security = HTTPBearer()
 # Enums
 class MembershipStatus(str, Enum):
     ACTIVE = "Actif"
+    INACTIVE = "Inactif"
+    SUSPENDED = "Suspendu"
     EXPIRED = "Expiré"
     PENDING = "En attente"
 
@@ -102,6 +106,8 @@ class MembershipType(str, Enum):
     STANDARD = "Standard"
     PREMIUM = "Premium"
     VIP = "VIP"
+    INSTRUCTOR = "Instructeur"
+    TECHNICAL_DIRECTOR = "Directeur Technique"
 
 class BeltGrade(str, Enum):
     WHITE = "Ceinture Blanche"
@@ -194,54 +200,132 @@ class EventStatus(str, Enum):
 
 # Models
 class User(BaseModel):
+    """
+    Modèle unifié pour tous les utilisateurs de l'académie.
+    Rôles hiérarchiques: admin | fondateur | directeur_national | directeur_technique | instructeur | membre
+    """
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     email: EmailStr
     password_hash: str
     full_name: str
-    role: str = "member"  # Default role for new users is member
-    has_paid_license: bool = False  # Track license payment status
-    is_premium: bool = False  # Track premium subscription status
+    first_name: Optional[str] = None  # Prénom (extrait de full_name ou saisi)
+    last_name: Optional[str] = None   # Nom (extrait de full_name ou saisi)
+    role: str = "membre"  # Rôle principal: admin, fondateur, directeur_national, directeur_technique, instructeur, membre
+    roles: List[str] = []  # Rôles additionnels (peut cumuler instructeur + directeur_technique)
+
+    # Paiements et abonnements
+    has_paid_license: bool = False
+    is_premium: bool = False
     stripe_customer_id: Optional[str] = None
-    # Profile fields
+
+    # Profil personnel
     photo_url: Optional[str] = None
     phone: Optional[str] = None
     city: Optional[str] = None
     country: str = "France"
+    country_code: str = "FR"
     date_of_birth: Optional[str] = None
-    belt_grade: Optional[str] = None
-    club_name: Optional[str] = None
-    instructor_name: Optional[str] = None
     bio: Optional[str] = None
+
+    # Grade martial
+    belt_grade: Optional[str] = None  # Ceinture: Blanche → Noire 5ème Dan
+    dan_grade: Optional[str] = None   # Grade Dan spécifique (pour compatibilité)
+
+    # Affiliation club
+    club_id: Optional[str] = None     # ID du club affilié
+    club_name: Optional[str] = None   # Nom du club (pour affichage rapide)
+    club_ids: List[str] = []          # Clubs associés (pour instructeurs multi-clubs)
+    instructor_name: Optional[str] = None
+    technical_director_id: Optional[str] = None  # DT responsable (pour membres)
+
+    # Adhésion (anciennement dans Member)
+    membership_status: Optional[str] = None  # Actif, Inactif, Suspendu, Expiré
+    membership_type: Optional[str] = None    # Standard, Premium, VIP
+    membership_start_date: Optional[str] = None
+    membership_end_date: Optional[str] = None
+    sessions_attended: int = 0
+
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class UserProfileUpdate(BaseModel):
+    """Mise à jour du profil par l'utilisateur lui-même"""
     full_name: Optional[str] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
     phone: Optional[str] = None
     city: Optional[str] = None
     country: Optional[str] = None
+    country_code: Optional[str] = None
     date_of_birth: Optional[str] = None
     belt_grade: Optional[str] = None
+    dan_grade: Optional[str] = None
     club_name: Optional[str] = None
     instructor_name: Optional[str] = None
     bio: Optional[str] = None
     photo_url: Optional[str] = None
 
+class AdminUserUpdate(BaseModel):
+    """Mise à jour complète d'un utilisateur par un admin"""
+    full_name: Optional[str] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    role: Optional[str] = None
+    roles: Optional[List[str]] = None
+    phone: Optional[str] = None
+    city: Optional[str] = None
+    country: Optional[str] = None
+    country_code: Optional[str] = None
+    date_of_birth: Optional[str] = None
+    belt_grade: Optional[str] = None
+    dan_grade: Optional[str] = None
+    club_id: Optional[str] = None
+    club_name: Optional[str] = None
+    club_ids: Optional[List[str]] = None
+    instructor_name: Optional[str] = None
+    technical_director_id: Optional[str] = None
+    bio: Optional[str] = None
+    photo_url: Optional[str] = None
+    # Adhésion
+    membership_status: Optional[str] = None
+    membership_type: Optional[str] = None
+    membership_start_date: Optional[str] = None
+    membership_end_date: Optional[str] = None
+    sessions_attended: Optional[int] = None
+    # Paiements
+    has_paid_license: Optional[bool] = None
+    is_premium: Optional[bool] = None
+
 class AdminUserCreate(BaseModel):
+    """Création d'un utilisateur par un admin"""
     email: EmailStr
     password: Optional[str] = None  # If None, generate random password
     full_name: str
-    role: str = "member"  # Primary role: admin, member, instructor, technical_director
-    roles: List[str] = []  # Additional roles (can be multiple)
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    role: str = "membre"  # admin, fondateur, directeur_national, directeur_technique, instructeur, membre
+    roles: List[str] = []  # Rôles additionnels
     phone: Optional[str] = None
     city: Optional[str] = None
     country: str = "France"
-    country_code: str = "FR"  # ISO country code for flag display
+    country_code: str = "FR"
+    date_of_birth: Optional[str] = None
     belt_grade: Optional[str] = None
-    dan_grade: Optional[str] = None  # Dan grade (1er Dan, 2ème Dan, etc.)
-    club_ids: List[str] = []  # Clubs this person is associated with
+    dan_grade: Optional[str] = None
+    club_id: Optional[str] = None
+    club_name: Optional[str] = None
+    club_ids: List[str] = []
+    technical_director_id: Optional[str] = None
     photo_url: Optional[str] = None
-    send_email: bool = True  # Send credentials by email
+    bio: Optional[str] = None
+    # Adhésion
+    membership_status: Optional[str] = "Actif"
+    membership_type: Optional[str] = "Standard"
+    membership_start_date: Optional[str] = None
+    membership_end_date: Optional[str] = None
+    # Options
+    send_email: bool = True
 
 class UserCreate(BaseModel):
     email: EmailStr
@@ -287,7 +371,7 @@ class Member(BaseModel):
     country: str
     city: str
     technical_director_id: str
-    photo: Optional[str] = None
+    photo_url: Optional[str] = None
     belt_grade: BeltGrade
     membership_status: MembershipStatus
     membership_type: MembershipType
@@ -305,11 +389,28 @@ class MemberCreate(BaseModel):
     country: str
     city: str
     technical_director_id: str
-    photo: Optional[str] = None
+    photo_url: Optional[str] = None
     belt_grade: BeltGrade
     membership_type: MembershipType
     membership_start_date: str
     membership_end_date: str
+
+class MemberUpdate(BaseModel):
+    """Model for partial member updates - all fields optional"""
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    phone: Optional[str] = None
+    date_of_birth: Optional[str] = None
+    country: Optional[str] = None
+    city: Optional[str] = None
+    technical_director_id: Optional[str] = None
+    photo_url: Optional[str] = None
+    belt_grade: Optional[str] = None  # Accept string for flexibility
+    membership_status: Optional[str] = None
+    membership_type: Optional[str] = None
+    membership_start_date: Optional[str] = None
+    membership_end_date: Optional[str] = None
 
 class Subscription(BaseModel):
     model_config = ConfigDict(extra="ignore")
@@ -582,6 +683,7 @@ class Club(BaseModel):
     phone: Optional[str] = None
     email: Optional[str] = None
     logo_url: Optional[str] = None
+    national_director_ids: List[str] = []  # Multiple DNs allowed
     technical_director_ids: List[str] = []  # Multiple DTs allowed
     instructor_ids: List[str] = []
     disciplines: List[str] = []
@@ -599,6 +701,7 @@ class ClubCreate(BaseModel):
     phone: Optional[str] = None
     email: Optional[str] = None
     logo_url: Optional[str] = None
+    national_director_ids: List[str] = []
     technical_director_ids: List[str] = []
     instructor_ids: List[str] = []
     disciplines: List[str] = []
@@ -613,6 +716,7 @@ class ClubUpdate(BaseModel):
     phone: Optional[str] = None
     email: Optional[str] = None
     logo_url: Optional[str] = None
+    national_director_ids: Optional[List[str]] = None
     technical_director_ids: Optional[List[str]] = None
     instructor_ids: Optional[List[str]] = None
     disciplines: Optional[List[str]] = None
@@ -834,22 +938,52 @@ async def update_user_photo(user_id: str, data: PhotoUploadRequest, current_user
 @api_router.get("/admin/users")
 async def get_all_users(
     role: Optional[str] = None,
+    country: Optional[str] = None,
+    city: Optional[str] = None,
+    club_id: Optional[str] = None,
+    membership_status: Optional[str] = None,
+    belt_grade: Optional[str] = None,
     current_user: dict = Depends(get_current_user)
 ):
-    """Admin: Get all users"""
-    if current_user.get('role') != 'admin':
+    """
+    Admin: Get all users with optional filters.
+
+    Filtres disponibles:
+    - role: admin | fondateur | directeur_national | directeur_technique | instructeur | membre
+    - country: Pays
+    - city: Ville
+    - club_id: ID du club affilié
+    - membership_status: Actif | Inactif | Suspendu | Expiré
+    - belt_grade: Grade/Ceinture
+    """
+    if current_user.get('role') not in ['admin', 'fondateur', 'directeur_national']:
         raise HTTPException(status_code=403, detail="Admin access required")
-    
+
     query = {}
     if role:
         query["role"] = role
-    
+    if country:
+        query["country"] = country
+    if city:
+        query["city"] = city
+    if club_id:
+        query["club_id"] = club_id
+    if membership_status:
+        query["membership_status"] = membership_status
+    if belt_grade:
+        query["belt_grade"] = belt_grade
+
     users = await db.users.find(query, {"_id": 0, "password_hash": 0}).sort("created_at", -1).to_list(500)
-    
+
     for user in users:
         if isinstance(user.get('created_at'), str):
             user['created_at'] = datetime.fromisoformat(user['created_at'])
-    
+        # Ajouter first_name/last_name depuis full_name si absent
+        if user.get('full_name') and not user.get('first_name'):
+            parts = user['full_name'].split(' ', 1)
+            user['first_name'] = parts[0]
+            user['last_name'] = parts[1] if len(parts) > 1 else ''
+
     return {"users": users, "total": len(users)}
 
 @api_router.post("/admin/users")
@@ -1000,29 +1134,23 @@ async def get_user_details(user_id: str, current_user: dict = Depends(get_curren
     return user
 
 @api_router.put("/admin/users/{user_id}")
-async def update_user(user_id: str, data: dict, current_user: dict = Depends(get_current_user)):
-    """Admin: Update any user's profile"""
+async def update_user(user_id: str, data: AdminUserUpdate, current_user: dict = Depends(get_current_user)):
+    """Admin: Update any user's profile (unified model)"""
     if current_user.get('role') != 'admin':
         raise HTTPException(status_code=403, detail="Admin access required")
-    
-    # Fields that can be updated
-    allowed_fields = [
-        'full_name', 'email', 'phone', 'city', 'country', 'role',
-        'belt_grade', 'club_name', 'instructor_name', 'bio',
-        'date_of_birth', 'photo_url', 'has_paid_license', 'is_premium'
-    ]
-    
-    update_data = {k: v for k, v in data.items() if k in allowed_fields and v is not None}
-    
+
+    # Get only non-None fields for partial update
+    update_data = {k: v for k, v in data.model_dump().items() if v is not None}
+
     if not update_data:
         raise HTTPException(status_code=400, detail="Aucune donnée à mettre à jour")
-    
+
     # Check if email is being changed and if it's already taken
     if 'email' in update_data:
         existing = await db.users.find_one({"email": update_data['email'], "id": {"$ne": user_id}})
         if existing:
             raise HTTPException(status_code=400, detail="Cet email est déjà utilisé")
-    
+
     result = await db.users.update_one(
         {"id": user_id},
         {"$set": update_data}
@@ -1104,29 +1232,20 @@ async def delete_technical_director(director_id: str, current_user: dict = Depen
         raise HTTPException(status_code=404, detail="Director not found")
     return {"message": "Director deleted successfully"}
 
-# Members Routes
-@api_router.post("/members", response_model=Member)
-async def create_member(member_data: MemberCreate, current_user: dict = Depends(get_current_user)):
-    member_dict = member_data.model_dump()
-    member_dict['membership_status'] = MembershipStatus.ACTIVE
-    member_dict['sessions_attended'] = 0
-    
-    member = Member(**member_dict)
-    doc = member.model_dump()
-    doc['created_at'] = doc['created_at'].isoformat()
-    
-    await db.members.insert_one(doc)
-    return member
+# ==================== MEMBRES (ALIAS VERS USERS) ====================
+# Les membres sont des utilisateurs avec role="membre"
+# Ces endpoints sont des alias pour compatibilité, utilisez /admin/users avec role=membre
 
-@api_router.get("/members", response_model=List[Member])
-async def get_members(
+@api_router.get("/members")
+async def get_members_alias(
     country: Optional[str] = None,
     city: Optional[str] = None,
     technical_director_id: Optional[str] = None,
     status: Optional[str] = None,
     current_user: dict = Depends(get_current_user)
 ):
-    query = {}
+    """Alias: Récupère les utilisateurs avec role=membre"""
+    query = {"role": "membre"}
     if country:
         query['country'] = country
     if city:
@@ -1135,36 +1254,76 @@ async def get_members(
         query['technical_director_id'] = technical_director_id
     if status:
         query['membership_status'] = status
-    
-    members = await db.members.find(query, {"_id": 0}).to_list(1000)
-    for member in members:
-        if isinstance(member.get('created_at'), str):
-            member['created_at'] = datetime.fromisoformat(member['created_at'])
-    return members
 
-@api_router.get("/members/{member_id}", response_model=Member)
-async def get_member(member_id: str, current_user: dict = Depends(get_current_user)):
-    member = await db.members.find_one({"id": member_id}, {"_id": 0})
-    if not member:
+    users = await db.users.find(query, {"_id": 0, "password_hash": 0}).to_list(1000)
+    # Ajouter first_name/last_name pour compatibilité
+    for user in users:
+        if user.get('full_name') and not user.get('first_name'):
+            parts = user['full_name'].split(' ', 1)
+            user['first_name'] = parts[0]
+            user['last_name'] = parts[1] if len(parts) > 1 else ''
+        if isinstance(user.get('created_at'), str):
+            user['created_at'] = datetime.fromisoformat(user['created_at'])
+    return users
+
+@api_router.get("/members/{member_id}")
+async def get_member_alias(member_id: str, current_user: dict = Depends(get_current_user)):
+    """Alias: Récupère un utilisateur par ID"""
+    user = await db.users.find_one({"id": member_id}, {"_id": 0, "password_hash": 0})
+    if not user:
         raise HTTPException(status_code=404, detail="Member not found")
-    if isinstance(member.get('created_at'), str):
-        member['created_at'] = datetime.fromisoformat(member['created_at'])
-    return member
+    if user.get('full_name') and not user.get('first_name'):
+        parts = user['full_name'].split(' ', 1)
+        user['first_name'] = parts[0]
+        user['last_name'] = parts[1] if len(parts) > 1 else ''
+    return user
 
-@api_router.put("/members/{member_id}", response_model=Member)
-async def update_member(member_id: str, member_data: MemberCreate, current_user: dict = Depends(get_current_user)):
-    update_data = member_data.model_dump()
-    result = await db.members.update_one({"id": member_id}, {"$set": update_data})
+@api_router.put("/members/{member_id}")
+async def update_member_alias(member_id: str, data: AdminUserUpdate, current_user: dict = Depends(get_current_user)):
+    """Alias: Met à jour un utilisateur"""
+    update_data = {k: v for k, v in data.model_dump().items() if v is not None}
+    if not update_data:
+        raise HTTPException(status_code=400, detail="No data to update")
+
+    result = await db.users.update_one({"id": member_id}, {"$set": update_data})
     if result.matched_count == 0:
         raise HTTPException(status_code=404, detail="Member not found")
-    updated = await db.members.find_one({"id": member_id}, {"_id": 0})
-    if isinstance(updated.get('created_at'), str):
-        updated['created_at'] = datetime.fromisoformat(updated['created_at'])
+
+    updated = await db.users.find_one({"id": member_id}, {"_id": 0, "password_hash": 0})
     return updated
 
+@api_router.post("/members")
+async def create_member_alias(data: AdminUserCreate, current_user: dict = Depends(get_current_user)):
+    """Alias: Crée un utilisateur avec role=membre"""
+    # Force role to membre
+    user_dict = data.model_dump()
+    user_dict['role'] = 'membre'
+
+    # Check if email exists
+    existing = await db.users.find_one({"email": data.email})
+    if existing:
+        raise HTTPException(status_code=400, detail="Email already exists")
+
+    # Generate password if not provided
+    password = data.password or ''.join(random.choices(string.ascii_letters + string.digits, k=12))
+    user_dict['password_hash'] = hash_password(password)
+    user_dict.pop('password', None)
+
+    # Set defaults
+    user_dict['id'] = str(uuid.uuid4())
+    user_dict['created_at'] = datetime.now(timezone.utc).isoformat()
+    user_dict['membership_status'] = user_dict.get('membership_status') or 'Actif'
+
+    await db.users.insert_one(user_dict)
+
+    # Return without password_hash
+    user_dict.pop('password_hash', None)
+    return {"message": "Member created", "user": user_dict}
+
 @api_router.delete("/members/{member_id}")
-async def delete_member(member_id: str, current_user: dict = Depends(get_current_user)):
-    result = await db.members.delete_one({"id": member_id})
+async def delete_member_alias(member_id: str, current_user: dict = Depends(get_current_user)):
+    """Alias: Supprime un utilisateur"""
+    result = await db.users.delete_one({"id": member_id})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Member not found")
     return {"message": "Member deleted successfully"}
@@ -1191,18 +1350,21 @@ async def get_subscriptions(member_id: Optional[str] = None, current_user: dict 
 # Dashboard Routes
 @api_router.get("/dashboard/stats", response_model=DashboardStats)
 async def get_dashboard_stats(current_user: dict = Depends(get_current_user)):
-    total_members = await db.members.count_documents({})
-    active_memberships = await db.members.count_documents({"membership_status": "Actif"})
-    
+    # Membres = users avec role="membre"
+    member_query = {"role": "membre"}
+    total_members = await db.users.count_documents(member_query)
+    active_memberships = await db.users.count_documents({**member_query, "membership_status": "Actif"})
+
     subscriptions = await db.subscriptions.find({}, {"_id": 0}).to_list(10000)
     total_revenue = sum(sub['amount'] for sub in subscriptions)
-    
+
     now = datetime.now(timezone.utc)
     start_of_month = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-    new_members_this_month = await db.members.count_documents({
+    new_members_this_month = await db.users.count_documents({
+        **member_query,
         "created_at": {"$gte": start_of_month.isoformat()}
     })
-    
+
     members_by_month = [
         {"month": "Jan", "count": 12},
         {"month": "Fév", "count": 19},
@@ -1212,20 +1374,25 @@ async def get_dashboard_stats(current_user: dict = Depends(get_current_user)):
         {"month": "Jun", "count": 25},
         {"month": "Jul", "count": 30}
     ]
-    
-    members = await db.members.find({}, {"_id": 0}).to_list(1000)
+
+    members = await db.users.find(member_query, {"_id": 0, "password_hash": 0}).to_list(1000)
     members_by_country_dict = {}
     for member in members:
         country = member.get('country', 'Unknown')
         members_by_country_dict[country] = members_by_country_dict.get(country, 0) + 1
-    
+
     members_by_country = [{"country": k, "count": v} for k, v in members_by_country_dict.items()]
-    
-    recent_members_list = await db.members.find({}, {"_id": 0}).sort("created_at", -1).limit(5).to_list(5)
+
+    recent_members_list = await db.users.find(member_query, {"_id": 0, "password_hash": 0}).sort("created_at", -1).limit(5).to_list(5)
     for member in recent_members_list:
         if isinstance(member.get('created_at'), str):
             member['created_at'] = datetime.fromisoformat(member['created_at'])
-    
+        # Ajouter first_name/last_name pour compatibilité
+        if member.get('full_name') and not member.get('first_name'):
+            parts = member['full_name'].split(' ', 1)
+            member['first_name'] = parts[0]
+            member['last_name'] = parts[1] if len(parts) > 1 else ''
+
     return {
         "total_members": total_members,
         "total_revenue": total_revenue,
@@ -3354,7 +3521,7 @@ async def approve_pending_member(pending_id: str, current_user: dict = Depends(g
         email=pending['email'],
         password_hash=hash_password(temp_password),
         full_name=pending['full_name'],
-        role="member",
+        role="membre",  # Rôle unifié français
         has_paid_license=True,  # Existing members already paid
         is_premium=False
     )
@@ -3751,7 +3918,7 @@ async def get_club_stats(club_id: str, current_user: dict = Depends(get_current_
         grade = member.get("belt_grade", "Non défini")
         stats["by_grade"][grade] = stats["by_grade"].get(grade, 0) + 1
         
-        role = member.get("role", "member")
+        role = member.get("role", "membre")
         stats["by_role"][role] = stats["by_role"].get(role, 0) + 1
         
         if member.get("has_paid_license"):
@@ -3776,7 +3943,7 @@ async def get_visit_requests(
         # Admins see all
         if club_id:
             query["$or"] = [{"home_club_id": club_id}, {"target_club_id": club_id}]
-    elif current_user.get("role") == "technical_director":
+    elif current_user.get("role") == "directeur_technique":
         # DTs see requests for their club
         user_club = current_user.get("club_id")
         if user_club:
@@ -3851,10 +4018,10 @@ async def approve_visit_request(request_id: str, current_user: dict = Depends(ge
     # Check permissions
     is_admin = current_user.get("role") == "admin"
     is_club_dt = (
-        current_user.get("role") == "technical_director" and 
+        current_user.get("role") == "directeur_technique" and
         current_user.get("club_id") == visit_request.get("target_club_id")
     )
-    
+
     if not is_admin and not is_club_dt:
         raise HTTPException(status_code=403, detail="Vous n'êtes pas autorisé à approuver cette demande")
     
@@ -3879,10 +4046,10 @@ async def reject_visit_request(request_id: str, current_user: dict = Depends(get
     
     is_admin = current_user.get("role") == "admin"
     is_club_dt = (
-        current_user.get("role") == "technical_director" and 
+        current_user.get("role") == "directeur_technique" and
         current_user.get("club_id") == visit_request.get("target_club_id")
     )
-    
+
     if not is_admin and not is_club_dt:
         raise HTTPException(status_code=403, detail="Vous n'êtes pas autorisé à refuser cette demande")
     
@@ -3920,10 +4087,24 @@ async def get_technical_directors_list():
     """Get all technical directors for club assignment"""
     directors = await db.users.find(
         {"$or": [
+            {"role": "directeur_technique"},
             {"role": "technical_director"},
-            {"belt_grade": {"$in": ["Directeur Technique", "Directeur National"]}}
+            {"roles": "directeur_technique"}
         ]},
-        {"_id": 0, "id": 1, "full_name": 1, "email": 1, "city": 1, "country": 1, "photo_url": 1, "club_id": 1}
+        {"_id": 0, "id": 1, "full_name": 1, "email": 1, "city": 1, "country": 1, "photo_url": 1, "club_id": 1, "dan_grade": 1}
+    ).to_list(1000)
+    return {"directors": directors}
+
+@api_router.get("/national-directors-list")
+async def get_national_directors_list():
+    """Get all national directors for club assignment"""
+    directors = await db.users.find(
+        {"$or": [
+            {"role": "directeur_national"},
+            {"role": "national_director"},
+            {"roles": "directeur_national"}
+        ]},
+        {"_id": 0, "id": 1, "full_name": 1, "email": 1, "city": 1, "country": 1, "photo_url": 1, "dan_grade": 1}
     ).to_list(1000)
     return {"directors": directors}
 
@@ -3932,10 +4113,11 @@ async def get_instructors_list():
     """Get all instructors for club assignment"""
     instructors = await db.users.find(
         {"$or": [
+            {"role": "instructeur"},
             {"role": "instructor"},
-            {"belt_grade": "Instructeur"}
+            {"roles": "instructeur"}
         ]},
-        {"_id": 0, "id": 1, "full_name": 1, "email": 1, "city": 1, "country": 1, "photo_url": 1, "club_id": 1}
+        {"_id": 0, "id": 1, "full_name": 1, "email": 1, "city": 1, "country": 1, "photo_url": 1, "club_id": 1, "dan_grade": 1}
     ).to_list(1000)
     return {"instructors": instructors}
 
@@ -4064,10 +4246,8 @@ async def get_onboarding_countries():
 @api_router.get("/onboarding/instructors")
 async def get_onboarding_instructors(country: Optional[str] = None, city: Optional[str] = None):
     """Get list of instructors/technical directors for onboarding form"""
-    query = {"$or": [
-        {"role": {"$in": ["instructor", "technical_director"]}},
-        {"belt_grade": {"$in": ["Instructeur", "Directeur Technique", "Directeur National"]}}
-    ]}
+    # Rôles unifiés: instructeur, directeur_technique, directeur_national
+    query = {"role": {"$in": ["instructeur", "directeur_technique", "directeur_national"]}}
     
     if country:
         query["country"] = {"$regex": country, "$options": "i"}
@@ -4119,6 +4299,61 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+# ============================================================================
+# STATIC FILES - Serve React Frontend (Unified Deployment)
+# ============================================================================
+
+# Path to the frontend build directory
+FRONTEND_BUILD_DIR = ROOT_DIR.parent / "frontend" / "build"
+
+# Check if frontend build exists (for unified deployment)
+if FRONTEND_BUILD_DIR.exists():
+    logger.info(f"Frontend build found at {FRONTEND_BUILD_DIR}, serving static files")
+    
+    # Mount static assets (JS, CSS, images)
+    app.mount("/static", StaticFiles(directory=FRONTEND_BUILD_DIR / "static"), name="static")
+    
+    # Serve other static files (manifest.json, sw.js, etc.)
+    @app.get("/manifest.json")
+    async def serve_manifest():
+        return FileResponse(FRONTEND_BUILD_DIR / "manifest.json")
+    
+    @app.get("/sw.js")
+    async def serve_sw():
+        return FileResponse(FRONTEND_BUILD_DIR / "sw.js", media_type="application/javascript")
+    
+    @app.get("/favicon.ico")
+    async def serve_favicon():
+        favicon_path = FRONTEND_BUILD_DIR / "favicon.ico"
+        if favicon_path.exists():
+            return FileResponse(favicon_path)
+        raise HTTPException(status_code=404)
+    
+    # Catch-all route for React SPA - MUST be last
+    @app.get("/{full_path:path}")
+    async def serve_react_app(full_path: str):
+        """
+        Serve React app for all non-API routes.
+        This enables client-side routing in the React SPA.
+        """
+        # Don't serve index.html for API routes (they should 404 if not found)
+        if full_path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="API endpoint not found")
+        
+        # Serve index.html for all other routes
+        return FileResponse(FRONTEND_BUILD_DIR / "index.html")
+else:
+    logger.info("No frontend build found - running in API-only mode")
+    
+    @app.get("/")
+    async def root():
+        return {
+            "message": "Académie Levinet API",
+            "status": "running",
+            "docs": "/docs",
+            "mode": "api-only"
+        }
 
 @app.on_event("shutdown")
 async def shutdown_db_client():

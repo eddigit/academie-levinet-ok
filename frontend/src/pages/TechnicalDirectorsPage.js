@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
-import api from '../utils/api';
+import api, { getErrorMessage } from '../utils/api';
 import { countries, getFlag, danGrades, disciplines } from '../utils/countries';
 import { Plus, Edit, Trash2, Search, X, Loader2, Upload, User, MapPin, Award, Building2, Mail, Phone } from 'lucide-react';
 import { Button } from '../components/ui/button';
@@ -8,6 +8,7 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { toast } from 'sonner';
+import UserAvatar from '../components/UserAvatar';
 
 const TechnicalDirectorsPage = () => {
   const [directors, setDirectors] = useState([]);
@@ -41,20 +42,15 @@ const TechnicalDirectorsPage = () => {
 
   const fetchDirectors = async () => {
     try {
-      // Fetch users with technical_director role
-      const response = await api.get('/admin/users?role=technical_director');
-      const data = response.data || response;
-      setDirectors(Array.isArray(data) ? data : []);
+      // Fetch users with role=directeur_technique
+      const response = await api.get('/admin/users?role=directeur_technique');
+      // Backend returns {users: [...], total: n}
+      const users = response.data?.users || [];
+      setDirectors(users);
     } catch (error) {
       console.error('Error fetching directors:', error);
-      // Fallback to old endpoint
-      try {
-        const data = await api.getTechnicalDirectors();
-        setDirectors(Array.isArray(data) ? data : []);
-      } catch (e) {
-        setDirectors([]);
-        toast.error('Erreur lors du chargement');
-      }
+      setDirectors([]);
+      toast.error('Erreur lors du chargement des directeurs techniques');
     } finally {
       setLoading(false);
     }
@@ -118,21 +114,43 @@ const TechnicalDirectorsPage = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setUploading(true);
-    try {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const base64 = reader.result;
-        const response = await api.post('/upload/image', { image_data: base64 });
-        setFormData(prev => ({ ...prev, photo_url: response.data.url }));
-        toast.success('Photo uploadée');
-      };
-      reader.readAsDataURL(file);
-    } catch (error) {
-      toast.error('Erreur lors de l\'upload');
-    } finally {
-      setUploading(false);
+    // Validation du type de fichier
+    if (!file.type.startsWith('image/')) {
+      toast.error('Veuillez sélectionner une image (JPG, PNG, GIF, WebP)');
+      return;
     }
+
+    // Validation de la taille (max 10 Mo)
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+      toast.error(`L'image fait ${sizeMB} Mo, maximum autorisé: 10 Mo`);
+      return;
+    }
+
+    setUploading(true);
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      try {
+        // Retirer le préfixe data:image/...;base64,
+        const base64 = reader.result.split(',')[1];
+        const response = await api.post('/upload/photo', {
+          photo_base64: base64,
+          filename: file.name
+        });
+        setFormData(prev => ({ ...prev, photo_url: response.data.photo_url }));
+        toast.success('Photo uploadée');
+      } catch (error) {
+        console.error('Error uploading photo:', error);
+        toast.error('Erreur lors de l\'upload de la photo');
+      }
+      setUploading(false);
+    };
+    reader.onerror = () => {
+      toast.error('Erreur lors de la lecture du fichier');
+      setUploading(false);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleCountryChange = (countryCode) => {
@@ -153,13 +171,9 @@ const TechnicalDirectorsPage = () => {
 
     setSaving(true);
     try {
-      const roles = ['technical_director'];
-      if (formData.is_also_instructor) roles.push('instructor');
-
       const payload = {
         ...formData,
-        role: 'technical_director',
-        roles: roles,
+        role: 'directeur_technique',
       };
 
       if (editingDirector) {
@@ -172,7 +186,7 @@ const TechnicalDirectorsPage = () => {
       closeModal();
       fetchDirectors();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Erreur lors de l\'enregistrement');
+      toast.error(getErrorMessage(error, 'Erreur lors de l\'enregistrement'));
     } finally {
       setSaving(false);
     }
@@ -276,17 +290,13 @@ const TechnicalDirectorsPage = () => {
                 <div className="flex items-start gap-4">
                   {/* Photo */}
                   <div className="relative flex-shrink-0">
-                    {(director.photo_url || director.photo) ? (
-                      <img
-                        src={director.photo_url || director.photo}
-                        alt={director.full_name || director.name}
-                        className="w-20 h-20 rounded-lg object-cover"
-                      />
-                    ) : (
-                      <div className="w-20 h-20 rounded-lg bg-accent/20 flex items-center justify-center">
-                        <User className="w-10 h-10 text-accent" />
-                      </div>
-                    )}
+                    <UserAvatar
+                      user={{
+                        full_name: director.full_name || director.name,
+                        photo_url: director.photo_url || director.photo
+                      }}
+                      size="xl"
+                    />
                     {/* Flag badge */}
                     <span className="absolute -bottom-1 -right-1 text-xl">
                       {getFlag(director.country_code)}
@@ -402,15 +412,10 @@ const TechnicalDirectorsPage = () => {
             <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto max-h-[calc(90vh-140px)]">
               {/* Photo */}
               <div className="flex items-center gap-4">
-                <div className="relative">
-                  {formData.photo_url ? (
-                    <img src={formData.photo_url} alt="Photo" className="w-20 h-20 rounded-lg object-cover" />
-                  ) : (
-                    <div className="w-20 h-20 rounded-lg bg-accent/20 flex items-center justify-center">
-                      <User className="w-10 h-10 text-accent" />
-                    </div>
-                  )}
-                </div>
+                <UserAvatar
+                  user={{ full_name: formData.full_name, photo_url: formData.photo_url }}
+                  size="xl"
+                />
                 <div>
                   <input
                     type="file"

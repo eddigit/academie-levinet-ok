@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Building2, Plus, Search, MapPin, User, Phone, Mail, 
-  Edit, Trash2, Loader2, X, UserCog
+import {
+  Building2, Plus, Search, MapPin, Phone, Mail,
+  Edit, Trash2, Loader2, X, UserCog, Users
 } from 'lucide-react';
 import DashboardLayout from '../components/DashboardLayout';
 import { Button } from '../components/ui/button';
@@ -9,31 +9,34 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import api from '../utils/api';
+import api, { getErrorMessage } from '../utils/api';
 import { toast } from 'sonner';
 import { countries, getFlag, disciplines as disciplinesList } from '../utils/countries';
+import UserAvatar, { UserAvatarGroup } from '../components/UserAvatar';
 
 const ClubsPage = () => {
   const [clubs, setClubs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [countryFilter, setCountryFilter] = useState('all');
-  const [directors, setDirectors] = useState([]);
+  const [technicalDirectors, setTechnicalDirectors] = useState([]);
+  const [nationalDirectors, setNationalDirectors] = useState([]);
   const [instructorsList, setInstructorsList] = useState([]);
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingClub, setEditingClub] = useState(null);
   const [saving, setSaving] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     name: '', address: '', city: '', country: 'France', country_code: 'FR',
     phone: '', email: '', logo_url: '', technical_director_ids: [],
-    instructor_ids: [], disciplines: [], schedule: ''
+    national_director_ids: [], instructor_ids: [], disciplines: [], schedule: ''
   });
 
   useEffect(() => {
     fetchClubs();
-    fetchDirectors();
+    fetchTechnicalDirectors();
+    fetchNationalDirectors();
     fetchInstructors();
   }, []);
 
@@ -48,13 +51,25 @@ const ClubsPage = () => {
     setLoading(false);
   };
 
-  const fetchDirectors = async () => {
+  const fetchTechnicalDirectors = async () => {
     try {
       const response = await api.get('/technical-directors-list');
       const data = response.data?.directors || response.data || [];
-      setDirectors(Array.isArray(data) ? data : []);
+      setTechnicalDirectors(Array.isArray(data) ? data : []);
     } catch (error) {
-      setDirectors([]);
+      console.error('Error fetching technical directors:', error);
+      setTechnicalDirectors([]);
+    }
+  };
+
+  const fetchNationalDirectors = async () => {
+    try {
+      const response = await api.get('/national-directors-list');
+      const data = response.data?.directors || response.data || [];
+      setNationalDirectors(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error('Error fetching national directors:', error);
+      setNationalDirectors([]);
     }
   };
 
@@ -64,6 +79,7 @@ const ClubsPage = () => {
       const data = response.data?.instructors || response.data || [];
       setInstructorsList(Array.isArray(data) ? data : []);
     } catch (error) {
+      console.error('Error fetching instructors:', error);
       setInstructorsList([]);
     }
   };
@@ -72,13 +88,13 @@ const ClubsPage = () => {
     setFormData({
       name: '', address: '', city: '', country: 'France', country_code: 'FR',
       phone: '', email: '', logo_url: '', technical_director_ids: [],
-      instructor_ids: [], disciplines: [], schedule: ''
+      national_director_ids: [], instructor_ids: [], disciplines: [], schedule: ''
     });
     setEditingClub(null);
   };
 
   const openAddModal = () => { resetForm(); setIsModalOpen(true); };
-  
+
   const openEditModal = (club) => {
     setEditingClub(club);
     setFormData({
@@ -91,6 +107,7 @@ const ClubsPage = () => {
       email: club.email || '',
       logo_url: club.logo_url || '',
       technical_director_ids: club.technical_director_ids || (club.technical_director_id ? [club.technical_director_id] : []),
+      national_director_ids: club.national_director_ids || [],
       instructor_ids: club.instructor_ids || [],
       disciplines: club.disciplines || [],
       schedule: club.schedule || ''
@@ -123,7 +140,7 @@ const ClubsPage = () => {
       closeModal();
       fetchClubs();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Erreur');
+      toast.error(getErrorMessage(error, 'Erreur'));
     }
     setSaving(false);
   };
@@ -139,15 +156,24 @@ const ClubsPage = () => {
     }
   };
 
-  const getDirectorName = (id) => {
-    const d = directors.find(dir => dir.id === id);
-    return d?.name || d?.full_name || 'Inconnu';
+  const getTechnicalDirectorName = (id) => {
+    const d = technicalDirectors.find(dir => dir.id === id);
+    return d?.full_name || d?.name || 'Inconnu';
+  };
+
+  const getNationalDirectorName = (id) => {
+    const d = nationalDirectors.find(dir => dir.id === id);
+    return d?.full_name || d?.name || 'Inconnu';
   };
 
   const getInstructorName = (id) => {
     const i = instructorsList.find(inst => inst.id === id);
-    return i?.name || i?.full_name || 'Inconnu';
+    return i?.full_name || i?.name || 'Inconnu';
   };
+
+  const getTechnicalDirector = (id) => technicalDirectors.find(d => d.id === id);
+  const getNationalDirector = (id) => nationalDirectors.find(d => d.id === id);
+  const getInstructor = (id) => instructorsList.find(i => i.id === id);
 
   const filteredClubs = clubs.filter(club => {
     const matchesSearch = club.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -226,24 +252,62 @@ const ClubsPage = () => {
               <div className="p-4 space-y-3">
                 {club.phone && <p className="text-xs text-text-secondary flex items-center gap-2"><Phone className="w-3 h-3" />{club.phone}</p>}
                 {club.email && <p className="text-xs text-text-secondary flex items-center gap-2 truncate"><Mail className="w-3 h-3" />{club.email}</p>}
-                {(club.technical_director_ids?.length > 0 || club.technical_director_id) && (
+
+                {/* Directeurs Nationaux */}
+                {club.national_director_ids?.length > 0 && (
                   <div className="pt-2 border-t border-white/5">
-                    <p className="text-xs text-text-muted mb-1 flex items-center gap-1"><UserCog className="w-3 h-3" />DT:</p>
-                    <div className="flex flex-wrap gap-1">
-                      {(club.technical_director_ids || [club.technical_director_id]).filter(Boolean).map(id => (
-                        <span key={id} className="px-2 py-0.5 bg-accent/20 text-accent rounded text-xs">{getDirectorName(id)}</span>
-                      ))}
+                    <p className="text-xs text-text-muted mb-2 flex items-center gap-1"><UserCog className="w-3 h-3" />Directeurs Nationaux:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {club.national_director_ids.map(id => {
+                        const director = getNationalDirector(id);
+                        return (
+                          <div key={id} className="flex items-center gap-2 px-2 py-1 bg-purple-500/10 rounded-lg">
+                            <UserAvatar user={{ full_name: getNationalDirectorName(id), photo_url: director?.photo_url }} size="xs" />
+                            <span className="text-xs text-purple-400">{getNationalDirectorName(id)}</span>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
+
+                {/* Directeurs Techniques */}
+                {(club.technical_director_ids?.length > 0 || club.technical_director_id) && (
+                  <div className="pt-2 border-t border-white/5">
+                    <p className="text-xs text-text-muted mb-2 flex items-center gap-1"><UserCog className="w-3 h-3" />Directeurs Techniques:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {(club.technical_director_ids || [club.technical_director_id]).filter(Boolean).map(id => {
+                        const director = getTechnicalDirector(id);
+                        return (
+                          <div key={id} className="flex items-center gap-2 px-2 py-1 bg-accent/10 rounded-lg">
+                            <UserAvatar user={{ full_name: getTechnicalDirectorName(id), photo_url: director?.photo_url }} size="xs" />
+                            <span className="text-xs text-accent">{getTechnicalDirectorName(id)}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Instructeurs */}
                 {club.instructor_ids?.length > 0 && (
-                  <div>
-                    <p className="text-xs text-text-muted mb-1 flex items-center gap-1"><User className="w-3 h-3" />Instructeurs:</p>
-                    <div className="flex flex-wrap gap-1">
-                      {club.instructor_ids.slice(0, 3).map(id => (
-                        <span key={id} className="px-2 py-0.5 bg-primary/20 text-primary rounded text-xs">{getInstructorName(id)}</span>
-                      ))}
-                      {club.instructor_ids.length > 3 && <span className="px-2 py-0.5 bg-white/10 text-text-muted rounded text-xs">+{club.instructor_ids.length - 3}</span>}
+                  <div className="pt-2 border-t border-white/5">
+                    <p className="text-xs text-text-muted mb-2 flex items-center gap-1"><Users className="w-3 h-3" />Instructeurs:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {club.instructor_ids.slice(0, 4).map(id => {
+                        const instructor = getInstructor(id);
+                        return (
+                          <div key={id} className="flex items-center gap-2 px-2 py-1 bg-primary/10 rounded-lg">
+                            <UserAvatar user={{ full_name: getInstructorName(id), photo_url: instructor?.photo_url }} size="xs" />
+                            <span className="text-xs text-primary">{getInstructorName(id)}</span>
+                          </div>
+                        );
+                      })}
+                      {club.instructor_ids.length > 4 && (
+                        <span className="px-2 py-1 bg-white/10 text-text-muted rounded-lg text-xs flex items-center">
+                          +{club.instructor_ids.length - 4} autres
+                        </span>
+                      )}
                     </div>
                   </div>
                 )}
@@ -310,30 +374,91 @@ const ClubsPage = () => {
                   <Input type="email" value={formData.email} onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))} className="mt-1 bg-background border-white/10" />
                 </div>
               </div>
+              {/* Directeurs Nationaux */}
               <div>
-                <Label className="text-text-secondary">Directeurs Techniques</Label>
-                <div className="mt-2 grid grid-cols-2 gap-2 max-h-32 overflow-y-auto p-2 bg-background rounded-lg border border-white/10">
-                  {directors.length === 0 ? <p className="text-text-muted text-sm col-span-2">Aucun DT disponible</p> : directors.map(d => (
-                    <label key={d.id} className="flex items-center gap-2 text-sm cursor-pointer">
-                      <input type="checkbox" checked={formData.technical_director_ids.includes(d.id)} onChange={(e) => {
-                        if (e.target.checked) setFormData(prev => ({ ...prev, technical_director_ids: [...prev.technical_director_ids, d.id] }));
-                        else setFormData(prev => ({ ...prev, technical_director_ids: prev.technical_director_ids.filter(id => id !== d.id) }));
-                      }} className="rounded border-white/20" />
-                      <span className="text-text-secondary">{d.name || d.full_name}</span>
+                <Label className="text-text-secondary flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-purple-500"></span>
+                  Directeurs Nationaux
+                  {formData.national_director_ids.length > 0 && (
+                    <span className="text-xs bg-purple-500/20 text-purple-400 px-2 py-0.5 rounded-full">
+                      {formData.national_director_ids.length} selectionne(s)
+                    </span>
+                  )}
+                </Label>
+                <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-40 overflow-y-auto p-3 bg-background rounded-lg border border-white/10">
+                  {nationalDirectors.length === 0 ? (
+                    <p className="text-text-muted text-sm col-span-2 py-2">Aucun directeur national disponible</p>
+                  ) : nationalDirectors.map(d => (
+                    <label key={d.id} className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-colors ${formData.national_director_ids.includes(d.id) ? 'bg-purple-500/20 border border-purple-500/50' : 'hover:bg-white/5 border border-transparent'}`}>
+                      <input type="checkbox" checked={formData.national_director_ids.includes(d.id)} onChange={(e) => {
+                        if (e.target.checked) setFormData(prev => ({ ...prev, national_director_ids: [...prev.national_director_ids, d.id] }));
+                        else setFormData(prev => ({ ...prev, national_director_ids: prev.national_director_ids.filter(id => id !== d.id) }));
+                      }} className="rounded border-white/20 text-purple-500" />
+                      <UserAvatar user={d} size="xs" />
+                      <div className="flex-1 min-w-0">
+                        <span className="text-text-primary text-sm block truncate">{d.full_name || d.name}</span>
+                        {d.city && <span className="text-text-muted text-xs">{d.city}</span>}
+                      </div>
                     </label>
                   ))}
                 </div>
               </div>
+
+              {/* Directeurs Techniques */}
               <div>
-                <Label className="text-text-secondary">Instructeurs</Label>
-                <div className="mt-2 grid grid-cols-2 gap-2 max-h-32 overflow-y-auto p-2 bg-background rounded-lg border border-white/10">
-                  {instructorsList.length === 0 ? <p className="text-text-muted text-sm col-span-2">Aucun instructeur disponible</p> : instructorsList.map(i => (
-                    <label key={i.id} className="flex items-center gap-2 text-sm cursor-pointer">
+                <Label className="text-text-secondary flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-accent"></span>
+                  Directeurs Techniques
+                  {formData.technical_director_ids.length > 0 && (
+                    <span className="text-xs bg-accent/20 text-accent px-2 py-0.5 rounded-full">
+                      {formData.technical_director_ids.length} selectionne(s)
+                    </span>
+                  )}
+                </Label>
+                <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-40 overflow-y-auto p-3 bg-background rounded-lg border border-white/10">
+                  {technicalDirectors.length === 0 ? (
+                    <p className="text-text-muted text-sm col-span-2 py-2">Aucun directeur technique disponible</p>
+                  ) : technicalDirectors.map(d => (
+                    <label key={d.id} className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-colors ${formData.technical_director_ids.includes(d.id) ? 'bg-accent/20 border border-accent/50' : 'hover:bg-white/5 border border-transparent'}`}>
+                      <input type="checkbox" checked={formData.technical_director_ids.includes(d.id)} onChange={(e) => {
+                        if (e.target.checked) setFormData(prev => ({ ...prev, technical_director_ids: [...prev.technical_director_ids, d.id] }));
+                        else setFormData(prev => ({ ...prev, technical_director_ids: prev.technical_director_ids.filter(id => id !== d.id) }));
+                      }} className="rounded border-white/20 text-accent" />
+                      <UserAvatar user={d} size="xs" />
+                      <div className="flex-1 min-w-0">
+                        <span className="text-text-primary text-sm block truncate">{d.full_name || d.name}</span>
+                        {d.city && <span className="text-text-muted text-xs">{d.city}</span>}
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Instructeurs */}
+              <div>
+                <Label className="text-text-secondary flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-primary"></span>
+                  Instructeurs
+                  {formData.instructor_ids.length > 0 && (
+                    <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full">
+                      {formData.instructor_ids.length} selectionne(s)
+                    </span>
+                  )}
+                </Label>
+                <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-40 overflow-y-auto p-3 bg-background rounded-lg border border-white/10">
+                  {instructorsList.length === 0 ? (
+                    <p className="text-text-muted text-sm col-span-2 py-2">Aucun instructeur disponible</p>
+                  ) : instructorsList.map(i => (
+                    <label key={i.id} className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-colors ${formData.instructor_ids.includes(i.id) ? 'bg-primary/20 border border-primary/50' : 'hover:bg-white/5 border border-transparent'}`}>
                       <input type="checkbox" checked={formData.instructor_ids.includes(i.id)} onChange={(e) => {
                         if (e.target.checked) setFormData(prev => ({ ...prev, instructor_ids: [...prev.instructor_ids, i.id] }));
                         else setFormData(prev => ({ ...prev, instructor_ids: prev.instructor_ids.filter(id => id !== i.id) }));
-                      }} className="rounded border-white/20" />
-                      <span className="text-text-secondary">{i.name || i.full_name}</span>
+                      }} className="rounded border-white/20 text-primary" />
+                      <UserAvatar user={i} size="xs" />
+                      <div className="flex-1 min-w-0">
+                        <span className="text-text-primary text-sm block truncate">{i.full_name || i.name}</span>
+                        {i.city && <span className="text-text-muted text-xs">{i.city}</span>}
+                      </div>
                     </label>
                   ))}
                 </div>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
-import { 
-  Heart, MessageCircle, Send, MoreHorizontal, Trash2, 
+import UserAvatar from './UserAvatar';
+import {
+  Heart, MessageCircle, Send, MoreHorizontal, Trash2,
   Flame, ThumbsUp, Award, Users, TrendingUp, Clock,
   Image as ImageIcon, Video, Smile, X, ChevronDown, ChevronUp
 } from 'lucide-react';
@@ -53,7 +54,7 @@ const PostCard = ({ post, onReact, onComment, onDelete, currentUserId }) => {
   const handleSubmitComment = async (e) => {
     e.preventDefault();
     if (!newComment.trim() || submittingComment) return;
-    
+
     setSubmittingComment(true);
     try {
       const response = await api.post(`/wall/posts/${post.id}/comments`, {
@@ -73,11 +74,6 @@ const PostCard = ({ post, onReact, onComment, onDelete, currentUserId }) => {
     onReact(post.id, reactionType);
   };
 
-  const getInitials = (name) => {
-    if (!name) return '?';
-    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-  };
-
   const totalReactions = post.reactions_count || 0;
   const canDelete = post.author_id === currentUserId || post.author?.role === 'admin';
 
@@ -86,9 +82,7 @@ const PostCard = ({ post, onReact, onComment, onDelete, currentUserId }) => {
       {/* Post Header */}
       <div className="p-4 flex items-start justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-sm">
-            {getInitials(post.author?.full_name)}
-          </div>
+          <UserAvatar user={post.author} size="md" />
           <div>
             <p className="font-semibold text-text-primary">{post.author?.full_name || 'Membre'}</p>
             <p className="text-xs text-text-muted flex items-center gap-1">
@@ -200,9 +194,7 @@ const PostCard = ({ post, onReact, onComment, onDelete, currentUserId }) => {
               <div className="max-h-64 overflow-y-auto">
                 {comments.map(comment => (
                   <div key={comment.id} className="p-3 flex gap-3">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold flex-shrink-0">
-                      {getInitials(comment.author?.full_name)}
-                    </div>
+                    <UserAvatar user={comment.author} size="sm" />
                     <div className="flex-1 bg-paper rounded-lg px-3 py-2">
                       <p className="text-sm font-semibold text-text-primary">{comment.author?.full_name}</p>
                       <p className="text-sm text-text-secondary">{comment.content}</p>
@@ -247,7 +239,7 @@ const CreatePost = ({ onPostCreated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!content.trim() || isSubmitting) return;
-    
+
     setIsSubmitting(true);
     try {
       const response = await api.post('/wall/posts', { content, post_type: 'text' });
@@ -260,17 +252,10 @@ const CreatePost = ({ onPostCreated }) => {
     setIsSubmitting(false);
   };
 
-  const getInitials = (name) => {
-    if (!name) return '?';
-    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-  };
-
   return (
     <div className="bg-paper rounded-xl border border-white/10 p-4">
       <div className="flex gap-3">
-        <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-sm flex-shrink-0">
-          {getInitials(user?.full_name)}
-        </div>
+        <UserAvatar user={user} size="md" />
         <div className="flex-1">
           {isExpanded ? (
             <form onSubmit={handleSubmit}>
@@ -366,7 +351,7 @@ const SocialWall = ({ variant = 'full' }) => {
     fetchPosts();
     fetchOnlineUsers();
     fetchStats();
-    
+
     // Refresh online users every 30 seconds
     const interval = setInterval(fetchOnlineUsers, 30000);
     return () => clearInterval(interval);
@@ -393,11 +378,6 @@ const SocialWall = ({ variant = 'full' }) => {
     } catch (error) {
       console.error('Error deleting post:', error);
     }
-  };
-
-  const getInitials = (name) => {
-    if (!name) return '?';
-    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
   };
 
   if (variant === 'compact') {
@@ -428,9 +408,7 @@ const SocialWall = ({ variant = 'full' }) => {
         {/* User Card */}
         <div className="bg-paper rounded-xl border border-white/10 p-4">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
-              {getInitials(user?.full_name)}
-            </div>
+            <UserAvatar user={user} size="lg" />
             <div>
               <p className="font-semibold text-text-primary">{user?.full_name}</p>
               <p className="text-xs text-text-muted capitalize">{user?.role}</p>
@@ -521,12 +499,7 @@ const SocialWall = ({ variant = 'full' }) => {
           <div className="space-y-2">
             {onlineUsers.slice(0, 10).map(u => (
               <div key={u.id} className="flex items-center gap-2 p-2 rounded-lg hover:bg-white/5 transition-colors">
-                <div className="relative">
-                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold">
-                    {getInitials(u.full_name)}
-                  </div>
-                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-paper rounded-full"></span>
-                </div>
+                <UserAvatar user={u} size="sm" showOnlineIndicator isOnline />
                 <span className="text-sm text-text-primary truncate">{u.full_name}</span>
               </div>
             ))}

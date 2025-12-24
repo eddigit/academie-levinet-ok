@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import MemberSidebar from '../../components/MemberSidebar';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../utils/api';
-import { Users, Newspaper, Calendar, Heart, MessageSquare, Share2, ChevronRight } from 'lucide-react';
+import UserAvatar from '../../components/UserAvatar';
+import { Users, Newspaper, Calendar, Heart, MessageSquare, Share2, MapPin } from 'lucide-react';
 import { Button } from '../../components/ui/button';
-import { Link } from 'react-router-dom';
 
 const MemberCommunity = () => {
   const { user } = useAuth();
@@ -194,14 +194,12 @@ const MemberCommunity = () => {
 
             {activeTab === 'members' && (
               <div className="bg-paper rounded-xl border border-white/5 p-6">
-                <h3 className="font-oswald text-xl text-text-primary uppercase mb-4">Membres de l'Académie</h3>
+                <h3 className="font-oswald text-xl text-text-primary uppercase mb-4">Membres de l'Academie</h3>
                 <div className="space-y-3">
                   {communityMembers.map((member, idx) => (
                     <div key={idx} className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                          <span className="font-oswald text-primary font-bold">{member.name[0]}</span>
-                        </div>
+                        <UserAvatar user={{ full_name: member.name, photo_url: member.photo_url }} size="md" />
                         <div>
                           <p className="font-oswald text-text-primary">{member.name}</p>
                           <p className="text-xs text-text-muted">{member.grade} • {member.city}</p>

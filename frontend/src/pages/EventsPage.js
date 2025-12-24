@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
-import api from '../utils/api';
-import { Plus, Edit, Trash2, Users, Calendar, MapPin, Clock, Euro, X, Loader2 } from 'lucide-react';
+import api, { getErrorMessage } from '../utils/api';
+import { useAuth } from '../context/AuthContext';
+import { Plus, Edit, Trash2, Users, Calendar, MapPin, Clock, Euro, X, Loader2, Eye } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Label } from '../components/ui/label';
 import { Input } from '../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { toast } from 'sonner';
+import UserAvatar, { UserAvatarGroup } from '../components/UserAvatar';
+import EventDetailModal from '../components/EventDetailModal';
 
 // Event Modal Component - Extracted outside to prevent re-renders
 const EventModal = ({ 
@@ -242,13 +245,16 @@ const initialFormData = {
 };
 
 const EventsPage = () => {
+  const { user } = useAuth();
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [saving, setSaving] = useState(false);
-  
+
   // Single form state object to prevent re-renders
   const [formData, setFormData] = useState(initialFormData);
   
@@ -314,6 +320,16 @@ const EventsPage = () => {
     resetForm();
   };
 
+  const openDetailModal = (event) => {
+    setSelectedEvent(event);
+    setIsDetailModalOpen(true);
+  };
+
+  const closeDetailModal = () => {
+    setIsDetailModalOpen(false);
+    setSelectedEvent(null);
+  };
+
   const getFormDataPayload = () => ({
     title: formData.title,
     description: formData.description,
@@ -346,7 +362,7 @@ const EventsPage = () => {
       fetchEvents();
     } catch (error) {
       console.error('Error creating event:', error);
-      toast.error(error.response?.data?.detail || 'Erreur lors de la création');
+      toast.error(getErrorMessage(error, 'Erreur lors de la création'));
     }
     setSaving(false);
   };
@@ -363,7 +379,7 @@ const EventsPage = () => {
       fetchEvents();
     } catch (error) {
       console.error('Error updating event:', error);
-      toast.error(error.response?.data?.detail || 'Erreur lors de la mise à jour');
+      toast.error(getErrorMessage(error, 'Erreur lors de la mise à jour'));
     }
     setSaving(false);
   };
@@ -551,12 +567,20 @@ const EventsPage = () => {
                       <p className="text-xs text-text-muted font-manrope">Inscrits</p>
                     </div>
                     <Button
+                      onClick={() => openDetailModal(event)}
+                      size="sm"
+                      className="bg-primary hover:bg-primary-dark text-white"
+                    >
+                      <Eye className="w-4 h-4 mr-1 lg:mr-2" strokeWidth={1.5} />
+                      <span className="hidden sm:inline">Voir</span>
+                    </Button>
+                    <Button
                       onClick={() => openEditModal(event)}
                       variant="outline"
                       size="sm"
                       className="border-white/10 text-text-secondary hover:text-text-primary"
                     >
-                      <Edit className="w-4 h-4 mr-1 lg:mr-2" strokeWidth={1.5} /> 
+                      <Edit className="w-4 h-4 mr-1 lg:mr-2" strokeWidth={1.5} />
                       <span className="hidden sm:inline">Modifier</span>
                     </Button>
                     <Button
@@ -586,14 +610,23 @@ const EventsPage = () => {
         />
 
         {/* Edit Modal */}
-        <EventModal 
-          isOpen={isEditModalOpen} 
-          onClose={closeEditModal} 
+        <EventModal
+          isOpen={isEditModalOpen}
+          onClose={closeEditModal}
           onSubmit={handleEditEvent}
           isEdit={true}
           saving={saving}
           formData={formData}
           onFieldChange={handleFieldChange}
+        />
+
+        {/* Detail Modal with Participants */}
+        <EventDetailModal
+          event={selectedEvent}
+          isOpen={isDetailModalOpen}
+          onClose={closeDetailModal}
+          currentUser={user}
+          onUpdate={fetchEvents}
         />
       </div>
     </DashboardLayout>
