@@ -1,9 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, Users, Award, Globe, Video, CheckCircle, Target, Sparkles } from 'lucide-react';
+import { Shield, Users, Award, Globe, Video, CheckCircle, Target, Sparkles, Loader2 } from 'lucide-react';
 import MegaMenu from '../components/MegaMenu';
+import api from '../utils/api';
 
 const LandingPage = () => {
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const response = await api.get('/site-content');
+        const data = response.data || response;
+        setContent(data);
+      } catch (error) {
+        console.error('Error fetching site content:', error);
+      }
+      setLoading(false);
+    };
+    fetchContent();
+  }, []);
+
+  // Valeurs dynamiques avec fallbacks
+  const heroTitle = content?.hero?.title || "La Self-Défense Efficace, Réaliste et Sécurisée";
+  const heroSubtitle = content?.hero?.subtitle || "Validée par l'Expérience d'Élite du Capitaine Jacques Levinet";
+  const heroDescription = content?.hero?.description || "Méthode brevetée par l'ex-capitaine de police et champion de France de karaté.";
+  const heroImage = content?.hero?.background_image || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1920&q=80';
+  const heroVideoUrl = content?.hero?.video_url || 'https://www.youtube.com/embed/mX3cGUHUgKo?autoplay=1&mute=1&loop=1&playlist=mX3cGUHUgKo&controls=0&showinfo=0&modestbranding=1&rel=0&enablejsapi=1&playsinline=1';
+  const logoUrl = content?.images?.logo || 'https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg';
+  const footerTagline = content?.footer?.tagline || 'Académie Jacques Levinet – World Krav Maga Organization – International Police Confederation';
+  const footerCopyright = content?.footer?.copyright || '© 2025 Académie Jacques Levinet. Tous droits réservés.';
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background" data-testid="landing-page">
       {/* Header - Mobile First */}
@@ -11,7 +47,7 @@ const LandingPage = () => {
         <div className="container mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 md:gap-3">
             <img 
-              src="https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg" 
+              src={logoUrl} 
               alt="Logo Académie Jacques Levinet" 
               className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover"
               data-testid="header-logo"
@@ -48,7 +84,7 @@ const LandingPage = () => {
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1920&q=80)',
+              backgroundImage: `url(${heroImage})`,
               filter: 'brightness(0.4)'
             }}
           />
@@ -59,7 +95,7 @@ const LandingPage = () => {
               transform: 'translate(-50%, -50%)',
               pointerEvents: 'none',
             }}
-            src="https://www.youtube.com/embed/mX3cGUHUgKo?autoplay=1&mute=1&loop=1&playlist=mX3cGUHUgKo&controls=0&showinfo=0&modestbranding=1&rel=0&enablejsapi=1&playsinline=1"
+            src={heroVideoUrl}
             title="Académie Jacques Levinet Video"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -72,13 +108,13 @@ const LandingPage = () => {
         {/* Content - Mobile First */}
         <div className="container mx-auto text-center max-w-4xl relative z-30 px-4">
           <h2 className="font-oswald text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-primary uppercase mb-6 md:mb-10 tracking-wide drop-shadow-2xl leading-tight">
-            La Self-Défense Efficace,<br />Réaliste et Sécurisée
+            {heroTitle}
           </h2>
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-text-secondary font-manrope mb-4 md:mb-8 leading-relaxed drop-shadow-lg">
-            Validée par l'Expérience d'Élite du Capitaine Jacques Levinet
+            {heroSubtitle}
           </p>
           <p className="text-sm sm:text-base md:text-lg text-text-primary/90 font-manrope mb-8 md:mb-12 leading-relaxed drop-shadow-lg max-w-3xl mx-auto">
-            Méthode brevetée par l'ex-capitaine de police et champion de France de karaté.
+            {heroDescription}
           </p>
           <div className="flex gap-4 md:gap-6 justify-center flex-wrap">
             <Link 
@@ -471,7 +507,7 @@ const LandingPage = () => {
             <div className="col-span-2 md:col-span-3 lg:col-span-2">
               <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-6">
                 <img 
-                  src="https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg" 
+                  src={logoUrl} 
                   alt="Logo Académie Jacques Levinet" 
                   className="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover"
                 />
@@ -530,10 +566,10 @@ const LandingPage = () => {
 
           <div className="pt-6 md:pt-8 border-t border-white/5 text-center">
             <p className="text-text-secondary font-oswald text-sm md:text-base uppercase tracking-wide mb-2">
-              Académie Jacques Levinet – World Krav Maga Organization – International Police Confederation
+              {footerTagline}
             </p>
             <p className="text-text-muted font-manrope text-xs md:text-sm">
-              © 2025 Académie Jacques Levinet. Tous droits réservés.
+              {footerCopyright}
             </p>
           </div>
         </div>

@@ -1,9 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PublicLayout from '../components/PublicLayout';
 import { Link } from 'react-router-dom';
-import { Shield, Target, Award, Users, ChevronRight, CheckCircle, Star } from 'lucide-react';
+import { Shield, Target, Award, Users, ChevronRight, CheckCircle, Star, Loader2 } from 'lucide-react';
+import api from '../utils/api';
 
 const DisciplineIPCPage = () => {
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const response = await api.get('/site-content');
+        const data = response.data || response;
+        setContent(data.disciplines?.ipc || {});
+      } catch (error) {
+        console.error('Error fetching discipline content:', error);
+      }
+      setLoading(false);
+    };
+    fetchContent();
+  }, []);
+
+  // Valeurs dynamiques avec fallbacks
+  const discTitle = content?.title || 'IPC / ROS';
+  const discSubtitle = content?.subtitle || 'International Police Confederation';
+  const discDescription = content?.description || "Formation professionnelle pour les forces de l'ordre et agents de sécurité.";
+  const discImage = content?.image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/vjnvljgu_Professionnels%20Card.jpeg';
+
   const features = [
     { icon: Target, title: 'Efficacité Opérationnelle', description: 'Techniques validées sur le terrain par des unités d\'élite.' },
     { icon: Shield, title: 'Cadre Légal', description: 'Formation conforme aux règlementations de chaque pays.' },
@@ -31,13 +55,23 @@ const DisciplineIPCPage = () => {
     'Techniques de menottage',
   ];
 
+  if (loading) {
+    return (
+      <PublicLayout>
+        <div className="flex items-center justify-center min-h-screen">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </PublicLayout>
+    );
+  }
+
   return (
     <PublicLayout>
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6 relative overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: 'url(https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/vjnvljgu_Professionnels%20Card.jpeg)' }}
+          style={{ backgroundImage: `url(${discImage})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background" />
         
@@ -47,15 +81,14 @@ const DisciplineIPCPage = () => {
           </div>
           
           <h1 className="font-oswald text-5xl md:text-7xl font-bold text-text-primary uppercase mb-6 tracking-tight">
-            <span className="text-primary">IPC</span> / ROS
+            <span className="text-primary">{discTitle}</span>
           </h1>
           <p className="font-oswald text-2xl text-text-secondary uppercase tracking-wide mb-6">
-            International Police Conference
+            {discSubtitle}
           </p>
           
           <p className="text-xl text-text-secondary font-manrope mb-8 leading-relaxed max-w-3xl mx-auto">
-            Formation tactique avancée pour les forces de l'ordre et agents de sécurité. 
-            Certifications professionnelles reconnues par les unités d'élite mondiales.
+            {discDescription}
           </p>
           
           <Link

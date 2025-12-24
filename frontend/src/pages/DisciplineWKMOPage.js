@@ -1,9 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PublicLayout from '../components/PublicLayout';
 import { Link } from 'react-router-dom';
-import { Users, Heart, Home, Shield, CheckCircle, ChevronRight } from 'lucide-react';
+import { Users, Heart, Home, Shield, CheckCircle, ChevronRight, Loader2 } from 'lucide-react';
+import api from '../utils/api';
 
 const DisciplineWKMOPage = () => {
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const response = await api.get('/site-content');
+        const data = response.data || response;
+        setContent(data.disciplines?.wkmo || {});
+      } catch (error) {
+        console.error('Error fetching discipline content:', error);
+      }
+      setLoading(false);
+    };
+    fetchContent();
+  }, []);
+
+  // Valeurs dynamiques avec fallbacks
+  const discTitle = content?.title || 'WKMO';
+  const discSubtitle = content?.subtitle || 'World Krav Maga Organization';
+  const discDescription = content?.description || 'La self-défense pour tous. Krav Maga, KAPAP et Self-Pro Krav accessibles au grand public dans un esprit familial et bienveillant.';
+  const discImage = content?.image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/m50t9hgn_Grand%20Public%20Card.jpeg';
+
   const benefits = [
     { icon: Shield, title: 'Sécurité Personnelle', description: 'Apprenez à vous protéger et à protéger vos proches au quotidien.' },
     { icon: Heart, title: 'Confiance en Soi', description: 'Développez votre assurance et votre présence face aux situations de stress.' },
@@ -18,13 +42,23 @@ const DisciplineWKMOPage = () => {
     { title: 'Seniors', description: 'Exercices adaptés pour maintenir forme et sécurité.' },
   ];
 
+  if (loading) {
+    return (
+      <PublicLayout>
+        <div className="flex items-center justify-center min-h-screen">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </PublicLayout>
+    );
+  }
+
   return (
     <PublicLayout>
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6 relative overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: 'url(https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/m50t9hgn_Grand%20Public%20Card.jpeg)' }}
+          style={{ backgroundImage: `url(${discImage})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background" />
         
@@ -34,15 +68,14 @@ const DisciplineWKMOPage = () => {
           </div>
           
           <h1 className="font-oswald text-5xl md:text-7xl font-bold text-text-primary uppercase mb-6 tracking-tight">
-            <span className="text-primary">WKMO</span>
+            <span className="text-primary">{discTitle}</span>
           </h1>
           <p className="font-oswald text-2xl text-text-secondary uppercase tracking-wide mb-6">
-            World Krav Maga Organization
+            {discSubtitle}
           </p>
           
           <p className="text-xl text-text-secondary font-manrope mb-8 leading-relaxed max-w-3xl mx-auto">
-            La self-défense pour tous. Krav Maga, KAPAP et Self-Pro Krav accessibles 
-            au grand public dans un esprit familial et bienveillant.
+            {discDescription}
           </p>
           
           <Link

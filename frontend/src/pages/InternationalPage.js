@@ -1,9 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PublicLayout from '../components/PublicLayout';
 import { Link } from 'react-router-dom';
-import { Globe, Users, MapPin, Star, ChevronRight, Newspaper } from 'lucide-react';
+import { Globe, Users, MapPin, Star, ChevronRight, Newspaper, Loader2 } from 'lucide-react';
+import api from '../utils/api';
 
 const InternationalPage = () => {
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const response = await api.get('/site-content');
+        const data = response.data || response;
+        setContent(data.international || {});
+      } catch (error) {
+        console.error('Error fetching international content:', error);
+      }
+      setLoading(false);
+    };
+    fetchContent();
+  }, []);
+
+  // Valeurs dynamiques avec fallbacks
+  const internationalTitle = content?.title || 'Présence Internationale';
+  const internationalSubtitle = content?.subtitle || "L'Académie Jacques Levinet est représentée sur tous les continents avec des directeurs techniques et clubs affiliés dans plus de 50 pays.";
+  const magazineName = content?.magazine_name || 'KRAV MAG AJL';
+  const magazineSubtitle = content?.magazine_subtitle || 'Magazine International';
+  const mapImage = content?.map_image;
+
   const stats = [
     { value: '50+', label: 'Pays' },
     { value: '50', label: 'Directeurs Techniques' },
@@ -28,6 +53,16 @@ const InternationalPage = () => {
     { name: 'Océanie', countries: 'Australie, Nouvelle-Zélande...' },
   ];
 
+  if (loading) {
+    return (
+      <PublicLayout>
+        <div className="flex items-center justify-center min-h-screen">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </PublicLayout>
+    );
+  }
+
   return (
     <PublicLayout>
       {/* Hero Section */}
@@ -40,12 +75,11 @@ const InternationalPage = () => {
           </div>
           
           <h1 className="font-oswald text-5xl md:text-6xl font-bold text-text-primary uppercase mb-6 tracking-tight">
-            Présence <span className="text-primary">Internationale</span>
+            <span className="text-primary">{internationalTitle}</span>
           </h1>
           
           <p className="text-xl text-text-secondary font-manrope mb-8 leading-relaxed max-w-3xl mx-auto">
-            L'Académie Jacques Levinet est représentée sur tous les continents 
-            avec des directeurs techniques et clubs affiliés dans plus de 50 pays.
+            {internationalSubtitle}
           </p>
         </div>
       </section>
@@ -180,9 +214,9 @@ const InternationalPage = () => {
                 </div>
               </div>
               <div className="text-center md:text-left">
-                <h3 className="font-oswald text-3xl text-white uppercase mb-2">KRAV MAG AJL</h3>
+                <h3 className="font-oswald text-3xl text-white uppercase mb-2">{magazineName}</h3>
                 <p className="font-oswald text-lg text-primary uppercase tracking-wide mb-4">
-                  Magazine International
+                  {magazineSubtitle}
                 </p>
                 <p className="text-text-secondary font-manrope mb-4">
                   Le magazine du monde de la self-défense, des sports de combat et des arts martiaux. 

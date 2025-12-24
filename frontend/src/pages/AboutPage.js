@@ -1,9 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PublicLayout from '../components/PublicLayout';
 import { Link } from 'react-router-dom';
-import { Shield, Users, Award, Target, ChevronRight, CheckCircle } from 'lucide-react';
+import { Shield, Users, Award, Target, ChevronRight, CheckCircle, Loader2 } from 'lucide-react';
+import api from '../utils/api';
 
 const AboutPage = () => {
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const response = await api.get('/site-content');
+        const data = response.data || response;
+        setContent(data.about || {});
+      } catch (error) {
+        console.error('Error fetching about content:', error);
+      }
+      setLoading(false);
+    };
+    fetchContent();
+  }, []);
+
+  // Valeurs dynamiques avec fallbacks
+  const aboutTitle = content?.title || "L'Académie Jacques Levinet";
+  const aboutDescription = content?.description || "Depuis plus de 25 ans, l'Académie est spécialisée dans la self-défense de rue et la formation professionnelle des forces de l'ordre. Une structure tripartite internationale regroupant Self-Pro Krav, Krav Maga, KAPAP et autres disciplines de combat.";
+  const aboutMission = content?.mission || "Unifier les pratiquants de diverses disciplines — Self-Pro Krav, Krav Maga, KAPAP, Canne Défense, Self Féminine et autres méthodes de self-défense — sous une bannière commune d'excellence et d'efficacité.";
+  const aboutImage = content?.image || 'https://images.unsplash.com/photo-1595554919503-b806f0f8f106?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwyfHxkaXZlcnNlJTIwZ3JvdXAlMjBtYXJ0aWFsJTIwYXJ0cyUyMGNsYXNzJTIwbW9kZXJuJTIwZ3ltfGVufDB8fHx8MTc2NTgwMzcwMnww&ixlib=rb-4.1.0&q=85';
+
   const pillars = [
     {
       acronym: 'AJL',
@@ -37,6 +61,16 @@ const AboutPage = () => {
     'Communauté mondiale solidaire',
   ];
 
+  if (loading) {
+    return (
+      <PublicLayout>
+        <div className="flex items-center justify-center min-h-screen">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </PublicLayout>
+    );
+  }
+
   return (
     <PublicLayout>
       {/* Hero Section */}
@@ -49,14 +83,11 @@ const AboutPage = () => {
           </div>
           
           <h1 className="font-oswald text-5xl md:text-6xl font-bold text-text-primary uppercase mb-6 tracking-tight">
-            L'Académie<br />
-            <span className="text-secondary">Jacques Levinet</span>
+            <span className="text-secondary">{aboutTitle}</span>
           </h1>
           
           <p className="text-xl text-text-secondary font-manrope mb-8 leading-relaxed max-w-3xl mx-auto">
-            Depuis plus de 25 ans, l'Académie est spécialisée dans la self-défense de rue et la formation 
-            professionnelle des forces de l'ordre. Une structure tripartite internationale regroupant 
-            Self-Pro Krav, Krav Maga, KAPAP et autres disciplines de combat.
+            {aboutDescription}
           </p>
         </div>
       </section>
@@ -70,8 +101,7 @@ const AboutPage = () => {
                 Notre <span className="text-primary">Mission</span>
               </h2>
               <p className="text-text-secondary font-manrope text-lg leading-relaxed mb-6">
-                Unifier les pratiquants de diverses disciplines — Self-Pro Krav, Krav Maga, KAPAP, Canne Défense, 
-                Self Féminine et autres méthodes de self-défense — sous une bannière commune d'excellence et d'efficacité.
+                {aboutMission}
               </p>
               <p className="text-text-secondary font-manrope text-lg leading-relaxed mb-8">
                 Optimiser l'entraînement des forces de police à travers le monde pour une 
@@ -90,10 +120,10 @@ const AboutPage = () => {
             
             <div className="relative">
               <div className="aspect-video rounded-lg overflow-hidden border border-white/10">
-                <div 
-                  className="w-full h-full bg-cover bg-center bg-gray-800"
-                  style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1595554919503-b806f0f8f106?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwyfHxkaXZlcnNlJTIwZ3JvdXAlMjBtYXJ0aWFsJTIwYXJ0cyUyMGNsYXNzJTIwbW9kZXJuJTIwZ3ltfGVufDB8fHx8MTc2NTgwMzcwMnww&ixlib=rb-4.1.0&q=85)' }}
-                  data-placeholder="academy-group-training"
+                <img 
+                  src={aboutImage}
+                  alt="Entraînement à l'Académie"
+                  className="w-full h-full object-cover bg-gray-800"
                 />
               </div>
             </div>

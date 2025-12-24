@@ -1,9 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PublicLayout from '../components/PublicLayout';
 import { Link } from 'react-router-dom';
-import { Shield, Heart, Sparkles, Target, Users, ChevronRight, CheckCircle } from 'lucide-react';
+import { Shield, Heart, Sparkles, Target, Users, ChevronRight, CheckCircle, Loader2 } from 'lucide-react';
+import api from '../utils/api';
 
 const DisciplineSFJLPage = () => {
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const response = await api.get('/site-content');
+        const data = response.data || response;
+        setContent(data.disciplines?.sfjl || {});
+      } catch (error) {
+        console.error('Error fetching discipline content:', error);
+      }
+      setLoading(false);
+    };
+    fetchContent();
+  }, []);
+
+  // Valeurs dynamiques avec fallbacks
+  const discTitle = content?.title || 'Self-Défense Féminine';
+  const discSubtitle = content?.subtitle || 'Apprenez à Vous Protéger';
+  const discDescription = content?.description || 'Vous avez le droit de vous sentir en sécurité. Nous sommes là pour vous apprendre des gestes simples et efficaces, dans un cadre bienveillant et rassurant.';
+  const discImage = content?.image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/mbtzqqpj_Self-D%C3%A9fense%20F%C3%A9minine.jpeg';
+
   const pillars = [
     { icon: Sparkles, title: 'Reprendre Confiance', description: 'Apprenez à vous faire confiance. Vous êtes plus forte que vous ne le pensez.' },
     { icon: Target, title: 'Des Gestes Simples', description: 'Des techniques faciles à retenir, adaptées à votre quotidien.' },
@@ -22,13 +46,23 @@ const DisciplineSFJLPage = () => {
     'Prendre confiance en soi',
   ];
 
+  if (loading) {
+    return (
+      <PublicLayout>
+        <div className="flex items-center justify-center min-h-screen">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </PublicLayout>
+    );
+  }
+
   return (
     <PublicLayout>
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6 relative overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: 'url(https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/mbtzqqpj_Self-D%C3%A9fense%20F%C3%A9minine.jpeg)' }}
+          style={{ backgroundImage: `url(${discImage})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background" />
         
@@ -38,15 +72,14 @@ const DisciplineSFJLPage = () => {
           </div>
           
           <h1 className="font-oswald text-5xl md:text-7xl font-bold text-text-primary uppercase mb-6 tracking-tight">
-            Self-Défense <span className="text-secondary">Féminine</span>
+            <span className="text-secondary">{discTitle}</span>
           </h1>
           <p className="font-oswald text-2xl text-text-secondary uppercase tracking-wide mb-6">
-            Apprenez à Vous Protéger
+            {discSubtitle}
           </p>
           
           <p className="text-xl text-text-secondary font-manrope mb-8 leading-relaxed max-w-3xl mx-auto">
-            Vous avez le droit de vous sentir en sécurité. Nous sommes là pour vous apprendre 
-            des gestes simples et efficaces, dans un cadre bienveillant et rassurant.
+            {discDescription}
           </p>
           
           <Link

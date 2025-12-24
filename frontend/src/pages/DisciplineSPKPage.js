@@ -1,9 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PublicLayout from '../components/PublicLayout';
 import { Link } from 'react-router-dom';
-import { Shield, Target, Zap, Brain, CheckCircle, ChevronRight } from 'lucide-react';
+import { Shield, Target, Zap, Brain, CheckCircle, ChevronRight, Loader2 } from 'lucide-react';
+import api from '../utils/api';
 
 const DisciplineSPKPage = () => {
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const response = await api.get('/site-content');
+        const data = response.data || response;
+        setContent(data.disciplines?.spk || {});
+      } catch (error) {
+        console.error('Error fetching discipline content:', error);
+      }
+      setLoading(false);
+    };
+    fetchContent();
+  }, []);
+
+  // Valeurs dynamiques avec fallbacks
+  const discTitle = content?.title || 'Krav Maga Self-Défense';
+  const discSubtitle = content?.subtitle || 'Apprenez à Vous Défendre';
+  const discDescription = content?.description || 'Apprenez à vous protéger avec des gestes simples et efficaces.';
+  const discImage = content?.image || 'https://images.unsplash.com/photo-1655558846882-fa55132d6c20?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwxfHx0YWN0aWNhbCUyMHNlbGYlMjBkZWZlbnNlJTIwdHJhaW5pbmclMjBhY3Rpb258ZW58MHx8fHwxNzY1ODAzNzAwfDA&ixlib=rb-4.1.0&q=85';
+
   const principles = [
     { icon: Target, title: 'Simple & Efficace', description: 'Des techniques basées sur vos réflexes naturels. Pas besoin d\'être sportif.' },
     { icon: Shield, title: '100% Légal', description: 'Conforme aux lois françaises. Vous apprenez à vous défendre, pas à attaquer.' },
@@ -22,27 +46,37 @@ const DisciplineSPKPage = () => {
     'Reprendre confiance en soi',
   ];
 
+  if (loading) {
+    return (
+      <PublicLayout>
+        <div className="flex items-center justify-center min-h-screen">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </PublicLayout>
+    );
+  }
+
   return (
     <PublicLayout>
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6 relative overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1655558846882-fa55132d6c20?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwxfHx0YWN0aWNhbCUyMHNlbGYlMjBkZWZlbnNlJTIwdHJhaW5pbmclMjBhY3Rpb258ZW58MHx8fHwxNzY1ODAzNzAwfDA&ixlib=rb-4.1.0&q=85)' }}
+          style={{ backgroundImage: `url(${discImage})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background" />
         
         <div className="container mx-auto max-w-4xl text-center relative z-10">
           <div className="inline-block px-4 py-2 bg-accent/10 border border-accent/30 rounded-sm mb-6">
-            <span className="text-accent font-oswald text-sm uppercase tracking-wider">Apprenez à Vous Défendre</span>
+            <span className="text-accent font-oswald text-sm uppercase tracking-wider">{discSubtitle}</span>
           </div>
           
           <h1 className="font-oswald text-5xl md:text-7xl font-bold text-text-primary uppercase mb-6 tracking-tight">
-            Krav Maga <span className="text-accent">Self-Défense</span>
+            <span className="text-accent">{discTitle}</span>
           </h1>
           
           <p className="text-xl text-text-secondary font-manrope mb-4 leading-relaxed max-w-3xl mx-auto">
-            Apprenez à vous protéger avec des gestes simples et efficaces.
+            {discDescription}
           </p>
           <p className="text-lg text-text-muted font-manrope mb-8 leading-relaxed max-w-3xl mx-auto">
             Notre méthode <strong className="text-accent">Self-Pro Krav</strong> : le Krav Maga adapté aux lois françaises, éthique et accessible à tous.
