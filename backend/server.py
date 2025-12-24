@@ -1581,6 +1581,24 @@ async def delete_news(news_id: str, current_user: dict = Depends(get_current_use
     return {"message": "News deleted successfully"}
 
 # Events Routes
+
+# Endpoint to get eligible event organizers (instructors, directors, admins, founders)
+@api_router.get("/events/organizers")
+async def get_event_organizers(current_user: dict = Depends(get_current_user)):
+    """
+    Get list of users eligible to organize events.
+    Roles: instructeur, directeur_technique, directeur_national, admin, fondateur
+    Accessible to any authenticated user.
+    """
+    eligible_roles = ['instructeur', 'directeur_technique', 'directeur_national', 'admin', 'fondateur']
+    
+    organizers = await db.users.find(
+        {"role": {"$in": eligible_roles}},
+        {"_id": 0, "id": 1, "full_name": 1, "role": 1, "email": 1}
+    ).sort("full_name", 1).to_list(100)
+    
+    return {"organizers": organizers}
+
 @api_router.post("/events", response_model=Event)
 async def create_event(event_data: EventCreate, current_user: dict = Depends(get_current_user)):
     event_dict = event_data.model_dump()

@@ -299,11 +299,9 @@ const EventsPage = () => {
 
   const fetchOrganizers = async () => {
     try {
-      // Récupérer les utilisateurs avec les rôles autorisés à organiser des événements
-      const response = await api.get('/admin/users');
-      const allUsers = response.data?.users || [];
-      // Filtrer les utilisateurs avec les rôles autorisés
-      const eligibleOrganizers = allUsers.filter(u => ORGANIZER_ROLES.includes(u.role));
+      // Récupérer les utilisateurs éligibles pour organiser des événements
+      const response = await api.get('/events/organizers');
+      const eligibleOrganizers = response.data?.organizers || [];
       setOrganizers(eligibleOrganizers);
     } catch (error) {
       console.error('Error fetching organizers:', error);
