@@ -1023,10 +1023,27 @@ async def create_admin_user(data: AdminUserCreate, current_user: dict = Depends(
     if existing:
         raise HTTPException(status_code=400, detail="Email déjà utilisé")
     
+    # Normalize role (accept both French and English versions)
+    role_mapping = {
+        'directeur_technique': 'directeur_technique',
+        'technical_director': 'directeur_technique',
+        'directeur_national': 'directeur_national',
+        'national_director': 'directeur_national',
+        'instructeur': 'instructeur',
+        'instructor': 'instructeur',
+        'membre': 'membre',
+        'member': 'membre',
+        'admin': 'admin',
+        'fondateur': 'fondateur'
+    }
+    
     # Validate role
-    valid_roles = ['admin', 'member', 'instructor', 'technical_director']
+    valid_roles = list(role_mapping.keys())
     if data.role not in valid_roles:
-        raise HTTPException(status_code=400, detail=f"Rôle invalide. Utilisez: {', '.join(valid_roles)}")
+        raise HTTPException(status_code=400, detail=f"Rôle invalide. Utilisez: admin, fondateur, directeur_national, directeur_technique, instructeur, membre")
+    
+    # Use normalized role
+    normalized_role = role_mapping.get(data.role, data.role)
     
     # Generate password if not provided
     import secrets
@@ -1037,16 +1054,16 @@ async def create_admin_user(data: AdminUserCreate, current_user: dict = Depends(
     
     # Determine belt grade based on role if not provided
     belt_grade = data.belt_grade
-    if not belt_grade and data.role == 'instructor':
+    if not belt_grade and normalized_role in ['instructeur', 'instructor']:
         belt_grade = 'Instructeur'
-    elif not belt_grade and data.role == 'technical_director':
+    elif not belt_grade and normalized_role in ['directeur_technique', 'technical_director']:
         belt_grade = 'Directeur Technique'
     
     user = User(
         email=data.email,
         password_hash=hash_password(password),
         full_name=data.full_name,
-        role='admin' if data.role in ['admin', 'instructor', 'technical_director'] else 'member',
+        role=normalized_role,
         phone=data.phone,
         city=data.city,
         has_paid_license=True  # Admin-created users are considered paid
@@ -1055,9 +1072,13 @@ async def create_admin_user(data: AdminUserCreate, current_user: dict = Depends(
     doc = user.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
     doc['country'] = data.country
+    doc['country_code'] = data.country_code
     doc['belt_grade'] = belt_grade
+    doc['dan_grade'] = data.dan_grade
     doc['club_name'] = data.club_name
-    doc['user_type'] = data.role  # Store original type
+    doc['club_ids'] = data.club_ids
+    doc['photo_url'] = data.photo_url
+    doc['user_type'] = normalized_role  # Store normalized type
     
     await db.users.insert_one(doc)
     
@@ -1065,11 +1086,17 @@ async def create_admin_user(data: AdminUserCreate, current_user: dict = Depends(
     if data.send_email:
         role_labels = {
             'admin': 'Administrateur',
+            'fondateur': 'Fondateur',
+            'directeur_national': 'Directeur National',
+            'directeur_technique': 'Directeur Technique',
+            'instructeur': 'Instructeur',
+            'membre': 'Membre',
             'member': 'Membre',
             'instructor': 'Instructeur',
-            'technical_director': 'Directeur Technique'
+            'technical_director': 'Directeur Technique',
+            'national_director': 'Directeur National'
         }
-        role_label = role_labels.get(data.role, data.role)
+        role_label = role_labels.get(normalized_role, normalized_role)
         
         login_url = os.environ.get('FRONTEND_URL', 'https://martial-defense-app.preview.emergentagent.com')
         
@@ -1106,7 +1133,7 @@ async def create_admin_user(data: AdminUserCreate, current_user: dict = Depends(
         ))
     
     return {
-        "message": f"Utilisateur {data.role} créé avec succès" + (" - Email envoyé" if data.send_email else ""),
+        "message": f"Utilisateur {role_label} créé avec succès" + (" - Email envoyé" if data.send_email else ""),
         "user_id": user.id,
         "password": password if not data.password else None  # Return generated password if applicable
     }
