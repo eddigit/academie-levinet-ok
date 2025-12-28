@@ -82,10 +82,19 @@ load_dotenv(ROOT_DIR / '.env')
 # LLM Configuration
 EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY', '')
 
-# MongoDB connection
+# MongoDB connection with retry and timeout
 mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
+print("🔌 Connexion à MongoDB...")
+client = AsyncIOMotorClient(
+    mongo_url,
+    serverSelectionTimeoutMS=30000,
+    connectTimeoutMS=30000,
+    socketTimeoutMS=30000,
+    retryWrites=True,
+    retryReads=True
+)
 db = client[os.environ['DB_NAME']]
+print(f"📦 Base de données: {os.environ['DB_NAME']}")
 
 JWT_SECRET = os.environ.get('JWT_SECRET', 'your-secret-key-change-in-production')
 JWT_ALGORITHM = "HS256"
@@ -5098,6 +5107,17 @@ else:
             "docs": "/docs",
             "mode": "api-only"
         }
+
+@app.on_event("startup")
+async def startup_db_client():
+    """Test MongoDB connection on startup"""
+    try:
+        # Test the connection
+        await client.admin.command('ping')
+        logger.info("✅ MongoDB connecté avec succès")
+    except Exception as e:
+        logger.error(f"❌ ERREUR MongoDB: {e}")
+        logger.error("Vérifiez votre MONGO_URL dans backend/.env")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
