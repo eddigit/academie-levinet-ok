@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, Users, Award, Globe, Video, CheckCircle, Target, Sparkles, Loader2 } from 'lucide-react';
+import { Shield, Users, Award, Globe, Video, CheckCircle, Target, Sparkles, Loader2, Facebook, Youtube, Linkedin, Twitter } from 'lucide-react';
 import MegaMenu from '../components/MegaMenu';
 import api from '../utils/api';
 import BUILD_INFO from '../buildInfo';
@@ -597,15 +597,31 @@ const LandingPage = () => {
               </ul>
             </div>
 
-            {/* Réseaux Sociaux */}
+            {/* Réseaux Sociaux - Icônes horizontales */}
             <div>
               <h4 className="font-oswald text-xs md:text-sm font-bold uppercase tracking-wider text-primary mb-3 md:mb-6">Suivez-nous</h4>
-              <ul className="space-y-2 md:space-y-3">
-                {socialFacebook && <li><a href={socialFacebook} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Facebook</a></li>}
-                {socialYoutube && <li><a href={socialYoutube} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">YouTube</a></li>}
-                {socialLinkedin && <li><a href={socialLinkedin} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">LinkedIn</a></li>}
-                {socialTwitter && <li><a href={socialTwitter} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">X (Twitter)</a></li>}
-              </ul>
+              <div className="flex items-center gap-4">
+                {socialFacebook && (
+                  <a href={socialFacebook} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-primary transition-colors" title="Facebook">
+                    <Facebook className="w-5 h-5 md:w-6 md:h-6" />
+                  </a>
+                )}
+                {socialYoutube && (
+                  <a href={socialYoutube} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-primary transition-colors" title="YouTube">
+                    <Youtube className="w-5 h-5 md:w-6 md:h-6" />
+                  </a>
+                )}
+                {socialLinkedin && (
+                  <a href={socialLinkedin} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-primary transition-colors" title="LinkedIn">
+                    <Linkedin className="w-5 h-5 md:w-6 md:h-6" />
+                  </a>
+                )}
+                {socialTwitter && (
+                  <a href={socialTwitter} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-primary transition-colors" title="X (Twitter)">
+                    <Twitter className="w-5 h-5 md:w-6 md:h-6" />
+                  </a>
+                )}
+              </div>
             </div>
           </div>
 
@@ -618,6 +634,9 @@ const LandingPage = () => {
             </p>
             <p className="text-text-muted/50 font-mono text-[10px] mt-2" title={`Build ID: ${BUILD_INFO.buildId}`}>
               v{BUILD_INFO.version} • Build: {BUILD_INFO.date} {BUILD_INFO.time}
+            </p>
+            <p className="text-text-muted/40 font-manrope text-[10px] mt-3">
+              Site réalisé par <a href="https://coachdigitalparis.com/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">GILLES KORZEC</a>
             </p>
           </div>
         </div>
