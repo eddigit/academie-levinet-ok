@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Globe, Save, Loader2, Image, Type, Mail, Upload, X,
-  Facebook, Instagram, Youtube, Linkedin, Home, User, BookOpen, MapPin, Phone
+  Facebook, Instagram, Youtube, Linkedin, Twitter, Home, User, BookOpen, MapPin, Phone
 } from 'lucide-react';
 import DashboardLayout from '../components/DashboardLayout';
 import { Button } from '../components/ui/button';
@@ -737,6 +737,15 @@ const SiteContentPage = () => {
                   onChange={(e) => updateField('social_links', 'linkedin', e.target.value)}
                   className="mt-1 bg-background border-white/10"
                   placeholder="https://linkedin.com/..."
+                />
+              </div>
+              <div>
+                <Label className="text-text-secondary flex items-center gap-2"><Twitter className="w-4 h-4" /> X (Twitter)</Label>
+                <Input
+                  value={content.social_links?.twitter || ''}
+                  onChange={(e) => updateField('social_links', 'twitter', e.target.value)}
+                  className="mt-1 bg-background border-white/10"
+                  placeholder="https://x.com/..."
                 />
               </div>
             </div>

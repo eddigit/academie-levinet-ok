@@ -30,6 +30,16 @@ const LandingPage = () => {
   const logoUrl = content?.images?.logo || 'https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg';
   const footerTagline = content?.footer?.tagline || 'Académie Jacques Levinet – World Krav Maga Organization – International Police Confederation';
   const footerCopyright = content?.footer?.copyright || '© 2025 Académie Jacques Levinet. Tous droits réservés.';
+  
+  // Contact dynamique
+  const contactPhone = content?.contact?.phone || '+33698070851';
+  const contactAddress = content?.contact?.address || 'Saint Jean de Védas';
+  
+  // Réseaux sociaux dynamiques
+  const socialFacebook = content?.social_links?.facebook || 'https://www.facebook.com/capitainejacqueslevinet/';
+  const socialYoutube = content?.social_links?.youtube || 'https://www.youtube.com/@CapitaineJacquesLevinet';
+  const socialLinkedin = content?.social_links?.linkedin || 'https://www.linkedin.com/in/jacqueslevinet/';
+  const socialTwitter = content?.social_links?.twitter || 'https://x.com/Jacques_LEVINET';
 
   // Vidéo YouTube - utiliser l'URL du CMS hero.video_url ou la vidéo par défaut
   // L'URL doit être au format embed avec les paramètres autoplay
@@ -581,8 +591,19 @@ const LandingPage = () => {
               <ul className="space-y-2 md:space-y-3">
                 <li><Link to="/international" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Trouver un Club</Link></li>
                 <li><Link to="/onboarding" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">S'inscrire</Link></li>
-                <li><a href="tel:+33148051610" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">+33 1 48 05 16 10</a></li>
-                <li><a href="https://www.linkedin.com/in/worldkravmagaorganization/" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">LinkedIn</a></li>
+                <li><a href={`tel:${contactPhone.replace(/\s/g, '')}`} className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">{contactPhone}</a></li>
+                <li><span className="text-text-secondary font-manrope text-xs md:text-sm">{contactAddress}</span></li>
+              </ul>
+            </div>
+
+            {/* Réseaux Sociaux */}
+            <div>
+              <h4 className="font-oswald text-xs md:text-sm font-bold uppercase tracking-wider text-primary mb-3 md:mb-6">Suivez-nous</h4>
+              <ul className="space-y-2 md:space-y-3">
+                {socialFacebook && <li><a href={socialFacebook} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Facebook</a></li>}
+                {socialYoutube && <li><a href={socialYoutube} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">YouTube</a></li>}
+                {socialLinkedin && <li><a href={socialLinkedin} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">LinkedIn</a></li>}
+                {socialTwitter && <li><a href={socialTwitter} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">X (Twitter)</a></li>}
               </ul>
             </div>
           </div>

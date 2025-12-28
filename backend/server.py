@@ -3597,13 +3597,15 @@ DEFAULT_SITE_CONTENT = {
     "testimonials": [],
     "contact": {
         "email": "contact@academie-levinet.com",
-        "phone": "",
-        "address": ""
+        "phone": "+33698070851",
+        "address": "Saint Jean de Védas"
     },
     "social_links": {
-        "facebook": "",
+        "facebook": "https://www.facebook.com/capitainejacqueslevinet/",
         "instagram": "",
-        "youtube": ""
+        "youtube": "https://www.youtube.com/@CapitaineJacquesLevinet",
+        "linkedin": "https://www.linkedin.com/in/jacqueslevinet/",
+        "twitter": "https://x.com/Jacques_LEVINET"
     },
     "images": {
         "logo": "",
