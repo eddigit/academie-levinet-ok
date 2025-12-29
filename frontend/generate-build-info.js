@@ -7,7 +7,13 @@ const { execSync } = require('child_process');
 
 const now = new Date();
 const dateStr = now.toLocaleDateString('fr-FR');
-const timeStr = now.toLocaleTimeString('fr-FR');
+// Utiliser toLocaleTimeString avec timeZone pour éviter le décalage UTC
+const timeStr = now.toLocaleTimeString('fr-FR', { 
+  timeZone: 'Europe/Paris',
+  hour: '2-digit', 
+  minute: '2-digit', 
+  second: '2-digit' 
+});
 const buildId = now.getTime().toString();
 
 // Récupérer le hash du dernier commit Git
