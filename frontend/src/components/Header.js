@@ -51,6 +51,14 @@ const Header = () => {
   return (
     <header className="hidden lg:flex h-16 glassmorphism-header fixed top-0 right-0 left-64 z-40 items-center justify-end px-6 border-b border-white/5">
       <div className="flex items-center gap-4">
+        {/* Bouton Voir Site */}
+        <Link
+          to="/"
+          className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-text-secondary hover:text-primary rounded-lg transition-all font-medium text-sm"
+          title="Retour vers le site public"
+        >
+          <span>Voir Site</span>
+        </Link>
         {/* Token Balance */}
         {tokenBalance !== null && (
           <Link
