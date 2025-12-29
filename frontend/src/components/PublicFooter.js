@@ -1,9 +1,37 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Facebook, Instagram, Youtube } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Instagram, Youtube, Linkedin, Twitter } from 'lucide-react';
 import BUILD_INFO from '../buildInfo';
+import { useSiteContent } from '../context/SiteContentContext';
 
 const PublicFooter = () => {
+  const { content, loading } = useSiteContent();
+
+  // Default values in case content is not loaded
+  const branding = content?.branding || {
+    logo_url: "https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg",
+    short_name: "AJL",
+    foundation_year: "1998",
+    description: "L'Académie Jacques Levinet forme l'élite de la self-défense mondiale depuis plus de 25 ans."
+  };
+
+  const contact = content?.contact || {
+    email: "contact@academie-levinet.com",
+    phone: "+33 1 23 45 67 89",
+    address: "France - Siège International"
+  };
+
+  const social = content?.social_links || {};
+  const navigation = content?.navigation || { quick_links: [], disciplines: [], legal_links: [] };
+  const footer = content?.footer || {
+    copyright: "© 2025 Académie Jacques Levinet. Tous droits réservés.",
+    developer: "GILLES KORZEC"
+  };
+
+  if (loading) {
+    return null; // or a skeleton loader
+  }
+
   return (
     <footer className="bg-paper border-t border-white/5">
       <div className="container mx-auto px-6 py-16">
@@ -12,17 +40,17 @@ const PublicFooter = () => {
           <div>
             <div className="flex items-center gap-3 mb-6">
               <img 
-                src="https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg" 
+                src={branding.logo_url} 
                 alt="Logo" 
                 className="w-10 h-10 rounded-full object-cover"
               />
               <div>
-                <h3 className="font-oswald text-lg font-bold text-text-primary uppercase">AJL</h3>
-                <p className="text-xs text-text-muted">Depuis 1998</p>
+                <h3 className="font-oswald text-lg font-bold text-text-primary uppercase">{branding.short_name}</h3>
+                <p className="text-xs text-text-muted">Depuis {branding.foundation_year}</p>
               </div>
             </div>
             <p className="text-text-secondary font-manrope text-sm leading-relaxed">
-              L'Académie Jacques Levinet forme l'élite de la self-défense mondiale depuis plus de 25 ans.
+              {branding.description}
             </p>
           </div>
 
@@ -30,10 +58,13 @@ const PublicFooter = () => {
           <div>
             <h4 className="font-oswald text-sm font-bold uppercase tracking-wider text-primary mb-6">Navigation</h4>
             <ul className="space-y-3">
-              <li><Link to="/founder" className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">Le Fondateur</Link></li>
-              <li><Link to="/about" className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">À Propos</Link></li>
-              <li><Link to="/disciplines/spk" className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">Self-Pro Krav</Link></li>
-              <li><Link to="/pedagogy" className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">Pédagogie</Link></li>
+              {navigation.quick_links.map((link, idx) => (
+                <li key={idx}>
+                  <Link to={link.path} className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -41,10 +72,13 @@ const PublicFooter = () => {
           <div>
             <h4 className="font-oswald text-sm font-bold uppercase tracking-wider text-primary mb-6">Disciplines</h4>
             <ul className="space-y-3">
-              <li><Link to="/disciplines/wkmo" className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">WKMO - Grand Public</Link></li>
-              <li><Link to="/disciplines/sfjl" className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">SFJL - Défense Féminine</Link></li>
-              <li><Link to="/disciplines/ipc" className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">IPC - Professionnels</Link></li>
-              <li><Link to="/international" className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">Présence Internationale</Link></li>
+              {navigation.disciplines.map((link, idx) => (
+                <li key={idx}>
+                  <Link to={link.path} className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -54,28 +88,44 @@ const PublicFooter = () => {
             <ul className="space-y-4">
               <li className="flex items-center gap-3 text-text-secondary">
                 <Mail className="w-4 h-4 text-primary" strokeWidth={1.5} />
-                <span className="font-manrope text-sm">contact@academie-levinet.com</span>
+                <span className="font-manrope text-sm">{contact.email}</span>
               </li>
               <li className="flex items-center gap-3 text-text-secondary">
                 <Phone className="w-4 h-4 text-primary" strokeWidth={1.5} />
-                <span className="font-manrope text-sm">+33 1 23 45 67 89</span>
+                <span className="font-manrope text-sm">{contact.phone}</span>
               </li>
               <li className="flex items-start gap-3 text-text-secondary">
                 <MapPin className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" strokeWidth={1.5} />
-                <span className="font-manrope text-sm">France - Siège International</span>
+                <span className="font-manrope text-sm">{contact.address}</span>
               </li>
             </ul>
             {/* Social */}
             <div className="flex items-center gap-4 mt-6">
-              <a href="#" className="p-2 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors">
-                <Facebook className="w-5 h-5 text-text-secondary hover:text-primary" strokeWidth={1.5} />
-              </a>
-              <a href="#" className="p-2 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors">
-                <Instagram className="w-5 h-5 text-text-secondary hover:text-primary" strokeWidth={1.5} />
-              </a>
-              <a href="#" className="p-2 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors">
-                <Youtube className="w-5 h-5 text-text-secondary hover:text-primary" strokeWidth={1.5} />
-              </a>
+              {social.facebook && (
+                <a href={social.facebook} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors">
+                  <Facebook className="w-5 h-5 text-text-secondary hover:text-primary" strokeWidth={1.5} />
+                </a>
+              )}
+              {social.instagram && (
+                <a href={social.instagram} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors">
+                  <Instagram className="w-5 h-5 text-text-secondary hover:text-primary" strokeWidth={1.5} />
+                </a>
+              )}
+              {social.youtube && (
+                <a href={social.youtube} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors">
+                  <Youtube className="w-5 h-5 text-text-secondary hover:text-primary" strokeWidth={1.5} />
+                </a>
+              )}
+              {social.linkedin && (
+                <a href={social.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors">
+                  <Linkedin className="w-5 h-5 text-text-secondary hover:text-primary" strokeWidth={1.5} />
+                </a>
+              )}
+              {social.twitter && (
+                <a href={social.twitter} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors">
+                  <Twitter className="w-5 h-5 text-text-secondary hover:text-primary" strokeWidth={1.5} />
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -84,18 +134,21 @@ const PublicFooter = () => {
         <div className="mt-12 pt-8 border-t border-white/5">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-text-muted font-manrope text-sm text-center md:text-left">
-              <p>© 2025 Académie Jacques Levinet. Tous droits réservés.</p>
+              <p>{footer.copyright}</p>
               <p className="text-xs text-text-muted/60 mt-1">
                 v{BUILD_INFO.version} • Build: {BUILD_INFO.date} {BUILD_INFO.time} • Commit: {BUILD_INFO.commitHash}
               </p>
             </div>
             <div className="flex items-center gap-6">
-              <Link to="#" className="text-text-muted hover:text-primary transition-colors font-manrope text-sm">Mentions Légales</Link>
-              <Link to="#" className="text-text-muted hover:text-primary transition-colors font-manrope text-sm">Confidentialité</Link>
+              {navigation.legal_links.map((link, idx) => (
+                <Link key={idx} to={link.path} className="text-text-muted hover:text-primary transition-colors font-manrope text-sm">
+                  {link.label}
+                </Link>
+              ))}
             </div>
           </div>
           <p className="text-center text-xs text-text-muted/50 mt-4 font-manrope">
-            Plateforme réalisée par <span className="text-primary">GILLES KORZEC</span>
+            Plateforme réalisée par <span className="text-primary">{footer.developer}</span>
           </p>
         </div>
       </div>

@@ -132,7 +132,7 @@ const ImageUploader = ({ label, value, onChange, placeholder }) => {
 const SiteContentPage = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [activeSection, setActiveSection] = useState('hero');
+  const [activeSection, setActiveSection] = useState('branding');
   const [content, setContent] = useState({});
 
   useEffect(() => {
@@ -187,6 +187,7 @@ const SiteContentPage = () => {
   };
 
   const sections = [
+    { id: 'branding', label: 'Identité & Branding', icon: Globe },
     { id: 'hero', label: 'Page d\'Accueil', icon: Home },
     { id: 'login', label: 'Page Connexion', icon: User },
     { id: 'founder', label: 'Fondateur', icon: User },
@@ -245,6 +246,114 @@ const SiteContentPage = () => {
             </button>
           ))}
         </div>
+
+        {/* BRANDING SECTION */}
+        {activeSection === 'branding' && (
+          <div className="bg-paper rounded-xl border border-white/10 p-6 space-y-6">
+            <h2 className="font-oswald text-xl text-text-primary uppercase border-b border-white/10 pb-3">
+              Identité de Marque & Navigation
+            </h2>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Branding */}
+              <div className="space-y-4">
+                <h3 className="font-oswald text-lg text-primary uppercase">Identité Visuelle</h3>
+                
+                <ImageUploader
+                  label="Logo"
+                  value={content.branding?.logo_url || ''}
+                  onChange={(url) => updateField('branding', 'logo_url', url)}
+                />
+                
+                <div>
+                  <Label className="text-text-secondary">Nom complet</Label>
+                  <Input
+                    value={content.branding?.name || ''}
+                    onChange={(e) => updateField('branding', 'name', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    placeholder="Académie Jacques Levinet"
+                  />
+                </div>
+                
+                <div>
+                  <Label className="text-text-secondary">Nom court (sigle)</Label>
+                  <Input
+                    value={content.branding?.short_name || ''}
+                    onChange={(e) => updateField('branding', 'short_name', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    placeholder="AJL"
+                  />
+                </div>
+                
+                <div>
+                  <Label className="text-text-secondary">Tagline (sous le nom)</Label>
+                  <Input
+                    value={content.branding?.tagline || ''}
+                    onChange={(e) => updateField('branding', 'tagline', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    placeholder="École Internationale de Self-Défense"
+                  />
+                </div>
+                
+                <div>
+                  <Label className="text-text-secondary">Année de fondation</Label>
+                  <Input
+                    value={content.branding?.foundation_year || ''}
+                    onChange={(e) => updateField('branding', 'foundation_year', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    placeholder="1998"
+                  />
+                </div>
+                
+                <div>
+                  <Label className="text-text-secondary">Description (footer)</Label>
+                  <Textarea
+                    value={content.branding?.description || ''}
+                    onChange={(e) => updateField('branding', 'description', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    rows={2}
+                    placeholder="L'Académie Jacques Levinet forme l'élite..."
+                  />
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="space-y-4">
+                <h3 className="font-oswald text-lg text-primary uppercase">Footer</h3>
+                
+                <div>
+                  <Label className="text-text-secondary">Copyright</Label>
+                  <Input
+                    value={content.footer?.copyright || ''}
+                    onChange={(e) => updateField('footer', 'copyright', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    placeholder="© 2025 Académie Jacques Levinet"
+                  />
+                </div>
+                
+                <div>
+                  <Label className="text-text-secondary">Développeur</Label>
+                  <Input
+                    value={content.footer?.developer || ''}
+                    onChange={(e) => updateField('footer', 'developer', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    placeholder="GILLES KORZEC"
+                  />
+                </div>
+
+                <div>
+                  <Label className="text-text-secondary">Tagline officielle (organisations)</Label>
+                  <Input
+                    value={content.footer?.tagline || ''}
+                    onChange={(e) => updateField('footer', 'tagline', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    placeholder="World Krav Maga Organization - International Police Confederation"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* HERO SECTION */}
         {activeSection === 'hero' && (

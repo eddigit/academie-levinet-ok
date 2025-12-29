@@ -1,12 +1,22 @@
 {
   "_version": "1.0.0",
-  "_last_updated": "2025-12-28",
+  "_last_updated": "2025-12-29",
   "_description": "Configuration officielle de l'Académie Jacques Levinet - NE PAS MODIFIER SANS RAISON",
+  
+  "branding": {
+    "logo_url": "https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg",
+    "name": "Académie Jacques Levinet",
+    "short_name": "AJL",
+    "tagline": "École Internationale de Self-Défense",
+    "foundation_year": "1998",
+    "description": "L'Académie Jacques Levinet forme l'élite de la self-défense mondiale depuis plus de 25 ans."
+  },
   
   "contact": {
     "email": "contact@academie-levinet.com",
     "phone": "+33698070851",
-    "address": "Saint Jean de Védas"
+    "address": "France - Siège International",
+    "location": "Saint Jean de Védas"
   },
   
   "social_links": {
@@ -17,9 +27,120 @@
     "twitter": "https://x.com/Jacques_LEVINET"
   },
   
+  "navigation": {
+    "quick_links": [
+      { "label": "Le Fondateur", "path": "/founder" },
+      { "label": "À Propos", "path": "/about" },
+      { "label": "Self-Pro Krav", "path": "/disciplines/spk" },
+      { "label": "Pédagogie", "path": "/pedagogy" }
+    ],
+    "disciplines": [
+      { "label": "WKMO - Grand Public", "path": "/disciplines/wkmo" },
+      { "label": "SFJL - Défense Féminine", "path": "/disciplines/sfjl" },
+      { "label": "IPC - Professionnels", "path": "/disciplines/ipc" },
+      { "label": "Présence Internationale", "path": "/international" }
+    ],
+    "legal_links": [
+      { "label": "Mentions Légales", "path": "/mentions-legales" },
+      { "label": "Confidentialité", "path": "/confidentialite" }
+    ]
+  },
+  
   "footer": {
     "tagline": "Académie Jacques Levinet – World Krav Maga Organization – International Police Confederation",
-    "copyright": "© 2025 Académie Jacques Levinet. Tous droits réservés."
+    "copyright": "© 2025 Académie Jacques Levinet. Tous droits réservés.",
+    "developer": "GILLES KORZEC"
+  },
+  
+  "landing": {
+    "pillars": [
+      {
+        "icon": "award",
+        "title": "Légitimité & Expertise",
+        "description": "Héritage du Capitaine Jacques Levinet, Champion de France de Karaté",
+        "subtitle": "Méthodes éprouvées et reconnues mondialement (WKMO, IPC)",
+        "color": "primary"
+      },
+      {
+        "icon": "shield",
+        "title": "Sécurité & Éthique",
+        "description": "Respect de la légitime défense",
+        "subtitle": "Une pratique simple basée sur l'instinct de survie et les réflexes",
+        "color": "secondary"
+      },
+      {
+        "icon": "users",
+        "title": "Accessibilité & Communauté",
+        "description": "Conçue pour tous : hommes, femmes, enfants, seniors",
+        "subtitle": "Esprit familial avec présence internationale forte",
+        "color": "accent"
+      }
+    ],
+    "pillars_section": {
+      "title": "Les 3 Piliers de Nos Méthodes",
+      "subtitle": "Krav Maga SPK - Self Pro Krav - Canne Défense - Bâton Défense - Self-Défense Femmes - Self-Défense Enfants",
+      "tagline": "Pour les professionnels de la sécurité et Forces de l'ordre : Real Operational System"
+    },
+    "audiences": [
+      {
+        "title": "Pour Tout Public",
+        "description": "Apprenez à vous défendre avec notre méthode Self-Pro Krav, adaptée à tous",
+        "image": "https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/m50t9hgn_Grand%20Public%20Card.jpeg",
+        "cta": "Je veux apprendre",
+        "link": "/disciplines/wkmo",
+        "color": "accent"
+      },
+      {
+        "title": "Pour les Femmes",
+        "description": "Apprenez à vous défendre avec des gestes simples et efficaces. On est là pour vous aider.",
+        "image": "https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/mbtzqqpj_Self-D%C3%A9fense%20F%C3%A9minine.jpeg",
+        "cta": "Je veux apprendre",
+        "link": "/disciplines/sfjl",
+        "color": "secondary"
+      },
+      {
+        "title": "Forces de Sécurité",
+        "description": "Formation opérationnelle pour les forces de l'ordre et les agents de sécurité",
+        "image": "https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/vjnvljgu_Professionnels%20Card.jpeg",
+        "cta": "Formation Pro",
+        "link": "/disciplines/ipc",
+        "color": "primary"
+      }
+    ],
+    "audiences_section": {
+      "title": "Pour Qui ?",
+      "description": "L'Académie Jacques Levinet, organisme de formation, propose des parcours adaptés à chaque profil, du débutant au professionnel aguerri."
+    },
+    "world_map": {
+      "title": "Trouvez Votre Club",
+      "description": "Trouvez votre club partout dans le monde",
+      "iframe_url": "https://www.google.com/maps/d/u/0/embed?mid=1RdKNrRv4jEPjQTr7BDBCpXuuYAs&ll=-0.10736278113021733%2C0&z=1",
+      "stats": [
+        { "value": "50+", "label": "Pays" },
+        { "value": "50", "label": "Directeurs Techniques" },
+        { "value": "50 ans", "label": "d'Expertise" }
+      ]
+    },
+    "elearning": {
+      "title": "Formations en Ligne",
+      "description": "Accédez à une bibliothèque complète de supports pédagogiques pour vous former où que vous soyez, à votre rythme.",
+      "features": [
+        {
+          "title": "Supports Pédagogiques",
+          "description": "Vidéos et PDF téléchargeables"
+        },
+        {
+          "title": "Programmes Structurés",
+          "description": "Progressions adaptées à chaque niveau"
+        },
+        {
+          "title": "Manuels",
+          "description": "Supports pédagogiques imprimés et numériques"
+        }
+      ],
+      "card_title": "E-Learning Self Défense",
+      "card_description": "Rejoignez les élèves qui se forment en ligne"
+    }
   },
   
   "hero": {

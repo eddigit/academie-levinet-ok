@@ -2,25 +2,35 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import MegaMenu from './MegaMenu';
 import { useAuth } from '../context/AuthContext';
+import { useSiteContent } from '../context/SiteContentContext';
 
 const PublicHeader = () => {
   const { user } = useAuth();
+  const { content, loading } = useSiteContent();
+
+  // Default values in case content is not loaded
+  const branding = content?.branding || {
+    logo_url: "https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg",
+    name: "Académie Jacques Levinet",
+    tagline: "École Internationale de Self-Défense"
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-white/5">
       <div className="container mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
           <img 
-            src="https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg" 
-            alt="Logo Académie Jacques Levinet" 
+            src={branding.logo_url} 
+            alt={`Logo ${branding.name}`}
             className="w-12 h-12 rounded-full object-cover"
             data-testid="header-logo"
           />
           <div>
             <h1 className="font-oswald text-xl font-bold text-text-primary uppercase tracking-wide">
-              Académie Jacques Levinet
+              {branding.name}
             </h1>
-            <p className="text-xs text-text-secondary font-manrope">École Internationale de Self-Défense</p>
+            <p className="text-xs text-text-secondary font-manrope">{branding.tagline}</p>
           </div>
         </Link>
 

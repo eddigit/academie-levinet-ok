@@ -63,6 +63,7 @@ import PaymentCancelPage from './pages/PaymentCancelPage';
 // Contexts
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
+import { SiteContentProvider } from './context/SiteContentContext';
 // Components
 import CartDrawer from './components/CartDrawer';
 
@@ -189,9 +190,11 @@ function App() {
   return (
     <AuthProvider>
       <CartProvider>
-        <BrowserRouter>
-          <AppContent />
-        </BrowserRouter>
+        <SiteContentProvider>
+          <BrowserRouter>
+            <AppContent />
+          </BrowserRouter>
+        </SiteContentProvider>
       </CartProvider>
     </AuthProvider>
   );
