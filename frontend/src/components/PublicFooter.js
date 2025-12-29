@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Facebook, Instagram, Youtube } from 'lucide-react';
+import BUILD_INFO from '../buildInfo';
 
 const PublicFooter = () => {
   return (
@@ -80,14 +81,22 @@ const PublicFooter = () => {
         </div>
 
         {/* Bottom */}
-        <div className="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-text-muted font-manrope text-sm">
-            © 2025 Académie Jacques Levinet. Tous droits réservés. <span className="text-primary font-semibold">Version 2.0</span>
-          </p>
-          <div className="flex items-center gap-6">
-            <Link to="#" className="text-text-muted hover:text-primary transition-colors font-manrope text-sm">Mentions Légales</Link>
-            <Link to="#" className="text-text-muted hover:text-primary transition-colors font-manrope text-sm">Confidentialité</Link>
+        <div className="mt-12 pt-8 border-t border-white/5">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="text-text-muted font-manrope text-sm text-center md:text-left">
+              <p>© 2025 Académie Jacques Levinet. Tous droits réservés.</p>
+              <p className="text-xs text-text-muted/60 mt-1">
+                v{BUILD_INFO.version} • Build: {BUILD_INFO.date} {BUILD_INFO.time} • Commit: {BUILD_INFO.commitHash}
+              </p>
+            </div>
+            <div className="flex items-center gap-6">
+              <Link to="#" className="text-text-muted hover:text-primary transition-colors font-manrope text-sm">Mentions Légales</Link>
+              <Link to="#" className="text-text-muted hover:text-primary transition-colors font-manrope text-sm">Confidentialité</Link>
+            </div>
           </div>
+          <p className="text-center text-xs text-text-muted/50 mt-4 font-manrope">
+            Site réalisé par <span className="text-primary">GILLES KORZEC</span>
+          </p>
         </div>
       </div>
     </footer>
