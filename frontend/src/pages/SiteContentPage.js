@@ -466,6 +466,58 @@ const SiteContentPage = () => {
                 onChange={(url) => updateField('founder', 'photo', url)}
               />
             </div>
+
+            {/* Message du jour section */}
+            <div className="border-t border-white/10 pt-6 mt-6">
+              <h3 className="font-oswald text-lg text-primary uppercase mb-4">
+                📢 Message du jour (affiché sur le Tableau de Bord)
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div>
+                    <Label className="text-text-secondary">Message du jour</Label>
+                    <Textarea
+                      value={content.founder?.daily_message || ''}
+                      onChange={(e) => updateField('founder', 'daily_message', e.target.value)}
+                      className="mt-1 bg-background border-white/10"
+                      rows={4}
+                      placeholder="Écrivez votre message du jour pour les membres..."
+                    />
+                    <p className="text-xs text-text-muted mt-1">
+                      Ce message sera affiché sur le tableau de bord des membres avec votre photo.
+                    </p>
+                  </div>
+                  <div>
+                    <Label className="text-text-secondary">Date du message</Label>
+                    <Input
+                      type="date"
+                      value={content.founder?.daily_message_date || ''}
+                      onChange={(e) => updateField('founder', 'daily_message_date', e.target.value)}
+                      className="mt-1 bg-background border-white/10"
+                    />
+                  </div>
+                </div>
+                <div className="bg-background/50 rounded-lg p-4 border border-white/5">
+                  <p className="text-sm text-text-muted mb-2">Aperçu du message:</p>
+                  {content.founder?.daily_message ? (
+                    <div className="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg p-4">
+                      <p className="text-text-primary italic">"{content.founder.daily_message}"</p>
+                      {content.founder?.daily_message_date && (
+                        <p className="text-xs text-text-muted mt-2">
+                          Message du {new Date(content.founder.daily_message_date).toLocaleDateString('fr-FR', { 
+                            day: 'numeric', 
+                            month: 'long', 
+                            year: 'numeric' 
+                          })}
+                        </p>
+                      )}
+                    </div>
+                  ) : (
+                    <p className="text-text-muted text-sm">Aucun message configuré</p>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         )}
 

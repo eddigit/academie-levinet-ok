@@ -7,16 +7,12 @@
       "config": {
         "distDir": "build"
       }
-    },
-    {
-      "src": "backend/api/index.py",
-      "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "backend/api/index.py"
+      "dest": "https://academie-levinet.onrender.com/api/$1"
     },
     {
       "src": "/(.*)",

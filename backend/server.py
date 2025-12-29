@@ -3990,7 +3990,9 @@ DEFAULT_SITE_CONTENT = {
         "title": "",
         "bio": "",
         "quote": "",
-        "photo": ""
+        "photo": "",
+        "daily_message": "",
+        "daily_message_date": ""
     },
     "about": {
         "title": "À Propos",
@@ -4026,6 +4028,23 @@ DEFAULT_SITE_CONTENT = {
         "copyright": "© 2025 Académie Jacques Levinet. Tous droits réservés."
     }
 }
+
+@api_router.get("/founder-message")
+async def get_founder_message():
+    """Public: Get founder info and daily message for the dashboard"""
+    content = await db.settings.find_one({"id": "site_content"}, {"_id": 0})
+    if not content:
+        content = DEFAULT_SITE_CONTENT
+    
+    founder = content.get("founder", DEFAULT_SITE_CONTENT["founder"])
+    return {
+        "name": founder.get("name", "Capitaine Jacques LEVINET"),
+        "title": founder.get("title", "Fondateur de l'Académie"),
+        "grade": founder.get("grade", ""),
+        "photo": founder.get("photo", ""),
+        "daily_message": founder.get("daily_message", ""),
+        "daily_message_date": founder.get("daily_message_date", "")
+    }
 
 @api_router.get("/admin/site-content")
 async def get_site_content(current_user: dict = Depends(get_current_user)):

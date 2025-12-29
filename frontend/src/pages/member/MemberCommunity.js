@@ -36,7 +36,9 @@ const MemberCommunity = () => {
   const fetchSponsors = async () => {
     try {
       const res = await api.get('/sponsors');
-      const allSponsors = res.data || [];
+      // L'API retourne {sponsors: [...]}
+      const sponsorsData = res.data.sponsors || res.data || [];
+      const allSponsors = Array.isArray(sponsorsData) ? sponsorsData : [];
       setSponsors(allSponsors);
       
       // Séparer les sponsors par position

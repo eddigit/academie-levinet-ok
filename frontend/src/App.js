@@ -56,6 +56,7 @@ import AdminPartnersPage from './pages/admin/AdminPartnersPage';
 import AdminForumsPage from './pages/admin/AdminForumsPage';
 import AdminSponsorsPage from './pages/admin/AdminSponsorsPage';
 import ProfilePage from './pages/ProfilePage';
+import OnlineStudentsPage from './pages/OnlineStudentsPage';
 // Payment pages
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
 import PaymentCancelPage from './pages/PaymentCancelPage';
@@ -143,6 +144,7 @@ const AppContent = () => {
         <Route path="/technical-directors" element={<ProtectedRoute><TechnicalDirectorsPage /></ProtectedRoute>} />
         <Route path="/instructors" element={<ProtectedRoute><InstructorsPage /></ProtectedRoute>} />
         <Route path="/clubs" element={<ProtectedRoute><ClubsPage /></ProtectedRoute>} />
+        <Route path="/online-students" element={<ProtectedRoute><OnlineStudentsPage /></ProtectedRoute>} />
         <Route path="/subscriptions" element={<ProtectedRoute><SubscriptionsPage /></ProtectedRoute>} />
         <Route path="/shop" element={<ProtectedRoute><DashboardShopPage /></ProtectedRoute>} />
         <Route path="/leads" element={<ProtectedRoute><LeadsPage /></ProtectedRoute>} />

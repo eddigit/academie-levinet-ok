@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 import UserAvatar from './UserAvatar';
+import SponsorCard from './SponsorCard';
 import { formatFullName } from '../lib/utils';
 import {
   Heart, MessageCircle, Send, MoreHorizontal, Trash2,
@@ -330,6 +331,8 @@ const SocialWall = ({ variant = 'full' }) => {
   const [loading, setLoading] = useState(true);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [stats, setStats] = useState(null);
+  const [leftSponsors, setLeftSponsors] = useState([]);
+  const [rightSponsors, setRightSponsors] = useState([]);
 
   const fetchPosts = useCallback(async () => {
     try {
@@ -359,15 +362,28 @@ const SocialWall = ({ variant = 'full' }) => {
     }
   }, []);
 
+  const fetchSponsors = useCallback(async () => {
+    try {
+      const response = await api.get('/sponsors');
+      const sponsorsData = response.data.sponsors || response.data || [];
+      const allSponsors = Array.isArray(sponsorsData) ? sponsorsData : [];
+      setLeftSponsors(allSponsors.filter(s => s.position === 'left' || s.position === 'both'));
+      setRightSponsors(allSponsors.filter(s => s.position === 'right' || s.position === 'both'));
+    } catch (error) {
+      console.error('Error fetching sponsors:', error);
+    }
+  }, []);
+
   useEffect(() => {
     fetchPosts();
     fetchOnlineUsers();
     fetchStats();
+    fetchSponsors();
 
     // Refresh online users every 30 seconds
     const interval = setInterval(fetchOnlineUsers, 30000);
     return () => clearInterval(interval);
-  }, [fetchPosts, fetchOnlineUsers, fetchStats]);
+  }, [fetchPosts, fetchOnlineUsers, fetchStats, fetchSponsors]);
 
   const handlePostCreated = (newPost) => {
     setPosts([newPost, ...posts]);
@@ -435,6 +451,16 @@ const SocialWall = ({ variant = 'full' }) => {
             </div>
           </div>
         </div>
+
+        {/* Sponsors - Colonne Gauche */}
+        {leftSponsors.length > 0 && (
+          <div className="space-y-3">
+            <h3 className="font-oswald text-xs font-bold text-text-muted uppercase">Nos Partenaires</h3>
+            {leftSponsors.map(sponsor => (
+              <SponsorCard key={sponsor.id} sponsor={sponsor} />
+            ))}
+          </div>
+        )}
 
         {/* Community Stats */}
         {stats && (
@@ -545,6 +571,16 @@ const SocialWall = ({ variant = 'full' }) => {
             <p className="text-sm text-text-secondary">Paris - 15 Janvier 2025</p>
           </div>
         </div>
+
+        {/* Sponsors - Colonne Droite */}
+        {rightSponsors.length > 0 && (
+          <div className="space-y-3">
+            <h3 className="font-oswald text-xs font-bold text-text-muted uppercase">Sponsors</h3>
+            {rightSponsors.map(sponsor => (
+              <SponsorCard key={sponsor.id} sponsor={sponsor} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
