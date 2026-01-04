@@ -1,23 +1,51 @@
 import aiosmtplib
 import os
+import resend
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import logging
 
 logger = logging.getLogger(__name__)
 
+# Configuration Resend (prioritaire)
+RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
+if RESEND_API_KEY:
+    resend.api_key = RESEND_API_KEY
+
+# Configuration SMTP (fallback)
 SMTP_HOST = os.environ.get('SMTP_HOST', 'smtp.gmail.com')
 SMTP_PORT = int(os.environ.get('SMTP_PORT', '587'))
 SMTP_USER = os.environ.get('SMTP_USER')
 SMTP_PASSWORD = os.environ.get('SMTP_PASSWORD')
-SMTP_FROM_EMAIL = os.environ.get('SMTP_FROM_EMAIL')
+SMTP_FROM_EMAIL = os.environ.get('SMTP_FROM_EMAIL', 'noreply@academielevinet.com')
 SMTP_FROM_NAME = os.environ.get('SMTP_FROM_NAME', 'Académie Jacques Levinet')
 
 
 async def send_email(to_email: str, subject: str, html_content: str, text_content: str = None):
     """
-    Send email via Gmail SMTP (async)
+    Send email via Resend API (preferred) or SMTP (fallback)
     """
+    # Priorité 1: Resend API (fonctionne sur Render)
+    if RESEND_API_KEY:
+        try:
+            params = {
+                "from": f"{SMTP_FROM_NAME} <noreply@academielevinet.com>",
+                "to": [to_email],
+                "subject": subject,
+                "html": html_content,
+            }
+            if text_content:
+                params["text"] = text_content
+            
+            response = resend.Emails.send(params)
+            logger.info(f"Email sent via Resend to {to_email}: {response}")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to send email via Resend to {to_email}: {str(e)}")
+            # Ne pas faire de fallback SMTP si Resend échoue
+            return False
+    
+    # Fallback: SMTP (pour développement local uniquement)
     try:
         message = MIMEMultipart('alternative')
         message['Subject'] = subject
@@ -43,10 +71,10 @@ async def send_email(to_email: str, subject: str, html_content: str, text_conten
             start_tls=True,
         )
         
-        logger.info(f"Email sent successfully to {to_email}")
+        logger.info(f"Email sent via SMTP to {to_email}")
         return True
     except Exception as e:
-        logger.error(f"Failed to send email to {to_email}: {str(e)}")
+        logger.error(f"Failed to send email via SMTP to {to_email}: {str(e)}")
         return False
 
 

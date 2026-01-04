@@ -17,11 +17,19 @@ from email_service import send_email, get_welcome_email_html
 async def test_email(recipient_email: str):
     """Test l'envoi d'un email de bienvenue"""
     print(f"🚀 Envoi d'un email de test à {recipient_email}...")
-    print(f"📧 Configuration SMTP:")
-    print(f"   - Host: {os.environ.get('SMTP_HOST', 'N/A')}")
-    print(f"   - Port: {os.environ.get('SMTP_PORT', 'N/A')}")
-    print(f"   - User: {os.environ.get('SMTP_USER', 'N/A')}")
-    print(f"   - From: {os.environ.get('SMTP_FROM_EMAIL', 'N/A')}")
+    print(f"📧 Configuration Email:")
+    
+    resend_key = os.environ.get('RESEND_API_KEY')
+    if resend_key:
+        print(f"   - Mode: Resend API (Production)")
+        print(f"   - API Key: {resend_key[:15]}...")
+        print(f"   - From: noreply@academielevinet.com")
+    else:
+        print(f"   - Mode: SMTP (Développement)")
+        print(f"   - Host: {os.environ.get('SMTP_HOST', 'N/A')}")
+        print(f"   - Port: {os.environ.get('SMTP_PORT', 'N/A')}")
+        print(f"   - User: {os.environ.get('SMTP_USER', 'N/A')}")
+        print(f"   - From: {os.environ.get('SMTP_FROM_EMAIL', 'N/A')}")
     print()
     
     # Générer le HTML
@@ -55,16 +63,22 @@ if __name__ == "__main__":
     
     recipient = sys.argv[1]
     
-    # Vérifier les variables d'environnement
-    required_vars = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASSWORD', 'SMTP_FROM_EMAIL']
-    missing_vars = [var for var in required_vars if not os.environ.get(var)]
+    # Vérifier la clé API Resend en priorité
+    if os.environ.get('RESEND_API_KEY'):
+        print("✅ Resend API Key trouvée - Mode Production")
+    else:
+        print("⚠️  Resend API Key non trouvée - Mode SMTP Développement")
+        # Vérifier les variables d'environnement SMTP
+        required_vars = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASSWORD', 'SMTP_FROM_EMAIL']
+        missing_vars = [var for var in required_vars if not os.environ.get(var)]
+        
+        if missing_vars:
+            print("❌ Variables d'environnement SMTP manquantes:")
+            for var in missing_vars:
+                print(f"   - {var}")
+            print("\n⚠️  Assurez-vous d'avoir un fichier .env avec ces variables")
+            sys.exit(1)
     
-    if missing_vars:
-        print("❌ Variables d'environnement manquantes:")
-        for var in missing_vars:
-            print(f"   - {var}")
-        print("\n⚠️  Assurez-vous d'avoir un fichier .env avec ces variables")
-        sys.exit(1)
-    
+    print()
     # Exécuter le test
     asyncio.run(test_email(recipient))
