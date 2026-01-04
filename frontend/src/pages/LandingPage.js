@@ -496,7 +496,7 @@ const LandingPage = () => {
       <section 
         className="py-12 md:py-20 px-4 md:px-6 relative" 
         style={{
-          backgroundImage: `linear-gradient(rgba(11, 17, 32, 0.85), rgba(11, 17, 32, 0.9)), url('${content?.hero?.cta_background_image || 'https://images.unsplash.com/photo-1644594570589-ef85bd03169f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njd8MHwxfHNlYXJjaHwyfHxrcmF2JTIwbWFnYSUyMHRyYWluaW5nJTIwY2xhc3N8ZW58MHx8fHwxNzY1NzM2Njg0fDA&ixlib=rb-4.1.0&q=85'}')`,
+          backgroundImage: `linear-gradient(rgba(11, 17, 32, 0.5), rgba(11, 17, 32, 0.6)), url('${content?.hero?.cta_background_image || 'https://images.unsplash.com/photo-1644594570589-ef85bd03169f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njd8MHwxfHNlYXJjaHwyfHxrcmF2JTIwbWFnYSUyMHRyYWluaW5nJTIwY2xhc3N8ZW58MHx8fHwxNzY1NzM2Njg0fDA&ixlib=rb-4.1.0&q=85'}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
