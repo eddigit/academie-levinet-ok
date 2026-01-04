@@ -11,6 +11,7 @@ import { Label } from '../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import api, { getErrorMessage } from '../utils/api';
 import { toast } from 'sonner';
+import { useSiteContent } from '../context/SiteContentContext';
 
 const TOTAL_STEPS = 5;
 
@@ -34,6 +35,7 @@ const beltGrades = [
 
 const OnboardingPage = () => {
   const navigate = useNavigate();
+  const { content } = useSiteContent();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [isExistingMember, setIsExistingMember] = useState(false);
@@ -291,7 +293,7 @@ const OnboardingPage = () => {
           <div className="text-center mb-8">
             <Link to="/" className="inline-block mb-4">
               <img 
-                src="https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg" 
+                src={content.images?.logo || "https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg"} 
                 alt="Logo Académie Jacques Levinet" 
                 className="w-16 h-16 mx-auto rounded-full object-cover"
               />
@@ -439,7 +441,7 @@ const OnboardingPage = () => {
         <div className="text-center mb-8">
           <Link to="/" className="inline-block mb-4">
             <img 
-              src="https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg" 
+              src={content.images?.logo || "https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg"} 
               alt="Logo Académie Jacques Levinet" 
               className="w-16 h-16 mx-auto rounded-full object-cover"
             />

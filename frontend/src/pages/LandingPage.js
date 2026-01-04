@@ -1,27 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, Users, Award, Globe, Video, CheckCircle, Target, Sparkles, Loader2, Facebook, Youtube, Linkedin, Twitter } from 'lucide-react';
 import MegaMenu from '../components/MegaMenu';
-import api from '../utils/api';
+import { useSiteContent } from '../context/SiteContentContext';
 import BUILD_INFO from '../buildInfo';
 
 const LandingPage = () => {
-  const [content, setContent] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const response = await api.get('/site-content');
-        const data = response.data || response;
-        setContent(data);
-      } catch (error) {
-        console.error('Error fetching site content:', error);
-      }
-      setLoading(false);
-    };
-    fetchContent();
-  }, []);
+  const { content, loading } = useSiteContent();
 
   // Valeurs dynamiques avec fallbacks
   const heroTitle = content?.hero?.title || "La Self-Défense Efficace, Réaliste et Sécurisée";
@@ -235,7 +220,7 @@ const LandingPage = () => {
             >
               <div 
                 className="absolute inset-0 h-full w-full bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110"
-                style={{ backgroundImage: 'url(https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/m50t9hgn_Grand%20Public%20Card.jpeg)' }}
+                style={{ backgroundImage: `url(${content?.hero?.audience_cards?.public_image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/m50t9hgn_Grand%20Public%20Card.jpeg'})` }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-95" />
               
@@ -263,7 +248,7 @@ const LandingPage = () => {
             >
               <div 
                 className="absolute inset-0 h-full w-full bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110"
-                style={{ backgroundImage: 'url(https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/mbtzqqpj_Self-D%C3%A9fense%20F%C3%A9minine.jpeg)' }}
+                style={{ backgroundImage: `url(${content?.hero?.audience_cards?.women_image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/mbtzqqpj_Self-D%C3%A9fense%20F%C3%A9minine.jpeg'})` }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-95" />
               
@@ -291,7 +276,7 @@ const LandingPage = () => {
             >
               <div 
                 className="absolute inset-0 h-full w-full bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110"
-                style={{ backgroundImage: 'url(https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/vjnvljgu_Professionnels%20Card.jpeg)' }}
+                style={{ backgroundImage: `url(${content?.hero?.audience_cards?.pro_image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/vjnvljgu_Professionnels%20Card.jpeg'})` }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-95" />
               
@@ -511,7 +496,7 @@ const LandingPage = () => {
       <section 
         className="py-12 md:py-20 px-4 md:px-6 relative" 
         style={{
-          backgroundImage: `linear-gradient(rgba(11, 17, 32, 0.85), rgba(11, 17, 32, 0.9)), url('https://images.unsplash.com/photo-1644594570589-ef85bd03169f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njd8MHwxfHNlYXJjaHwyfHxrcmF2JTIwbWFnYSUyMHRyYWluaW5nJTIwY2xhc3N8ZW58MHx8fHwxNzY1NzM2Njg0fDA&ixlib=rb-4.1.0&q=85')`,
+          backgroundImage: `linear-gradient(rgba(11, 17, 32, 0.85), rgba(11, 17, 32, 0.9)), url('${content?.hero?.cta_background_image || 'https://images.unsplash.com/photo-1644594570589-ef85bd03169f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njd8MHwxfHNlYXJjaHwyfHxrcmF2JTIwbWFnYSUyMHRyYWluaW5nJTIwY2xhc3N8ZW58MHx8fHwxNzY1NzM2Njg0fDA&ixlib=rb-4.1.0&q=85'}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}

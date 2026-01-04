@@ -196,7 +196,7 @@ const SiteContentPage = () => {
     { id: 'international', label: 'International', icon: MapPin },
     { id: 'contact', label: 'Contact', icon: Mail },
     { id: 'social', label: 'Réseaux Sociaux', icon: Facebook },
-    { id: 'images', label: 'Images Globales', icon: Image },
+    { id: 'images', label: 'Logos & Branding', icon: Image },
   ];
 
   if (loading) {
@@ -427,6 +427,36 @@ const SiteContentPage = () => {
                   onChange={(url) => updateField('hero', 'background_image', url)}
                   placeholder="URL de l'image de fond"
                 />
+                
+                <div className="mt-6 space-y-4">
+                  <h3 className="font-oswald text-lg text-primary uppercase border-b border-white/10 pb-2">
+                    Images Cartes Audiences (Landing Page)
+                  </h3>
+                  <ImageUploader
+                    label="Card Grand Public"
+                    value={content.hero?.audience_cards?.public_image || ''}
+                    onChange={(url) => updateNestedField('hero', 'audience_cards', 'public_image', url)}
+                    placeholder="Image de la carte 'Pour Tout Public'"
+                  />
+                  <ImageUploader
+                    label="Card Self-Défense Féminine"
+                    value={content.hero?.audience_cards?.women_image || ''}
+                    onChange={(url) => updateNestedField('hero', 'audience_cards', 'women_image', url)}
+                    placeholder="Image de la carte 'Pour les Femmes'"
+                  />
+                  <ImageUploader
+                    label="Card Professionnels"
+                    value={content.hero?.audience_cards?.pro_image || ''}
+                    onChange={(url) => updateNestedField('hero', 'audience_cards', 'pro_image', url)}
+                    placeholder="Image de la carte 'Forces de Sécurité'"
+                  />
+                  <ImageUploader
+                    label="Background CTA Finale"
+                    value={content.hero?.cta_background_image || ''}
+                    onChange={(url) => updateField('hero', 'cta_background_image', url)}
+                    placeholder="Image de fond de la section Call-to-Action finale"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -754,11 +784,20 @@ const SiteContentPage = () => {
                       />
                     </div>
                   </div>
-                  <ImageUploader
-                    label={`Image ${disc.toUpperCase()}`}
-                    value={content.disciplines?.[disc]?.image || ''}
-                    onChange={(url) => updateNestedField('disciplines', disc, 'image', url)}
-                  />
+                  <div className="space-y-4">
+                    <ImageUploader
+                      label={`Image Hero ${disc.toUpperCase()}`}
+                      value={content.disciplines?.[disc]?.image || ''}
+                      onChange={(url) => updateNestedField('disciplines', disc, 'image', url)}
+                      placeholder="Image principale de la page"
+                    />
+                    <ImageUploader
+                      label={`Image Secondaire ${disc.toUpperCase()}`}
+                      value={content.disciplines?.[disc]?.secondary_image || ''}
+                      onChange={(url) => updateNestedField('disciplines', disc, 'secondary_image', url)}
+                      placeholder="Image de la section contenu"
+                    />
+                  </div>
                 </div>
               </div>
             ))}
@@ -917,8 +956,9 @@ const SiteContentPage = () => {
         {activeSection === 'images' && (
           <div className="bg-paper rounded-xl border border-white/10 p-6 space-y-6">
             <h2 className="font-oswald text-xl text-text-primary uppercase border-b border-white/10 pb-3">
-              Images Globales du Site
+              Logos & Identité Visuelle
             </h2>
+            <p className="text-text-muted text-sm -mt-4 mb-4">Ces éléments apparaissent sur toutes les pages du site</p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <ImageUploader

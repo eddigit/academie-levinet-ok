@@ -1,33 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PublicLayout from '../components/PublicLayout';
 import { Link } from 'react-router-dom';
 import { Globe, Users, MapPin, Star, ChevronRight, Newspaper, Loader2 } from 'lucide-react';
-import api from '../utils/api';
+import { useSiteContent } from '../context/SiteContentContext';
 
 const InternationalPage = () => {
-  const [content, setContent] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const response = await api.get('/site-content');
-        const data = response.data || response;
-        setContent(data.international || {});
-      } catch (error) {
-        console.error('Error fetching international content:', error);
-      }
-      setLoading(false);
-    };
-    fetchContent();
-  }, []);
+  const { content, loading } = useSiteContent();
 
   // Valeurs dynamiques avec fallbacks
-  const internationalTitle = content?.title || 'Présence Internationale';
-  const internationalSubtitle = content?.subtitle || "L'Académie Jacques Levinet est représentée sur tous les continents avec des directeurs techniques et clubs affiliés dans plus de 50 pays.";
-  const magazineName = content?.magazine_name || 'KRAV MAG AJL';
-  const magazineSubtitle = content?.magazine_subtitle || 'Magazine International';
-  const mapImage = content?.map_image;
+  const internationalTitle = content?.international?.title || 'Présence Internationale';
+  const internationalSubtitle = content?.international?.subtitle || "L'Académie Jacques Levinet est représentée sur tous les continents avec des directeurs techniques et clubs affiliés dans plus de 50 pays.";
+  const magazineName = content?.international?.magazine_name || 'KRAV MAG AJL';
+  const magazineSubtitle = content?.international?.magazine_subtitle || 'Magazine International';
+  const mapImage = content?.international?.map_image;
 
   const stats = [
     { value: '50+', label: 'Pays' },

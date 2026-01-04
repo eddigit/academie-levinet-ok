@@ -1,32 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PublicLayout from '../components/PublicLayout';
 import { Link } from 'react-router-dom';
 import { Shield, Target, Award, Users, ChevronRight, CheckCircle, Star, Loader2 } from 'lucide-react';
-import api from '../utils/api';
+import { useSiteContent } from '../context/SiteContentContext';
 
 const DisciplineIPCPage = () => {
-  const [content, setContent] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const response = await api.get('/site-content');
-        const data = response.data || response;
-        setContent(data.disciplines?.ipc || {});
-      } catch (error) {
-        console.error('Error fetching discipline content:', error);
-      }
-      setLoading(false);
-    };
-    fetchContent();
-  }, []);
+  const { content, loading } = useSiteContent();
 
   // Valeurs dynamiques avec fallbacks
-  const discTitle = content?.title || 'IPC / ROS';
-  const discSubtitle = content?.subtitle || 'International Police Confederation';
-  const discDescription = content?.description || "Formation professionnelle pour les forces de l'ordre et agents de sécurité.";
-  const discImage = content?.image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/vjnvljgu_Professionnels%20Card.jpeg';
+  const discTitle = content?.disciplines?.ipc?.title || 'IPC / ROS';
+  const discSubtitle = content?.disciplines?.ipc?.subtitle || 'International Police Confederation';
+  const discDescription = content?.disciplines?.ipc?.description || "Formation professionnelle pour les forces de l'ordre et agents de sécurité.";
+  const discImage = content?.disciplines?.ipc?.image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/vjnvljgu_Professionnels%20Card.jpeg';
+  const discSecondaryImage = content?.disciplines?.ipc?.secondary_image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/vjnvljgu_Professionnels%20Card.jpeg';
 
   const features = [
     { icon: Target, title: 'Efficacité Opérationnelle', description: 'Techniques validées sur le terrain par des unités d\'élite.' },
@@ -157,7 +143,7 @@ const DisciplineIPCPage = () => {
               <div className="aspect-video rounded-lg overflow-hidden border border-white/10">
                 <div 
                   className="w-full h-full bg-cover bg-center bg-gray-800"
-                  style={{ backgroundImage: 'url(https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/vjnvljgu_Professionnels%20Card.jpeg)' }}
+                  style={{ backgroundImage: `url(${discSecondaryImage})` }}
                   data-placeholder="ipc-tactical-training"
                 />
               </div>

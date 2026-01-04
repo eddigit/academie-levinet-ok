@@ -1,32 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PublicLayout from '../components/PublicLayout';
 import { Link } from 'react-router-dom';
 import { Shield, Target, Zap, Brain, CheckCircle, ChevronRight, Loader2 } from 'lucide-react';
-import api from '../utils/api';
+import { useSiteContent } from '../context/SiteContentContext';
 
 const DisciplineSPKPage = () => {
-  const [content, setContent] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const response = await api.get('/site-content');
-        const data = response.data || response;
-        setContent(data.disciplines?.spk || {});
-      } catch (error) {
-        console.error('Error fetching discipline content:', error);
-      }
-      setLoading(false);
-    };
-    fetchContent();
-  }, []);
+  const { content, loading } = useSiteContent();
 
   // Valeurs dynamiques avec fallbacks
-  const discTitle = content?.title || 'Krav Maga Self-Défense';
-  const discSubtitle = content?.subtitle || 'Apprenez à Vous Défendre';
-  const discDescription = content?.description || 'Apprenez à vous protéger avec des gestes simples et efficaces.';
-  const discImage = content?.image || 'https://images.unsplash.com/photo-1655558846882-fa55132d6c20?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwxfHx0YWN0aWNhbCUyMHNlbGYlMjBkZWZlbnNlJTIwdHJhaW5pbmclMjBhY3Rpb258ZW58MHx8fHwxNzY1ODAzNzAwfDA&ixlib=rb-4.1.0&q=85';
+  const discTitle = content?.disciplines?.spk?.title || 'Krav Maga Self-Défense';
+  const discSubtitle = content?.disciplines?.spk?.subtitle || 'Apprenez à Vous Défendre';
+  const discDescription = content?.disciplines?.spk?.description || 'Apprenez à vous protéger avec des gestes simples et efficaces.';
+  const discImage = content?.disciplines?.spk?.image || 'https://images.unsplash.com/photo-1655558846882-fa55132d6c20?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwxfHx0YWN0aWNhbCUyMHNlbGYlMjBkZWZlbnNlJTIwdHJhaW5pbmclMjBhY3Rpb258ZW58MHx8fHwxNzY1ODAzNzAwfDA&ixlib=rb-4.1.0&q=85';
+  const discSecondaryImage = content?.disciplines?.spk?.secondary_image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/m50t9hgn_Grand%20Public%20Card.jpeg';
 
   const principles = [
     { icon: Target, title: 'Simple & Efficace', description: 'Des techniques basées sur vos réflexes naturels. Pas besoin d\'être sportif.' },
@@ -125,7 +111,7 @@ const DisciplineSPKPage = () => {
               <div className="aspect-video rounded-lg overflow-hidden border border-white/10">
                 <div 
                   className="w-full h-full bg-cover bg-center bg-gray-800"
-                  style={{ backgroundImage: 'url(https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/m50t9hgn_Grand%20Public%20Card.jpeg)' }}
+                  style={{ backgroundImage: `url(${discSecondaryImage})` }}
                   data-placeholder="spk-training-session"
                 />
               </div>

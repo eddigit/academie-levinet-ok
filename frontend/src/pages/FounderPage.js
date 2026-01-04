@@ -1,33 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PublicLayout from '../components/PublicLayout';
 import { Link } from 'react-router-dom';
 import { Award, Shield, Globe, Star, ChevronRight, Loader2 } from 'lucide-react';
-import api from '../utils/api';
+import { useSiteContent } from '../context/SiteContentContext';
 
 const FounderPage = () => {
-  const [founderContent, setFounderContent] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const response = await api.get('/site-content');
-        const data = response.data || response;
-        setFounderContent(data.founder || {});
-      } catch (error) {
-        console.error('Error fetching founder content:', error);
-      }
-      setLoading(false);
-    };
-    fetchContent();
-  }, []);
+  const { content, loading } = useSiteContent();
 
   // Valeurs par défaut si pas de données du CMS
-  const founderName = founderContent?.name || 'Capitaine Jacques Levinet';
-  const founderTitle = founderContent?.title || '10ème Dan · Champion de France · Créateur du Self-Pro Krav';
-  const founderGrade = founderContent?.grade || '10ème Dan';
-  const founderBio = founderContent?.bio || "Ancien membre de la Police Nationale avec une forte expérience de terrain, expert en arts martiaux et visionnaire qui a révolutionné l'approche de la self-défense en créant une méthode adaptée aux réalités modernes.";
-  const founderQuote = founderContent?.quote || "J'ai parcouru le monde pour analyser les meilleures techniques de self-défense et d'entraînement policier. Mon objectif : créer des méthodes efficaces, réalistes et adaptées à la législation française.";
+  const founderName = content?.founder?.name || 'Capitaine Jacques Levinet';
+  const founderTitle = content?.founder?.title || '10ème Dan · Champion de France · Créateur du Self-Pro Krav';
+  const founderGrade = content?.founder?.grade || '10ème Dan';
+  const founderBio = content?.founder?.bio || "Ancien membre de la Police Nationale avec une forte expérience de terrain, expert en arts martiaux et visionnaire qui a révolutionné l'approche de la self-défense en créant une méthode adaptée aux réalités modernes.";
+  const founderQuote = content?.founder?.quote || "J'ai parcouru le monde pour analyser les meilleures techniques de self-défense et d'entraînement policier. Mon objectif : créer des méthodes efficaces, réalistes et adaptées à la législation française.";
   const founderPhoto = founderContent?.photo || 'https://images.unsplash.com/photo-1616005639387-9d59e4b1bdb9?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwxfHxtYXJ0aWFsJTIwYXJ0cyUyMGdyYW5kbWFzdGVyJTIwcG9ydHJhaXQlMjBzZXJpb3VzfGVufDB8fHxibGFja19hbmRfd2hpdGV8MTc2NTgwMzY5N3ww&ixlib=rb-4.1.0&q=85';
 
   const achievements = [

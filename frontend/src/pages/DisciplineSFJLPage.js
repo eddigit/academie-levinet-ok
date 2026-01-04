@@ -1,32 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PublicLayout from '../components/PublicLayout';
 import { Link } from 'react-router-dom';
 import { Shield, Heart, Sparkles, Target, Users, ChevronRight, CheckCircle, Loader2 } from 'lucide-react';
-import api from '../utils/api';
+import { useSiteContent } from '../context/SiteContentContext';
 
 const DisciplineSFJLPage = () => {
-  const [content, setContent] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const response = await api.get('/site-content');
-        const data = response.data || response;
-        setContent(data.disciplines?.sfjl || {});
-      } catch (error) {
-        console.error('Error fetching discipline content:', error);
-      }
-      setLoading(false);
-    };
-    fetchContent();
-  }, []);
+  const { content, loading } = useSiteContent();
 
   // Valeurs dynamiques avec fallbacks
-  const discTitle = content?.title || 'Self-Défense Féminine';
-  const discSubtitle = content?.subtitle || 'Apprenez à Vous Protéger';
-  const discDescription = content?.description || 'Vous avez le droit de vous sentir en sécurité. Nous sommes là pour vous apprendre des gestes simples et efficaces, dans un cadre bienveillant et rassurant.';
-  const discImage = content?.image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/mbtzqqpj_Self-D%C3%A9fense%20F%C3%A9minine.jpeg';
+  const discTitle = content?.disciplines?.sfjl?.title || 'Self-Défense Féminine';
+  const discSubtitle = content?.disciplines?.sfjl?.subtitle || 'Apprenez à Vous Protéger';
+  const discDescription = content?.disciplines?.sfjl?.description || 'Vous avez le droit de vous sentir en sécurité. Nous sommes là pour vous apprendre des gestes simples et efficaces, dans un cadre bienveillant et rassurant.';
+  const discImage = content?.disciplines?.sfjl?.image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/mbtzqqpj_Self-D%C3%A9fense%20F%C3%A9minine.jpeg';
+  const discSecondaryImage = content?.disciplines?.sfjl?.secondary_image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/mbtzqqpj_Self-D%C3%A9fense%20F%C3%A9minine.jpeg';
 
   const pillars = [
     { icon: Sparkles, title: 'Reprendre Confiance', description: 'Apprenez à vous faire confiance. Vous êtes plus forte que vous ne le pensez.' },
@@ -122,7 +108,7 @@ const DisciplineSFJLPage = () => {
               <div className="aspect-square rounded-lg overflow-hidden border border-white/10">
                 <div 
                   className="w-full h-full bg-cover bg-center bg-gray-800"
-                  style={{ backgroundImage: 'url(https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/mbtzqqpj_Self-D%C3%A9fense%20F%C3%A9minine.jpeg)' }}
+                  style={{ backgroundImage: `url(${discSecondaryImage})` }}
                   data-placeholder="sfjl-women-training"
                 />
               </div>

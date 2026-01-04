@@ -3978,7 +3978,13 @@ DEFAULT_SITE_CONTENT = {
         "cta_text": "Rejoindre l'Académie",
         "cta_link": "/onboarding",
         "background_image": "",
-        "video_url": ""
+        "video_url": "",
+        "cta_background_image": "",
+        "audience_cards": {
+            "public_image": "",
+            "women_image": "",
+            "pro_image": ""
+        }
     },
     "login": {
         "title": "Académie Jacques Levinet",
@@ -4001,7 +4007,38 @@ DEFAULT_SITE_CONTENT = {
         "title": "À Propos",
         "description": "L'Académie Jacques Levinet forme depuis plus de 40 ans des pratiquants et des professionnels à travers le monde.",
         "image_url": "",
-        "image": ""
+        "image": "",
+        "secondary_image": ""
+    },
+    "disciplines": {
+        "wkmo": {
+            "title": "WKMO",
+            "subtitle": "Pour Toute la Famille",
+            "description": "Méthode pour tous les âges",
+            "image": "",
+            "secondary_image": ""
+        },
+        "spk": {
+            "title": "Krav Maga Self-Défense",
+            "subtitle": "Apprenez à Vous Défendre",
+            "description": "Techniques de self-défense efficaces",
+            "image": "",
+            "secondary_image": ""
+        },
+        "sfjl": {
+            "title": "Self-Défense Féminine Jacques Levinet",
+            "subtitle": "Spécifiquement pour les Femmes",
+            "description": "Techniques adaptées pour la défense féminine",
+            "image": "",
+            "secondary_image": ""
+        },
+        "ipc": {
+            "title": "IPC / ROS",
+            "subtitle": "Pour les Professionnels",
+            "description": "Formation pour forces de l'ordre et sécurité",
+            "image": "",
+            "secondary_image": ""
+        }
     },
     "features": [
         {"title": "Self-Défense Réaliste", "description": "Techniques éprouvées sur le terrain", "icon": "shield"},

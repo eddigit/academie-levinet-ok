@@ -1,32 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PublicLayout from '../components/PublicLayout';
 import { Link } from 'react-router-dom';
 import { Shield, Users, Award, Target, ChevronRight, CheckCircle, Loader2 } from 'lucide-react';
-import api from '../utils/api';
+import { useSiteContent } from '../context/SiteContentContext';
 
 const AboutPage = () => {
-  const [content, setContent] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const response = await api.get('/site-content');
-        const data = response.data || response;
-        setContent(data.about || {});
-      } catch (error) {
-        console.error('Error fetching about content:', error);
-      }
-      setLoading(false);
-    };
-    fetchContent();
-  }, []);
+  const { content, loading } = useSiteContent();
 
   // Valeurs dynamiques avec fallbacks
-  const aboutTitle = content?.title || "L'Académie Jacques Levinet";
-  const aboutDescription = content?.description || "Depuis plus de 25 ans, l'Académie est spécialisée dans la self-défense de rue et la formation professionnelle des forces de l'ordre. Une structure tripartite internationale regroupant Self-Pro Krav, Krav Maga, KAPAP et autres disciplines de combat.";
-  const aboutMission = content?.mission || "Unifier les pratiquants de diverses disciplines — Self-Pro Krav, Krav Maga, KAPAP, Canne Défense, Self Féminine et autres méthodes de self-défense — sous une bannière commune d'excellence et d'efficacité.";
-  const aboutImage = content?.image || 'https://images.unsplash.com/photo-1595554919503-b806f0f8f106?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwyfHxkaXZlcnNlJTIwZ3JvdXAlMjBtYXJ0aWFsJTIwYXJ0cyUyMGNsYXNzJTIwbW9kZXJuJTIwZ3ltfGVufDB8fHx8MTc2NTgwMzcwMnww&ixlib=rb-4.1.0&q=85';
+  const aboutTitle = content?.about?.title || "L'Académie Jacques Levinet";
+  const aboutDescription = content?.about?.description || "Depuis plus de 25 ans, l'Académie est spécialisée dans la self-défense de rue et la formation professionnelle des forces de l'ordre. Une structure tripartite internationale regroupant Self-Pro Krav, Krav Maga, KAPAP et autres disciplines de combat.";
+  const aboutMission = content?.about?.mission || "Unifier les pratiquants de diverses disciplines — Self-Pro Krav, Krav Maga, KAPAP, Canne Défense, Self Féminine et autres méthodes de self-défense — sous une bannière commune d'excellence et d'efficacité.";
+  const aboutImage = content?.about?.image || 'https://images.unsplash.com/photo-1595554919503-b806f0f8f106?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwyfHxkaXZlcnNlJTIwZ3JvdXAlMjBtYXJ0aWFsJTIwYXJ0cyUyMGNsYXNzJTIwbW9kZXJuJTIwZ3ltfGVufDB8fHx8MTc2NTgwMzcwMnww&ixlib=rb-4.1.0&q=85';
 
   const pillars = [
     {

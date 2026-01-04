@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useSiteContent } from '../context/SiteContentContext';
 import { Eye, EyeOff } from 'lucide-react';
-import api from '../utils/api';
 
 // Default fallback values
 const DEFAULT_LOGIN_CONTENT = {
@@ -24,25 +24,9 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [siteContent, setSiteContent] = useState({ login: DEFAULT_LOGIN_CONTENT });
+  const { content: siteContent } = useSiteContent();
   const { login, register } = useAuth();
   const navigate = useNavigate();
-
-  // Fetch site content on mount
-  useEffect(() => {
-    const fetchSiteContent = async () => {
-      try {
-        const response = await api.get('/site-content');
-        const data = response.data || response;
-        if (data && data.login) {
-          setSiteContent(data);
-        }
-      } catch (error) {
-        // Utilisation du contenu par défaut
-      }
-    };
-    fetchSiteContent();
-  }, []);
 
   // Get login content with fallbacks
   const loginContent = {
@@ -122,7 +106,7 @@ const LoginPage = () => {
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <img 
-              src="https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg" 
+              src={siteContent.images?.logo || "https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg"} 
               alt="Logo Académie Jacques Levinet" 
               className="w-20 h-20 mx-auto mb-4 rounded-full object-cover"
               data-testid="login-logo"

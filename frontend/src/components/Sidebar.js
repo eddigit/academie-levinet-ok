@@ -7,12 +7,14 @@ import {
   Handshake, MessageCircle, CheckSquare, TrendingUp
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useSiteContent } from '../context/SiteContentContext';
 import api from '../utils/api';
 import { formatFullName, getInitials } from '../lib/utils';
 
 const Sidebar = () => {
   const location = useLocation();
   const { logout, user } = useAuth();
+  const { content } = useSiteContent();
   const [unreadCount, setUnreadCount] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -125,7 +127,7 @@ const Sidebar = () => {
       <div className="p-6 border-b border-white/5 flex-shrink-0">
         <div className="flex items-center gap-3">
           <img 
-            src="https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg" 
+            src={content.images?.logo || "https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg"} 
             alt="Académie Levinet Logo" 
             className="w-12 h-12 rounded-full object-cover"
             data-testid="sidebar-logo"
