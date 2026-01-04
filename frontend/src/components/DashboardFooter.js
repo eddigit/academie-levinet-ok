@@ -7,7 +7,7 @@ const DashboardFooter = () => {
       <div className="px-4 py-2">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-text-muted/60">
           <div className="flex items-center gap-4">
-            <span>© 2025 Académie Jacques Levinet</span>
+            <span>© 2026 Académie Jacques Levinet</span>
             <span className="hidden sm:inline">•</span>
             <span className="text-primary/80">v{BUILD_INFO.version}</span>
             <span className="hidden md:inline">•</span>

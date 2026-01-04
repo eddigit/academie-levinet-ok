@@ -18,13 +18,13 @@ const PublicFooter = () => {
   const contact = content?.contact || {
     email: "contact@academielevinet.com",
     phone: "+33 6 98 07 08 51",
-    address: "Saint Jean de Védas, France"
+    address: "Montpellier, France"
   };
 
   const social = content?.social_links || {};
   const navigation = content?.navigation || { quick_links: [], disciplines: [], legal_links: [] };
   const footer = content?.footer || {
-    copyright: "© 2025 Académie Jacques Levinet. Tous droits réservés.",
+    copyright: "© 2026 Académie Jacques Levinet. Tous droits réservés.",
     developer: "GILLES KORZEC"
   };
 
