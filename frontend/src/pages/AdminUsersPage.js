@@ -20,7 +20,19 @@ const beltGrades = [
   "Ceinture Blanche", "Ceinture Jaune", "Ceinture Orange", "Ceinture Verte",
   "Ceinture Bleue", "Ceinture Marron", "Ceinture Noire", "Ceinture Noire 1er Dan",
   "Ceinture Noire 2ème Dan", "Ceinture Noire 3ème Dan", "Ceinture Noire 4ème Dan",
-  "Ceinture Noire 5ème Dan", "Instructeur", "Directeur Technique", "Directeur National"
+  "Ceinture Noire 5ème Dan", "Ceinture Noire 6ème Dan", "Ceinture Noire 7ème Dan",
+  "Ceinture Noire 8ème Dan", "Ceinture Noire 9ème Dan", "Ceinture Noire 10ème Dan",
+  "Instructeur", "Directeur Technique", "Directeur National"
+];
+
+// Disciplines disponibles
+const disciplinesList = [
+  { code: 'SPK', label: 'Self-Pro Krav (SPK)' },
+  { code: 'CDJL', label: 'Canne Défense Jacques Levinet (CDJL)' },
+  { code: 'BDJL', label: 'Bâton Défense Jacques Levinet (BDJL)' },
+  { code: 'ROS', label: 'Real Operational System (ROS)' },
+  { code: 'SFJL', label: 'Self Féminine Jacques Levinet (SFJL)' },
+  { code: 'SEJL', label: 'Self Enfant Jacques Levinet (SEJL)' }
 ];
 
 // Rôles unifiés - Nouvelle structure
@@ -55,7 +67,7 @@ const AdminUsersPage = () => {
   const [creating, setCreating] = useState(false);
   const [newUser, setNewUser] = useState({
     email: '', password: '', full_name: '', role: 'eleve', phone: '', city: '',
-    country: 'France', belt_grade: '', send_email: true, club_id: '', instructor_id: '', technical_director_id: ''
+    country: 'France', belt_grade: '', discipline: '', send_email: true, club_id: '', instructor_id: '', technical_director_id: ''
   });
   const [newUserPhoto, setNewUserPhoto] = useState(null);
   const [newUserPhotoPreview, setNewUserPhotoPreview] = useState(null);
@@ -187,7 +199,7 @@ const AdminUsersPage = () => {
       
       toast.success(`${roleLabels[newUser.role]?.label || 'Utilisateur'} créé avec succès`);
       setIsCreateOpen(false);
-      setNewUser({ email: '', password: '', full_name: '', role: 'eleve', phone: '', city: '', country: 'France', belt_grade: '', send_email: true, club_id: '', instructor_id: '', technical_director_id: '' });
+      setNewUser({ email: '', password: '', full_name: '', role: 'eleve', phone: '', city: '', country: 'France', belt_grade: '', discipline: '', send_email: true, club_id: '', instructor_id: '', technical_director_id: '' });
       setNewUserPhoto(null);
       setNewUserPhotoPreview(null);
       fetchUsers();
@@ -548,6 +560,25 @@ const AdminUsersPage = () => {
                       </SelectContent>
                     </Select>
                   </div>
+                </div>
+
+                {/* Discipline */}
+                <div>
+                  <Label className="text-text-secondary">Discipline principale</Label>
+                  <Select
+                    value={newUser.discipline || ''}
+                    onValueChange={(value) => setNewUser({ ...newUser, discipline: value })}
+                  >
+                    <SelectTrigger className="mt-1 bg-background border-white/10">
+                      <SelectValue placeholder="Sélectionner une discipline" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-paper border-white/10 max-h-60">
+                      <SelectItem value="" className="text-text-muted">Aucune</SelectItem>
+                      {disciplinesList.map((disc) => (
+                        <SelectItem key={disc.code} value={disc.code} className="text-text-primary">{disc.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 
                 <div className="flex items-center gap-3 p-3 bg-background/50 rounded-lg">
@@ -924,6 +955,25 @@ const AdminUsersPage = () => {
                       </SelectContent>
                     </Select>
                   </div>
+                </div>
+
+                {/* Discipline */}
+                <div className="mt-4">
+                  <Label className="text-text-secondary">Discipline principale</Label>
+                  <Select
+                    value={editingUser.discipline || ''}
+                    onValueChange={(value) => setEditingUser({ ...editingUser, discipline: value })}
+                  >
+                    <SelectTrigger className="mt-1 bg-background border-white/10 text-text-primary">
+                      <SelectValue placeholder="Sélectionner une discipline" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-paper border-white/10 max-h-60">
+                      <SelectItem value="" className="text-text-muted">Aucune</SelectItem>
+                      {disciplinesList.map((disc) => (
+                        <SelectItem key={disc.code} value={disc.code} className="text-text-primary">{disc.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {/* Affectations conditionnelles selon le rôle */}

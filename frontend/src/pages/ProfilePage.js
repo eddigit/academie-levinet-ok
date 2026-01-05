@@ -29,7 +29,8 @@ const beltGrades = [
   "Ceinture Blanche", "Ceinture Jaune", "Ceinture Orange", "Ceinture Verte",
   "Ceinture Bleue", "Ceinture Marron", "Ceinture Noire", "Ceinture Noire 1er Dan",
   "Ceinture Noire 2ème Dan", "Ceinture Noire 3ème Dan", "Ceinture Noire 4ème Dan",
-  "Ceinture Noire 5ème Dan"
+  "Ceinture Noire 5ème Dan", "Ceinture Noire 6ème Dan", "Ceinture Noire 7ème Dan",
+  "Ceinture Noire 8ème Dan", "Ceinture Noire 9ème Dan", "Ceinture Noire 10ème Dan"
 ];
 
 // Rôles: admin > directeur_technique > instructeur > eleve (avec club) > eleve_libre (sans club)

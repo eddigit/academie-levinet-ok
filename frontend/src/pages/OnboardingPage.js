@@ -28,6 +28,11 @@ const beltGrades = [
   "Ceinture Noire 3ème Dan",
   "Ceinture Noire 4ème Dan",
   "Ceinture Noire 5ème Dan",
+  "Ceinture Noire 6ème Dan",
+  "Ceinture Noire 7ème Dan",
+  "Ceinture Noire 8ème Dan",
+  "Ceinture Noire 9ème Dan",
+  "Ceinture Noire 10ème Dan",
   "Instructeur",
   "Directeur Technique",
   "Directeur National"

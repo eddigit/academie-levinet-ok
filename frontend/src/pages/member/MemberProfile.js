@@ -27,6 +27,11 @@ const beltColors = {
   'Ceinture Noire 3ème Dan': { accent: '#374151', badgeBg: '#1F2937', badgeText: '#FFFFFF' },
   'Ceinture Noire 4ème Dan': { accent: '#374151', badgeBg: '#1F2937', badgeText: '#FFFFFF' },
   'Ceinture Noire 5ème Dan': { accent: '#374151', badgeBg: '#1F2937', badgeText: '#FFFFFF' },
+  'Ceinture Noire 6ème Dan': { accent: '#374151', badgeBg: '#1F2937', badgeText: '#FFFFFF' },
+  'Ceinture Noire 7ème Dan': { accent: '#374151', badgeBg: '#1F2937', badgeText: '#FFFFFF' },
+  'Ceinture Noire 8ème Dan': { accent: '#374151', badgeBg: '#1F2937', badgeText: '#FFFFFF' },
+  'Ceinture Noire 9ème Dan': { accent: '#374151', badgeBg: '#1F2937', badgeText: '#FFFFFF' },
+  'Ceinture Noire 10ème Dan': { accent: '#374151', badgeBg: '#1F2937', badgeText: '#FFFFFF' },
   'Instructeur': { accent: '#DC2626', badgeBg: '#DC2626', badgeText: '#FFFFFF' },
   'Directeur Technique': { accent: '#7C3AED', badgeBg: '#7C3AED', badgeText: '#FFFFFF' },
   'Directeur National': { accent: '#EA580C', badgeBg: '#EA580C', badgeText: '#FFFFFF' },
@@ -36,7 +41,9 @@ const beltGrades = [
   "Ceinture Blanche", "Ceinture Jaune", "Ceinture Orange", "Ceinture Verte",
   "Ceinture Bleue", "Ceinture Marron", "Ceinture Noire", "Ceinture Noire 1er Dan",
   "Ceinture Noire 2ème Dan", "Ceinture Noire 3ème Dan", "Ceinture Noire 4ème Dan",
-  "Ceinture Noire 5ème Dan", "Instructeur", "Directeur Technique", "Directeur National"
+  "Ceinture Noire 5ème Dan", "Ceinture Noire 6ème Dan", "Ceinture Noire 7ème Dan",
+  "Ceinture Noire 8ème Dan", "Ceinture Noire 9ème Dan", "Ceinture Noire 10ème Dan",
+  "Instructeur", "Directeur Technique", "Directeur National"
 ];
 
 const MemberProfile = () => {
