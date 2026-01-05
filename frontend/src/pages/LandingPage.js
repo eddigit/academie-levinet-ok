@@ -129,7 +129,7 @@ const LandingPage = () => {
           <h2 className="font-oswald text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-primary uppercase mb-4 md:mb-6 tracking-wide drop-shadow-2xl leading-tight">
             {heroTitle}
           </h2>
-          <p className="font-oswald text-xs sm:text-sm md:text-base text-primary/90 uppercase mb-6 md:mb-8 drop-shadow-lg" style={{ letterSpacing: '0.35em' }}>
+          <p className="font-oswald text-sm sm:text-base md:text-lg lg:text-xl text-primary uppercase mb-6 md:mb-8 drop-shadow-lg" style={{ letterSpacing: '0.25em', textShadow: '1px 1px 0 white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 0 0 8px rgba(255,255,255,0.5)' }}>
             World Krav Maga Organization • International Police Confederation
           </p>
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-text-secondary font-manrope mb-4 md:mb-8 leading-relaxed drop-shadow-lg">
@@ -157,7 +157,7 @@ const LandingPage = () => {
             Les 3 Piliers de Nos Méthodes
           </h3>
           <p className="text-center text-text-secondary font-manrope text-sm md:text-lg mb-2 max-w-3xl mx-auto">
-            Krav Maga SPK - Self Pro Krav - Canne Défense - Bâton Défense - Self-Défense Femmes - Self-Défense Enfants
+            Krav Maga SPK - Self Pro Krav - Canne Défense - Bâton Défense - Self-Défense Femmes - Self-Défense Enfants - Self-Défense Seniors
           </p>
           <p className="text-center text-primary font-manrope text-xs md:text-base mb-8 md:mb-16 max-w-3xl mx-auto">
             Pour les professionnels de la sécurité et Forces de l'ordre : Real Operational System
@@ -167,7 +167,7 @@ const LandingPage = () => {
               <Award className="w-10 h-10 md:w-12 md:h-12 text-primary mx-auto mb-3 md:mb-4" strokeWidth={1} />
               <h4 className="font-oswald text-lg md:text-xl font-bold text-text-primary uppercase mb-2 md:mb-3">Légitimité & Expertise</h4>
               <p className="text-text-secondary font-manrope leading-relaxed mb-2 md:mb-3 text-sm md:text-base">
-                Héritage du Capitaine Jacques Levinet, Champion de France de Karaté
+                Héritage du Capitaine Jacques Lévinet, expert formateur police et champion de France de karaté
               </p>
               <p className="text-text-muted font-manrope text-xs md:text-sm">
                 Méthodes éprouvées et reconnues mondialement (WKMO, IPC)
@@ -181,7 +181,7 @@ const LandingPage = () => {
                 Respect de la légitime défense
               </p>
               <p className="text-text-muted font-manrope text-xs md:text-sm">
-                Une pratique simple basée sur l'instinct de survie et les réflexes
+                Une pratique simple basée sur l'instinct de survie, les réflexes et les réflexes conditionnés
               </p>
             </div>
 
@@ -214,7 +214,8 @@ const LandingPage = () => {
 
           <div className="grid gap-4 md:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {/* Pour Tout Public Card */}
-            <div 
+            <Link 
+              to="/disciplines/wkmo"
               className="group relative h-[350px] sm:h-[400px] md:h-[500px] w-full overflow-hidden rounded-xl md:rounded-2xl border border-white/10 bg-gray-900 shadow-xl transition-all duration-500 hover:shadow-2xl hover:shadow-accent/20 hover:border-accent/50"
               data-testid="audience-card-public"
             >
@@ -231,7 +232,7 @@ const LandingPage = () => {
                     Pour Tout Public
                   </h4>
                   <p className="font-manrope text-sm md:text-base text-gray-300 mb-4 md:mb-6 opacity-90 max-w-xs">
-                    Apprenez à vous défendre avec notre méthode Self-Pro Krav, adaptée à tous
+                    Apprenez à vous défendre avec nos méthodes adaptées pour tous
                   </p>
                   <div className="flex items-center gap-2 md:gap-3 opacity-80 group-hover:opacity-100 transition-opacity duration-300">
                     <span className="font-oswald text-xs md:text-sm font-bold uppercase tracking-wider text-accent">Je veux apprendre</span>
@@ -239,10 +240,11 @@ const LandingPage = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
 
             {/* Les Femmes Card - Mobile First */}
-            <div 
+            <Link 
+              to="/disciplines/sfjl"
               className="group relative h-[350px] sm:h-[400px] md:h-[500px] w-full overflow-hidden rounded-xl md:rounded-2xl border border-white/10 bg-gray-900 shadow-xl transition-all duration-500 hover:shadow-2xl hover:shadow-secondary/20 hover:border-secondary/50"
               data-testid="audience-card-women"
             >
@@ -267,10 +269,11 @@ const LandingPage = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
 
             {/* Forces de Sécurité Card - Mobile First */}
-            <div 
+            <Link 
+              to="/disciplines/ipc"
               className="group relative h-[350px] sm:h-[400px] md:h-[500px] w-full overflow-hidden rounded-xl md:rounded-2xl border border-white/10 bg-gray-900 shadow-xl transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:border-primary/50 sm:col-span-2 lg:col-span-1"
               data-testid="audience-card-pro"
             >
@@ -295,7 +298,7 @@ const LandingPage = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
       </section>
@@ -312,7 +315,7 @@ const LandingPage = () => {
           <div className="max-w-6xl mx-auto">
             <div className="relative w-full rounded-lg border border-white/10 overflow-hidden" style={{ paddingBottom: '75%' }}>
               <iframe
-                src="https://www.google.com/maps/d/u/0/embed?mid=1RdKNrRv4jEPjQTr7BDBCpXuuYAs&ll=-0.10736278113021733%2C0&z=1"
+                src="https://www.google.com/maps/d/u/0/embed?mid=1RdKNrRv4jEPjQTr7BDBCpXuuYAs&ehbc=2E312F"
                 className="absolute inset-0 w-full h-full"
                 style={{ border: 0 }}
                 allowFullScreen=""
@@ -485,7 +488,7 @@ const LandingPage = () => {
               <CheckCircle className="w-6 h-6 md:w-8 md:h-8 text-primary flex-shrink-0" strokeWidth={1.5} />
               <div>
                 <h5 className="font-oswald text-base md:text-lg font-bold text-text-primary uppercase mb-1 md:mb-2">Réseau International</h5>
-                <p className="text-text-secondary font-manrope text-xs md:text-sm">Plus de 40 pays, des clubs partout pour s'entraîner près de chez vous</p>
+                <p className="text-text-secondary font-manrope text-xs md:text-sm">Près de 50 pays, des clubs partout pour s'entraîner près de chez vous</p>
               </div>
             </div>
           </div>
@@ -570,7 +573,7 @@ const LandingPage = () => {
               <h4 className="font-oswald text-xs md:text-sm font-bold uppercase tracking-wider text-primary mb-3 md:mb-6">Média</h4>
               <ul className="space-y-2 md:space-y-3">
                 <li><a href="https://kravmag-ajl.com" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Krav Mag AJL</a></li>
-                <li><a href="https://editions-ajl.com" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Éditions A.J.L.</a></li>
+                <li><a href="https://editions-ajl.com" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-primary transition-colors font-manrope text-xs md:text-sm">Éditions AJL</a></li>
               </ul>
             </div>
 

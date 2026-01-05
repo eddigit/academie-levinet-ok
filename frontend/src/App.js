@@ -22,6 +22,8 @@ import DisciplineSPKPage from './pages/DisciplineSPKPage';
 import DisciplineWKMOPage from './pages/DisciplineWKMOPage';
 import DisciplineSFJLPage from './pages/DisciplineSFJLPage';
 import DisciplineIPCPage from './pages/DisciplineIPCPage';
+import DisciplineCannePage from './pages/DisciplineCannePage';
+import DisciplineEnfantPage from './pages/DisciplineEnfantPage';
 import PedagogyPage from './pages/PedagogyPage';
 import InternationalPage from './pages/InternationalPage';
 import JoinPage from './pages/JoinPage';
@@ -128,6 +130,8 @@ const AppContent = () => {
         <Route path="/disciplines/wkmo" element={<DisciplineWKMOPage />} />
         <Route path="/disciplines/sfjl" element={<DisciplineSFJLPage />} />
         <Route path="/disciplines/ipc" element={<DisciplineIPCPage />} />
+        <Route path="/disciplines/canne" element={<DisciplineCannePage />} />
+        <Route path="/disciplines/enfant" element={<DisciplineEnfantPage />} />
         <Route path="/pedagogy" element={<PedagogyPage />} />
         <Route path="/international" element={<InternationalPage />} />
         <Route path="/join" element={<JoinPage />} />

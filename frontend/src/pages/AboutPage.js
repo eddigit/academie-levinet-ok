@@ -30,7 +30,7 @@ const AboutPage = () => {
     },
     {
       acronym: 'IPC',
-      name: 'International Police Conference',
+      name: 'International Police Confederation',
       description: 'Branche professionnelle dédiée à l\'optimisation de l\'entraînement des forces de l\'ordre pour une efficacité opérationnelle maximale.',
       color: 'secondary',
       icon: Shield,
@@ -184,7 +184,7 @@ const AboutPage = () => {
               <h3 className="font-oswald text-2xl font-bold text-white uppercase mt-2 mb-4">Une Référence Mondiale</h3>
               <p className="text-text-secondary font-manrope leading-relaxed">
                 Plus de 50 pays représentés, 50 directeurs techniques, et des collaborations avec les 
-                unités d'élite les plus prestigieuses : ROTAM (Brésil), OMON (Russie), BOPE, ERIS, GAD (Grupo de Apoyo). 
+                unités d'élite les plus prestigieuses : ROTAM (Brésil), Spetsnaz (Russie), BOPE, ERIS, GAD (Grupo de Apoyo). 
                 L'Académie continue d'innover et de former l'élite de demain.
               </p>
             </div>

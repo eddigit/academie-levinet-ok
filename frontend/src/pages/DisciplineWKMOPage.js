@@ -123,9 +123,15 @@ const DisciplineWKMOPage = () => {
               <div className="aspect-square rounded-lg overflow-hidden border border-white/10">
                 <div 
                   className="w-full h-full bg-cover bg-center bg-gray-800"
-                  style={{ backgroundImage: `url(${discSecondaryImage})` }}
+                  style={{ backgroundImage: `url(${content?.disciplines?.wkmo?.family_image || ''})` }}
                   data-placeholder="wkmo-family-training"
-                />
+                >
+                  {!content?.disciplines?.wkmo?.family_image && (
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20">
+                      <span className="text-text-muted font-manrope text-sm text-center px-4">Photo "Pour toute la famille" à ajouter</span>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

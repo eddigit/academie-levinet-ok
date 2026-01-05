@@ -23,12 +23,12 @@ const FounderPage = () => {
   ];
 
   const timeline = [
-    { year: 'Années 70-80', title: 'Carrière Policière', description: 'Intègre la Police Nationale comme officier et acquiert une expertise terrain en situations de crise et d\'intervention.' },
-    { year: 'Années 80', title: 'Champion de Karaté', description: 'Devient Champion de France de Karaté et atteint le 6ème Dan FEKAMT de Karaté.' },
+    { year: 'Années 70-80', title: 'Carrière Policière', description: 'Intègre la Police Nationale comme officier et acquiert une expertise de terrains en situations de crise et d\'intervention.' },
+    { year: 'Années 70-90', title: 'Champion de Karaté', description: 'Devient Champion de France de Karaté et atteint le 6ème Dan FEKAMT de Karaté.' },
     { year: 'Années 90', title: 'Recherche Internationale', description: 'Parcourt le monde pour étudier les meilleures techniques de self-défense et d\'entraînement policier.' },
-    { year: '1998', title: 'Création de l\'Académie', description: 'Fonde l\'Académie Jacques Levinet et met au point plusieurs méthodes de self-défense et d\'entraînement police, dont le Self-Pro Krav (SPK).' },
+    { year: '1998', title: 'Création de l\'Académie', description: 'Fonde l\'Académie Jacques Levinet et met au point plusieurs méthodes de self-défense et d\'entraînement police, dont celles de Krav, SPK et le Real Operational System (ROS).' },
     { year: '2000s', title: 'Expansion Mondiale', description: 'Création de la structure tripartite : AJL (Académie Jacques Levinet), WKMO (World Krav Maga Organization) et IPC (International Police Confederation). Reconnaissances internationales multiples.' },
-    { year: 'Aujourd\'hui', title: 'Héritage Vivant', description: 'Plus de 50 pays représentés, 50 directeurs techniques, collaboration avec des unités d\'élite mondiales comme la ROTAM (Brésil) et l\'OMON (Russie).' },
+    { year: 'Aujourd\'hui', title: 'Héritage Vivant', description: 'Plus de 50 pays représentés, 50 directeurs techniques, collaboration avec des unités d\'élite mondiales comme la ROTAM (Brésil) et les Spetsnaz (Russie).' },
   ];
 
   return (
@@ -110,28 +110,34 @@ const FounderPage = () => {
         </div>
       </section>
 
-      {/* Timeline Section */}
+      {/* Timeline Section with Photos in Quinconce */}
       <section className="py-20 px-6 bg-background">
-        <div className="container mx-auto max-w-4xl">
+        <div className="container mx-auto max-w-6xl">
           <h2 className="font-oswald text-4xl font-bold text-center text-text-primary uppercase mb-16 tracking-tight">
             Un Parcours <span className="text-primary">Exceptionnel</span>
           </h2>
           
-          <div className="relative">
-            {/* Timeline Line */}
-            <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-white/10 transform md:-translate-x-1/2" />
-            
+          <div className="space-y-16">
             {timeline.map((item, idx) => (
-              <div key={idx} className={`relative flex items-start mb-12 ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-                {/* Content */}
-                <div className={`w-full md:w-1/2 ${idx % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'} pl-8 md:pl-0`}>
-                  <span className="font-mono text-primary text-sm">{item.year}</span>
-                  <h3 className="font-oswald text-xl font-bold text-white uppercase mt-1 mb-2">{item.title}</h3>
-                  <p className="text-text-muted font-manrope">{item.description}</p>
+              <div key={idx} className={`flex flex-col ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 items-center`}>
+                {/* Image Placeholder */}
+                <div className="w-full md:w-1/2">
+                  <div 
+                    className="aspect-video rounded-lg overflow-hidden border border-white/10 bg-gray-800"
+                    data-placeholder={`founder-timeline-${idx + 1}`}
+                  >
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20">
+                      <span className="text-text-muted font-manrope text-sm">Photo à ajouter</span>
+                    </div>
+                  </div>
                 </div>
                 
-                {/* Dot */}
-                <div className="absolute left-0 md:left-1/2 w-4 h-4 bg-primary rounded-full transform -translate-x-1/2 border-4 border-background" />
+                {/* Content */}
+                <div className={`w-full md:w-1/2 ${idx % 2 === 0 ? 'md:text-left' : 'md:text-right'}`}>
+                  <span className="font-mono text-primary text-sm">{item.year}</span>
+                  <h3 className="font-oswald text-2xl font-bold text-white uppercase mt-1 mb-3">{item.title}</h3>
+                  <p className="text-text-secondary font-manrope leading-relaxed">{item.description}</p>
+                </div>
               </div>
             ))}
           </div>

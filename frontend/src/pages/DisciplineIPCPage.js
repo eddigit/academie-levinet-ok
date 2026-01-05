@@ -10,19 +10,19 @@ const DisciplineIPCPage = () => {
   // Valeurs dynamiques avec fallbacks
   const discTitle = content?.disciplines?.ipc?.title || 'IPC / ROS';
   const discSubtitle = content?.disciplines?.ipc?.subtitle || 'International Police Confederation';
-  const discDescription = content?.disciplines?.ipc?.description || "Formation professionnelle pour les forces de l'ordre et agents de sécurité.";
+  const discDescription = content?.disciplines?.ipc?.description || "Formation professionnelle des forces de l'ordre et des agents de sécurité. Certification ROS (Real Operational System).";
   const discImage = content?.disciplines?.ipc?.image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/vjnvljgu_Professionnels%20Card.jpeg';
   const discSecondaryImage = content?.disciplines?.ipc?.secondary_image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/vjnvljgu_Professionnels%20Card.jpeg';
 
   const features = [
     { icon: Target, title: 'Efficacité Opérationnelle', description: 'Techniques validées sur le terrain par des unités d\'élite.' },
     { icon: Shield, title: 'Cadre Légal', description: 'Formation conforme aux règlementations de chaque pays.' },
-    { icon: Award, title: 'Certification ROS', description: 'Certification délivrée dans le cadre de contrats de formation et de conventions.' },
-    { icon: Users, title: 'Partenariats Élite', description: 'Collaborations avec OMON, ROTAM, BOPE, ERIS, GAD...' },
+    { icon: Award, title: 'Certification ROS', description: 'Certifications délivrées dans le cadre de contrats de formation ou de conventions professionnelles.' },
+    { icon: Users, title: 'Partenariats Élite', description: 'Collaborations avec Spetsnaz, ROTAM, BOPE, ERIS, GAD...' },
   ];
 
   const eliteUnits = [
-    { name: 'OMON', country: 'Russie', description: 'Escadron d\'élite de la police russe' },
+    { name: 'Spetsnaz', country: 'Russie', description: 'Forces spéciales russes' },
     { name: 'BOPE', country: 'Brésil', description: 'Batallão de Operações Policiais Especiais' },
     { name: 'ROTAM', country: 'Brésil', description: 'Rondas Ostensivas Tático Móvel' },
     { name: 'ERIS', country: 'France', description: 'Équipes Régionales d\'Intervention et de Sécurité' },
@@ -36,7 +36,7 @@ const DisciplineIPCPage = () => {
     'Usage proportionné de la force',
     'Tonfa police',
     'Bâton télescopique',
-    'GTPI (Gestion Tactique de la Personne Interpellée)',
+    'GTPI (Gestes Techniques Police d\'Intervention)',
     'Défense contre armes',
     'Techniques de menottage',
   ];
@@ -131,10 +131,10 @@ const DisciplineIPCPage = () => {
               <div className="bg-primary/10 border border-primary/30 rounded-lg p-6">
                 <div className="flex items-center gap-3 mb-3">
                   <Award className="w-6 h-6 text-primary" strokeWidth={1.5} />
-                  <span className="font-oswald text-lg text-primary uppercase">Dan ROS</span>
+                  <span className="font-oswald text-lg text-primary uppercase">Qualification ROS</span>
                 </div>
                 <p className="text-text-secondary font-manrope">
-                  Les Dan ROS sont reconnus sur le plan international par l'ensemble des partenaires de l'IPC.
+                  Validé par l'Académie Jacques Levinet. Les Dan ROS sont reconnus sur le plan international par l'ensemble des partenaires de l'IPC.
                 </p>
               </div>
             </div>
@@ -143,9 +143,15 @@ const DisciplineIPCPage = () => {
               <div className="aspect-video rounded-lg overflow-hidden border border-white/10">
                 <div 
                   className="w-full h-full bg-cover bg-center bg-gray-800"
-                  style={{ backgroundImage: `url(${discSecondaryImage})` }}
-                  data-placeholder="ipc-tactical-training"
-                />
+                  style={{ backgroundImage: `url(${content?.disciplines?.ipc?.academy_image || ''})` }}
+                  data-placeholder="ipc-academy-photo"
+                >
+                  {!content?.disciplines?.ipc?.academy_image && (
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20">
+                      <span className="text-text-muted font-manrope text-sm text-center px-4">Photo de l'académie à ajouter</span>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -213,14 +219,8 @@ const DisciplineIPCPage = () => {
           </p>
           
           <div className="bg-white/5 border border-white/10 rounded-lg p-8">
-            <p className="text-text-secondary font-manrope leading-relaxed mb-6">
-              Certification délivrée dans le cadre de contrats de formation et de conventions avec les 
-              institutions et forces de l'ordre. Les Dan ROS sont reconnus sur le plan international 
-              par l'ensemble des partenaires de l'IPC.
-            </p>
-            <p className="text-text-secondary font-manrope leading-relaxed">
-              Qualifications professionnelles délivrées par contrat ou convention pour les agents des 
-              forces de l'ordre et professionnels de la sécurité.
+            <p className="text-text-secondary font-manrope leading-relaxed text-center">
+              Qualification professionnelle délivrée pour les agents des forces de l'ordre et professionnels de la sécurité.
             </p>
           </div>
         </div>

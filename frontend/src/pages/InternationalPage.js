@@ -17,12 +17,12 @@ const InternationalPage = () => {
   const stats = [
     { value: '50+', label: 'Pays' },
     { value: '50', label: 'Directeurs Techniques' },
-    { value: '100+', label: 'Clubs Affiliés' },
-    { value: '10K+', label: 'Membres' },
+    { value: '50', label: 'Clubs Affiliés' },
+    { value: '1K+', label: 'Membres' },
   ];
 
   const eliteUnits = [
-    { name: 'OMON', country: 'Russie', flag: '🇷🇺' },
+    { name: 'Spetsnaz', country: 'Russie', flag: '🇷🇺' },
     { name: 'BOPE', country: 'Brésil', flag: '🇧🇷' },
     { name: 'ROTAM', country: 'Brésil', flag: '🇧🇷' },
     { name: 'ERIS', country: 'France', flag: '🇫🇷' },
@@ -33,7 +33,8 @@ const InternationalPage = () => {
   const regions = [
     { name: 'Europe', countries: 'France, Espagne, Italie, Portugal, Belgique, Suisse...' },
     { name: 'Amériques', countries: 'Brésil, Argentine, USA, Canada, Mexique...' },
-    { name: 'Asie', countries: 'Japon, Corée, Inde, Israël, Vietnam...' },
+    { name: 'Asie', countries: 'Japon, Corée, Inde, Chine, Vietnam...' },
+    { name: 'Moyen-Orient', countries: 'Israël, Oman...' },
     { name: 'Afrique', countries: 'Maroc, Tunisie, Sénégal, Côte d\'Ivoire...' },
     { name: 'Océanie', countries: 'Australie, Nouvelle-Zélande...' },
   ];
@@ -162,6 +163,18 @@ const InternationalPage = () => {
                 </div>
               </div>
             </div>
+            
+            <div className="bg-white/5 border border-white/10 rounded-lg p-6 ml-24">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <MapPin className="w-6 h-6 text-primary/70" strokeWidth={1.5} />
+                </div>
+                <div>
+                  <h3 className="font-oswald text-xl text-white uppercase">Directions Départementales</h3>
+                  <p className="text-text-muted font-manrope">Sous la tutelle des directions régionales</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -207,7 +220,11 @@ const InternationalPage = () => {
                   Le magazine du monde de la self-défense, des sports de combat et des arts martiaux. 
                   Publication trimestrielle diffusée en version numérique et papier haute qualité.
                 </p>
-                <div className="flex items-center gap-6 justify-center md:justify-start">
+                <div className="flex items-center gap-6 justify-center md:justify-start flex-wrap">
+                  <div>
+                    <p className="font-oswald text-2xl text-primary">~1M</p>
+                    <p className="text-text-muted font-manrope text-sm">Followers</p>
+                  </div>
                   <div>
                     <p className="font-oswald text-2xl text-primary">50+</p>
                     <p className="text-text-muted font-manrope text-sm">Pays</p>

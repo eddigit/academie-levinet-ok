@@ -5,20 +5,20 @@ import { BookOpen, Award, Users, CheckCircle, ChevronRight, Star, GraduationCap 
 
 const PedagogyPage = () => {
   const grades = [
-    { level: 'Ceinture Blanche', dan: 'Débutant', description: 'Initiation aux fondamentaux', color: 'white' },
-    { level: 'Ceinture Jaune', dan: 'Débutant', description: 'Bases techniques maîtrisées', color: 'yellow-400' },
-    { level: 'Ceinture Orange', dan: 'Débutant', description: 'Techniques intermédiaires', color: 'orange-400' },
-    { level: 'Ceinture Verte', dan: 'Débutant', description: 'Niveau confirmé', color: 'green-500' },
-    { level: 'Ceinture Bleue', dan: 'Débutant', description: 'Niveau avancé', color: 'blue-500' },
-    { level: 'Ceinture Marron', dan: 'Débutant', description: 'Préparation au Dan', color: 'amber-700' },
+    { level: 'Ceinture Blanche', dan: 'Initiation', description: 'Initiation aux fondamentaux', color: 'white' },
+    { level: 'Ceinture Jaune', dan: 'Base technique', description: 'Base technique maîtrisée', color: 'yellow-400' },
+    { level: 'Ceinture Orange', dan: 'Intermédiaire', description: 'Techniques intermédiaires', color: 'orange-400' },
+    { level: 'Ceinture Verte', dan: 'Confirmé', description: 'Niveau confirmé', color: 'green-500' },
+    { level: 'Ceinture Bleue', dan: 'Avancé', description: 'Niveau avancé', color: 'blue-500' },
+    { level: 'Ceinture Marron', dan: 'Préparation Dan', description: 'Préparation au Dan', color: 'amber-700' },
     { level: 'Ceinture Noire', dan: '1er à 10ème Dan', description: 'Expert certifié', color: 'gray-900' },
   ];
 
   const pedagogyFeatures = [
     { icon: BookOpen, title: 'Programmes Structurés', description: 'Cahiers techniques et pédagogiques définis pour chaque discipline et niveau.' },
     { icon: GraduationCap, title: 'Supports Pédagogiques', description: 'Supports pédagogiques imprimés (papier), numériques, vidéos et PDF téléchargeables.' },
-    { icon: Award, title: 'Commission des Grades', description: 'Qualifications professionnelles par contrat ou convention. Instance de validation.' },
-    { icon: Users, title: 'Instructeurs Certifiés', description: 'Réseau mondial d\'instructeurs formés et validés par l\'Académie.' },
+    { icon: Award, title: 'Commission des Grades', description: 'Qualifications professionnelles par contrat ou convention. Instance de validation internationale.' },
+    { icon: Users, title: 'Instructeurs Certifiés', description: 'Réseau mondial d\'instructeurs formés et validés par l\'Académie et son fondateur.' },
   ];
 
   return (
@@ -113,7 +113,7 @@ const PedagogyPage = () => {
                 </li>
                 <li className="flex items-center gap-3">
                   <CheckCircle className="w-5 h-5 text-accent flex-shrink-0" strokeWidth={1.5} />
-                  <span className="text-text-secondary font-manrope">Validation par des experts internationaux</span>
+                  <span className="text-text-secondary font-manrope">Validation internationale</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <CheckCircle className="w-5 h-5 text-accent flex-shrink-0" strokeWidth={1.5} />
@@ -130,7 +130,7 @@ const PedagogyPage = () => {
               <Award className="w-16 h-16 text-accent mx-auto mb-4" strokeWidth={1.5} />
               <h3 className="font-oswald text-2xl text-white uppercase mb-4">Valeur Professionnelle</h3>
               <p className="text-text-secondary font-manrope mb-6">
-                Les Dan de Self-Pro Krav constituent de véritables qualifications professionnelles, 
+                Les DAN AJL constituent de véritables qualifications professionnelles, 
                 reconnues par les instances internationales et les employeurs du secteur de la sécurité.
               </p>
               <p className="font-mono text-accent text-sm">

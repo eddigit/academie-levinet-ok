@@ -25,7 +25,7 @@ const DisciplineSPKPage = () => {
     'Se défendre face à une agression',
     'Réagir face à une menace',
     'Gérer le stress et la peur',
-    'Se dégager d\'une prise',
+    'Se dégager d\'une immobilisation',
     'Protéger ses proches',
     'Garder son calme en situation de danger',
     'Fuir intelligemment',
@@ -57,15 +57,18 @@ const DisciplineSPKPage = () => {
             <span className="text-accent font-oswald text-sm uppercase tracking-wider">{discSubtitle}</span>
           </div>
           
-          <h1 className="font-oswald text-5xl md:text-7xl font-bold text-text-primary uppercase mb-6 tracking-tight">
+          <h1 className="font-oswald text-5xl md:text-7xl font-bold text-text-primary uppercase mb-4 tracking-tight">
             <span className="text-accent">{discTitle}</span>
           </h1>
+          <p className="font-oswald text-lg text-text-secondary uppercase tracking-wide mb-6">
+            Self pour Self-Défense • Pro pour Professionnel • Krav pour Combativité
+          </p>
           
           <p className="text-xl text-text-secondary font-manrope mb-4 leading-relaxed max-w-3xl mx-auto">
             {discDescription}
           </p>
           <p className="text-lg text-text-muted font-manrope mb-8 leading-relaxed max-w-3xl mx-auto">
-            Notre méthode <strong className="text-accent">Self-Pro Krav</strong> : le Krav Maga adapté aux lois françaises, éthique et accessible à tous.
+            Notre méthode <strong className="text-accent">Self-Pro-Krav</strong> est adaptée aux lois françaises, éthique et accessible à tous.
           </p>
           
           <Link
@@ -111,9 +114,15 @@ const DisciplineSPKPage = () => {
               <div className="aspect-video rounded-lg overflow-hidden border border-white/10">
                 <div 
                   className="w-full h-full bg-cover bg-center bg-gray-800"
-                  style={{ backgroundImage: `url(${discSecondaryImage})` }}
+                  style={{ backgroundImage: `url(${content?.disciplines?.spk?.training_image || ''})` }}
                   data-placeholder="spk-training-session"
-                />
+                >
+                  {!content?.disciplines?.spk?.training_image && (
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-accent/20 to-secondary/20">
+                      <span className="text-text-muted font-manrope text-sm text-center px-4">Photo Self-Pro-Krav à ajouter</span>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
