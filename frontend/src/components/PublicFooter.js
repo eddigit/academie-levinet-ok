@@ -60,9 +60,9 @@ const PublicFooter = () => {
             <ul className="space-y-3">
               {navigation.quick_links.map((link, idx) => (
                 <li key={idx}>
-                  <Link to={link.path} className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">
+                  <span className="text-text-secondary font-manrope text-sm">
                     {link.label}
-                  </Link>
+                  </span>
                 </li>
               ))}
             </ul>
@@ -74,9 +74,9 @@ const PublicFooter = () => {
             <ul className="space-y-3">
               {navigation.disciplines.map((link, idx) => (
                 <li key={idx}>
-                  <Link to={link.path} className="text-text-secondary hover:text-primary transition-colors font-manrope text-sm">
+                  <span className="text-text-secondary font-manrope text-sm">
                     {link.label}
-                  </Link>
+                  </span>
                 </li>
               ))}
             </ul>
@@ -141,9 +141,9 @@ const PublicFooter = () => {
             </div>
             <div className="flex items-center gap-6">
               {navigation.legal_links.map((link, idx) => (
-                <Link key={idx} to={link.path} className="text-text-muted hover:text-primary transition-colors font-manrope text-sm">
+                <span key={idx} className="text-text-muted font-manrope text-sm">
                   {link.label}
-                </Link>
+                </span>
               ))}
             </div>
           </div>
