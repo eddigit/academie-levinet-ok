@@ -26,7 +26,7 @@ const PublicHeader = () => {
             className="w-10 h-10 lg:w-12 lg:h-12 rounded-full object-cover"
             data-testid="header-logo"
           />
-          <div className="hidden sm:block">
+          <div>
             <h1 className="font-oswald text-base lg:text-xl font-bold text-text-primary uppercase tracking-wide">
               {branding.name}
             </h1>
