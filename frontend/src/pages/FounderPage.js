@@ -9,21 +9,21 @@ const FounderPage = () => {
 
   // Valeurs par défaut si pas de données du CMS
   const founderName = content?.founder?.name || 'Capitaine Jacques Levinet';
-  const founderTitle = content?.founder?.title || '10ème Dan · Champion de France · Créateur du Self-Pro Krav';
+  const founderTitle = content?.founder?.title || '10ème Dan · Champion de France · Créateur du Self Pro Krav';
   const founderGrade = content?.founder?.grade || '10ème Dan';
   const founderBio = content?.founder?.bio || "Ancien membre de la Police Nationale avec une forte expérience de terrain, expert en arts martiaux et visionnaire qui a révolutionné l'approche de la self-défense en créant une méthode adaptée aux réalités modernes.";
   const founderQuote = content?.founder?.quote || "J'ai parcouru le monde pour analyser les meilleures techniques de self-défense et d'entraînement policier. Mon objectif : créer des méthodes efficaces, réalistes et adaptées à la législation française.";
   const founderPhoto = content?.founder?.photo || 'https://images.unsplash.com/photo-1616005639387-9d59e4b1bdb9?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwxfHxtYXJ0aWFsJTIwYXJ0cyUyMGdyYW5kbWFzdGVyJTIwcG9ydHJhaXQlMjBzZXJpb3VzfGVufDB8fHxibGFja19hbmRfd2hpdGV8MTc2NTgwMzY5N3ww&ixlib=rb-4.1.0&q=85';
 
   const achievements = [
-    { icon: Award, title: '10ème Dan', description: 'Plus haut grade en Self-Pro Krav' },
+    { icon: Award, title: '10ème Dan', description: 'Plus haut grade en Self Pro Krav' },
     { icon: Star, title: 'Champion de France', description: 'Karaté - Compétition nationale' },
     { icon: Shield, title: 'Capitaine', description: 'Police Nationale française' },
     { icon: Globe, title: '50+ Pays', description: 'Méthode enseignée mondialement' },
   ];
 
   const timeline = [
-    { year: 'Années 70-80', title: 'Carrière Policière', description: 'Intègre la Police Nationale comme officier et acquiert une expertise de terrains en situations de crise et d\'intervention.' },
+    { year: 'Années 70-80', title: 'Carrière Policière', description: 'Intègre la Police Nationale comme officier et acquiert une expertise de terrain en situation de crise et d\'intervention.' },
     { year: 'Années 70-90', title: 'Champion de Karaté', description: 'Devient Champion de France de Karaté et atteint le 6ème Dan FEKAMT de Karaté.' },
     { year: 'Années 90', title: 'Recherche Internationale', description: 'Parcourt le monde pour étudier les meilleures techniques de self-défense et d\'entraînement policier.' },
     { year: '1998', title: 'Création de l\'Académie', description: 'Fonde l\'Académie Jacques Levinet et met au point plusieurs méthodes de self-défense et d\'entraînement police, dont celles de Krav, SPK et le Real Operational System (ROS).' },
@@ -120,16 +120,63 @@ const FounderPage = () => {
           <div className="space-y-16">
             {timeline.map((item, idx) => (
               <div key={idx} className={`flex flex-col ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 items-center`}>
-                {/* Image Placeholder */}
+                {/* Image */}
                 <div className="w-full md:w-1/2">
-                  <div 
-                    className="aspect-video rounded-lg overflow-hidden border border-white/10 bg-gray-800"
-                    data-placeholder={`founder-timeline-${idx + 1}`}
-                  >
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20">
-                      <span className="text-text-muted font-manrope text-sm">Photo à ajouter</span>
+                  {idx === 1 ? (
+                    // Photo historique pour "Champion de Karaté"
+                    <div className="aspect-video rounded-lg overflow-hidden border border-white/10 shadow-xl">
+                      <img 
+                        src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/xjxsyj4v_LE%20FONDATEUR%204.jpg"
+                        alt="Jacques Levinet champion de karaté"
+                        className="w-full h-full object-cover"
+                      />
                     </div>
-                  </div>
+                  ) : idx === 2 ? (
+                    // Logo AJL pour "Création de l'Académie"
+                    <div className="aspect-square rounded-lg overflow-hidden border border-white/10 shadow-xl">
+                      <img 
+                        src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/qr9mjvp4_LE%20FONDATEUR%203.jpg"
+                        alt="Création de l'Académie Jacques Levinet"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : idx === 3 ? (
+                    // Photo en uniforme pour "Carrière Policière"
+                    <div className="aspect-[2/3] rounded-lg overflow-hidden border border-white/10 shadow-xl">
+                      <img 
+                        src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/mjvdg2m5_LE%20FONDATEUR%205.jpg"
+                        alt="Jacques Levinet carrière policière"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : idx === 4 ? (
+                    // Globe AJL WKMO IPC pour "Expansion Mondiale"
+                    <div className="aspect-square rounded-lg overflow-hidden border border-white/10 shadow-xl">
+                      <img 
+                        src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/uykyfr27_LE%20FONDATEUR%202.jpg"
+                        alt="Expansion mondiale AJL-WKMO-IPC"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : idx === 5 ? (
+                    // Carte mondiale pour "Héritage vivant"
+                    <div className="aspect-video rounded-lg overflow-hidden border border-white/10 shadow-xl">
+                      <img 
+                        src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/yuwqhkg5_LE%20FONDATEUR.png"
+                        alt="Présence mondiale AJL-WKMO-IPC"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div 
+                      className="aspect-video rounded-lg overflow-hidden border border-white/10 bg-gray-800"
+                      data-placeholder={`founder-timeline-${idx + 1}`}
+                    >
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20">
+                        <span className="text-text-muted font-manrope text-sm">Photo à ajouter</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 
                 {/* Content */}

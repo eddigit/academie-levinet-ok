@@ -28,6 +28,9 @@ const DisciplineIPCPage = () => {
     { name: 'ERIS', country: 'France', description: 'Équipes Régionales d\'Intervention et de Sécurité' },
     { name: 'GAD', country: 'Argentine', description: 'Grupo de Apoyo Departamental' },
     { name: 'OSTTU', country: 'Australie', description: 'Partenaire australien de formation tactique' },
+    { name: 'GIPM', country: 'Île Maurice', description: 'Groupe d\'Intervention de la Police Maurice' },
+    { name: 'CPL', country: 'Luxembourg', description: 'Centre Pénitentiaire Luxembourg' },
+    { name: 'NYPD', country: 'États-Unis', description: 'New York Police Department' },
   ];
 
   const modules = [
@@ -125,7 +128,7 @@ const DisciplineIPCPage = () => {
               </p>
               <p className="text-text-secondary font-manrope text-lg leading-relaxed mb-8">
                 Reconnue internationalement, cette certification atteste d'un niveau d'expertise 
-                opérationnelle validé par l'Académie Jacques Levinet et ses partenaires.
+                opérationnelle validé par l'Académie Jacques Levinet et son fondateur.
               </p>
               
               <div className="bg-primary/10 border border-primary/30 rounded-lg p-6">
@@ -140,18 +143,17 @@ const DisciplineIPCPage = () => {
             </div>
             
             <div className="relative">
-              <div className="aspect-video rounded-lg overflow-hidden border border-white/10">
-                <div 
-                  className="w-full h-full bg-cover bg-center bg-gray-800"
-                  style={{ backgroundImage: `url(${content?.disciplines?.ipc?.academy_image || ''})` }}
-                  data-placeholder="ipc-academy-photo"
-                >
-                  {!content?.disciplines?.ipc?.academy_image && (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20">
-                      <span className="text-text-muted font-manrope text-sm text-center px-4">Photo de l'académie à ajouter</span>
-                    </div>
-                  )}
-                </div>
+              <div className="aspect-[16/9] rounded-lg overflow-hidden border border-white/10 shadow-xl">
+                <img 
+                  src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/3gj4k19i_IPC.jpg"
+                  alt="IPC - Formation avec unités d'élite internationales"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="mt-4 text-center">
+                <p className="text-text-muted font-manrope text-sm italic">
+                  Formation IPC avec unités d'élite internationales
+                </p>
               </div>
             </div>
           </div>

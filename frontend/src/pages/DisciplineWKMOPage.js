@@ -10,7 +10,7 @@ const DisciplineWKMOPage = () => {
   // Valeurs dynamiques avec fallbacks
   const discTitle = content?.disciplines?.wkmo?.title || 'WKMO';
   const discSubtitle = content?.disciplines?.wkmo?.subtitle || 'World Krav Maga Organization';
-  const discDescription = content?.disciplines?.wkmo?.description || 'La self-défense pour tous. Krav Maga, KAPAP et Self-Pro Krav accessibles au grand public dans un esprit familial et bienveillant.';
+  const discDescription = content?.disciplines?.wkmo?.description || 'La self-défense pour tous. Krav Maga, KAPAP et Self Pro Krav accessibles au grand public dans un esprit familial et bienveillant.';
   const discImage = content?.disciplines?.wkmo?.image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/m50t9hgn_Grand%20Public%20Card.jpeg';
   const discSecondaryImage = content?.disciplines?.wkmo?.secondary_image || 'https://images.unsplash.com/photo-1595554919503-b806f0f8f106?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwyfHxkaXZlcnNlJTIwZ3JvdXAlMjBtYXJ0aWFsJTIwYXJ0cyUyMGNsYXNzJTIwbW9kZXJuJTIwZ3ltfGVufDB8fHx8MTc2NTgwMzcwMnww&ixlib=rb-4.1.0&q=85';
 
@@ -23,7 +23,7 @@ const DisciplineWKMOPage = () => {
 
   const audiences = [
     { title: 'Adultes', description: 'Programmes complets de self-défense adaptés à tous les niveaux.' },
-    { title: 'Adolescents', description: 'Cours spécifiques pour développer confiance et discipline.' },
+    { title: 'Femmes', description: 'Cours adaptés à la lutte contre les violences féminines.' },
     { title: 'Enfants', description: 'Initiation ludique aux bases de la self-défense et du respect.' },
     { title: 'Seniors', description: 'Exercices adaptés pour maintenir forme et sécurité.' },
   ];
@@ -120,18 +120,17 @@ const DisciplineWKMOPage = () => {
             </div>
             
             <div className="relative">
-              <div className="aspect-square rounded-lg overflow-hidden border border-white/10">
-                <div 
-                  className="w-full h-full bg-cover bg-center bg-gray-800"
-                  style={{ backgroundImage: `url(${content?.disciplines?.wkmo?.family_image || ''})` }}
-                  data-placeholder="wkmo-family-training"
-                >
-                  {!content?.disciplines?.wkmo?.family_image && (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20">
-                      <span className="text-text-muted font-manrope text-sm text-center px-4">Photo "Pour toute la famille" à ajouter</span>
-                    </div>
-                  )}
-                </div>
+              <div className="aspect-[16/9] rounded-lg overflow-hidden border border-white/10 shadow-xl">
+                <img 
+                  src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/g1a8dhnp_WKMO.jpg"
+                  alt="WKMO - Pour toute la famille, adultes et enfants"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="mt-4 text-center">
+                <p className="text-text-muted font-manrope text-sm italic">
+                  Une famille unie dans la pratique du Krav Maga
+                </p>
               </div>
             </div>
           </div>
@@ -180,7 +179,7 @@ const DisciplineWKMOPage = () => {
             Trouvez Votre Club
           </h2>
           <p className="text-text-secondary font-manrope text-lg mb-8">
-            Près de 100 clubs WKMO dans le monde. Il y en a forcément un près de chez vous.
+            Près de cinquante clubs WKMO dans le monde. Il y en a forcément un près de chez vous.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { CheckCircle, Package, CreditCard, ArrowRight, Loader2 } from 'lucide-react';
+import { CheckCircle, Package, CreditCard, ArrowRight, Loader2, Award, CreditCard as CardIcon, Percent, MessageSquare } from 'lucide-react';
 import api from '../utils/api';
 import { useCart } from '../context/CartContext';
 
@@ -91,15 +91,60 @@ const PaymentSuccessPage = () => {
               )}
 
               {paymentType === 'membership' && (
-                <div className="bg-primary/10 rounded-lg p-4 mb-6 flex items-start gap-3 text-left">
-                  <CreditCard className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-text-primary font-semibold text-sm">Abonnement activé</p>
-                    <p className="text-text-muted text-xs mt-1">
-                      Votre compte a été mis à jour avec vos nouveaux avantages.
-                    </p>
+                <>
+                  <div className="bg-primary/10 rounded-lg p-4 mb-6 flex items-start gap-3 text-left">
+                    <CreditCard className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-text-primary font-semibold text-sm">Adhésion activée</p>
+                      <p className="text-text-muted text-xs mt-1">
+                        Bienvenue à l'Académie Jacques Levinet ! Votre compte a été activé avec vos avantages.
+                      </p>
+                    </div>
                   </div>
-                </div>
+                  
+                  {/* Membership Benefits */}
+                  <div className="bg-background rounded-lg p-4 mb-6 text-left">
+                    <h3 className="font-oswald text-sm font-bold text-primary uppercase mb-4">Vos Avantages Membre</h3>
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <Award className="w-4 h-4 text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-text-primary font-semibold text-sm">Licence AJL</p>
+                          <p className="text-text-muted text-xs">Licence officielle de l'Académie Jacques Levinet</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <CardIcon className="w-4 h-4 text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-text-primary font-semibold text-sm">Passeport Sportif</p>
+                          <p className="text-text-muted text-xs">Votre passeport de progression et grades</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <Percent className="w-4 h-4 text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-text-primary font-semibold text-sm">10% Réduction Stages</p>
+                          <p className="text-text-muted text-xs">Remise sur tous nos stages et formations</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <MessageSquare className="w-4 h-4 text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-text-primary font-semibold text-sm">Communication Mur AJL</p>
+                          <p className="text-text-muted text-xs">Accès au mur social et à la communauté</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
               )}
 
               {/* Action Buttons */}

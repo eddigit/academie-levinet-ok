@@ -125,7 +125,7 @@ const LandingPage = () => {
               <Award className="w-10 h-10 md:w-12 md:h-12 text-primary mx-auto mb-3 md:mb-4" strokeWidth={1} />
               <h4 className="font-oswald text-lg md:text-xl font-bold text-text-primary uppercase mb-2 md:mb-3">Légitimité & Expertise</h4>
               <p className="text-text-secondary font-manrope leading-relaxed mb-2 md:mb-3 text-sm md:text-base">
-                Héritage du Capitaine Jacques Lévinet, expert formateur police et champion de France de karaté
+                Héritage du Capitaine Jacques Levinet, expert formateur police et champion de France de karaté
               </p>
               <p className="text-text-muted font-manrope text-xs md:text-sm">
                 Méthodes éprouvées et reconnues mondialement (WKMO, IPC)

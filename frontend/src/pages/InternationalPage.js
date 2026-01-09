@@ -23,6 +23,10 @@ const InternationalPage = () => {
 
   const eliteUnits = [
     { name: 'Spetsnaz', country: 'Russie', flag: '🇷🇺' },
+    { name: 'NYPD', country: 'États-Unis', flag: '🇺🇸' },
+    { name: 'CPL', country: 'Luxembourg', flag: '🇱🇺' },
+    { name: 'GIPM', country: 'Maurice', flag: '🇲🇺' },
+    { name: 'BSA', country: 'Argentine', flag: '🇦🇷' },
     { name: 'BOPE', country: 'Brésil', flag: '🇧🇷' },
     { name: 'ROTAM', country: 'Brésil', flag: '🇧🇷' },
     { name: 'ERIS', country: 'France', flag: '🇫🇷' },
@@ -33,7 +37,7 @@ const InternationalPage = () => {
   const regions = [
     { name: 'Europe', countries: 'France, Espagne, Italie, Portugal, Belgique, Suisse...' },
     { name: 'Amériques', countries: 'Brésil, Argentine, USA, Canada, Mexique...' },
-    { name: 'Asie', countries: 'Japon, Corée, Inde, Chine, Vietnam...' },
+    { name: 'Asie', countries: 'Chine, Japon, Corée, Inde, Vietnam...' },
     { name: 'Moyen-Orient', countries: 'Israël, Oman...' },
     { name: 'Afrique', countries: 'Maroc, Tunisie, Sénégal, Côte d\'Ivoire...' },
     { name: 'Océanie', countries: 'Australie, Nouvelle-Zélande...' },
@@ -211,7 +215,7 @@ const InternationalPage = () => {
                   <Newspaper className="w-12 h-12 text-primary" strokeWidth={1.5} />
                 </div>
               </div>
-              <div className="text-center md:text-left">
+              <div className="text-center md:text-left flex-1">
                 <h3 className="font-oswald text-3xl text-white uppercase mb-2">{magazineName}</h3>
                 <p className="font-oswald text-lg text-primary uppercase tracking-wide mb-4">
                   {magazineSubtitle}
@@ -238,6 +242,15 @@ const InternationalPage = () => {
                     <p className="text-text-muted font-manrope text-sm">Éditions</p>
                   </div>
                 </div>
+              </div>
+              <div className="flex-shrink-0">
+                <Link
+                  to="/kravmag"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-dark text-white font-oswald uppercase leading-none tracking-wider rounded-sm transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)]"
+                >
+                  Découvrir
+                  <ChevronRight className="w-5 h-5" strokeWidth={2} />
+                </Link>
               </div>
             </div>
           </div>

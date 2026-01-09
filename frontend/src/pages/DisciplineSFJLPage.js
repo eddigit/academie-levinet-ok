@@ -92,7 +92,7 @@ const DisciplineSFJLPage = () => {
                 peu importe votre âge ou votre condition physique.
               </p>
               <p className="text-text-secondary font-manrope text-lg leading-relaxed mb-6">
-                Nos instructrices sont là pour vous accompagner avec patience et bienveillance. 
+                Nos instructrices et nos instructeurs sont là pour vous accompagner avec patience et bienveillance. 
                 Vous apprenez à votre rythme, dans un environnement où vous vous sentez à l'aise.
               </p>
               <div className="bg-secondary/10 border border-secondary/30 rounded-lg p-6">

@@ -24,8 +24,11 @@ import DisciplineSFJLPage from './pages/DisciplineSFJLPage';
 import DisciplineIPCPage from './pages/DisciplineIPCPage';
 import DisciplineCannePage from './pages/DisciplineCannePage';
 import DisciplineEnfantPage from './pages/DisciplineEnfantPage';
+import DisciplineBatonPage from './pages/DisciplineBatonPage';
 import PedagogyPage from './pages/PedagogyPage';
 import InternationalPage from './pages/InternationalPage';
+import KravMagAJLPage from './pages/KravMagAJLPage';
+import EditionsAJLPage from './pages/EditionsAJLPage';
 import JoinPage from './pages/JoinPage';
 import FindClubPage from './pages/FindClubPage';
 import ClubDetailPage from './pages/ClubDetailPage';
@@ -132,8 +135,11 @@ const AppContent = () => {
         <Route path="/disciplines/ipc" element={<DisciplineIPCPage />} />
         <Route path="/disciplines/canne" element={<DisciplineCannePage />} />
         <Route path="/disciplines/enfant" element={<DisciplineEnfantPage />} />
+        <Route path="/disciplines/baton" element={<DisciplineBatonPage />} />
         <Route path="/pedagogy" element={<PedagogyPage />} />
         <Route path="/international" element={<InternationalPage />} />
+        <Route path="/kravmag" element={<KravMagAJLPage />} />
+        <Route path="/editions" element={<EditionsAJLPage />} />
         <Route path="/join" element={<JoinPage />} />
         <Route path="/onboarding" element={<OnboardingPage />} />
         <Route path="/trouver-club" element={<FindClubPage />} />

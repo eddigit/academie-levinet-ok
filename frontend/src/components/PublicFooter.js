@@ -35,98 +35,68 @@ const PublicFooter = () => {
   return (
     <footer className="bg-paper border-t border-white/5">
       <div className="container mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          {/* Brand */}
-          <div>
-            <div className="flex items-center gap-3 mb-6">
-              <img 
-                src={branding.logo_url} 
-                alt="Logo" 
-                className="w-10 h-10 rounded-full object-cover"
-              />
-              <div>
-                <h3 className="font-oswald text-lg font-bold text-text-primary uppercase">{branding.short_name}</h3>
-                <p className="text-xs text-text-muted">Depuis {branding.foundation_year}</p>
-              </div>
+        {/* Brand Section Centered */}
+        <div className="max-w-2xl mx-auto text-center mb-12">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <img 
+              src={branding.logo_url} 
+              alt="Logo" 
+              className="w-12 h-12 rounded-full object-cover"
+            />
+            <div>
+              <h3 className="font-oswald text-xl font-bold text-text-primary uppercase">{branding.short_name}</h3>
+              <p className="text-sm text-text-muted">Depuis 1998</p>
             </div>
-            <p className="text-text-secondary font-manrope text-sm leading-relaxed">
-              {branding.description}
-            </p>
           </div>
+          <p className="text-text-secondary font-manrope leading-relaxed">
+            {branding.description}
+          </p>
+        </div>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="font-oswald text-sm font-bold uppercase tracking-wider text-primary mb-6">Navigation</h4>
-            <ul className="space-y-3">
-              {navigation.quick_links.map((link, idx) => (
-                <li key={idx}>
-                  <span className="text-text-secondary font-manrope text-sm">
-                    {link.label}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Disciplines */}
-          <div>
-            <h4 className="font-oswald text-sm font-bold uppercase tracking-wider text-primary mb-6">Disciplines</h4>
-            <ul className="space-y-3">
-              {navigation.disciplines.map((link, idx) => (
-                <li key={idx}>
-                  <span className="text-text-secondary font-manrope text-sm">
-                    {link.label}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="font-oswald text-sm font-bold uppercase tracking-wider text-primary mb-6">Contact</h4>
-            <ul className="space-y-4">
-              <li className="flex items-center gap-3 text-text-secondary">
-                <Mail className="w-4 h-4 text-primary" strokeWidth={1.5} />
-                <span className="font-manrope text-sm">{contact.email}</span>
-              </li>
-              <li className="flex items-center gap-3 text-text-secondary">
-                <Phone className="w-4 h-4 text-primary" strokeWidth={1.5} />
-                <span className="font-manrope text-sm">{contact.phone}</span>
-              </li>
-              <li className="flex items-start gap-3 text-text-secondary">
-                <MapPin className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" strokeWidth={1.5} />
-                <span className="font-manrope text-sm">{contact.address}</span>
-              </li>
-            </ul>
-            {/* Social */}
-            <div className="flex items-center gap-4 mt-6">
-              {social.facebook && (
-                <a href={social.facebook} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors">
-                  <Facebook className="w-5 h-5 text-text-secondary hover:text-primary" strokeWidth={1.5} />
-                </a>
-              )}
-              {social.instagram && (
-                <a href={social.instagram} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors">
-                  <Instagram className="w-5 h-5 text-text-secondary hover:text-primary" strokeWidth={1.5} />
-                </a>
-              )}
-              {social.youtube && (
-                <a href={social.youtube} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors">
-                  <Youtube className="w-5 h-5 text-text-secondary hover:text-primary" strokeWidth={1.5} />
-                </a>
-              )}
-              {social.linkedin && (
-                <a href={social.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors">
-                  <Linkedin className="w-5 h-5 text-text-secondary hover:text-primary" strokeWidth={1.5} />
-                </a>
-              )}
-              {social.twitter && (
-                <a href={social.twitter} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors">
-                  <Twitter className="w-5 h-5 text-text-secondary hover:text-primary" strokeWidth={1.5} />
-                </a>
-              )}
-            </div>
+        {/* Contact Section Centered */}
+        <div className="max-w-xl mx-auto">
+          <h4 className="font-oswald text-sm font-bold uppercase tracking-wider text-primary mb-6 text-center">Contact</h4>
+          <ul className="space-y-4">
+            <li className="flex items-center justify-center gap-3 text-text-secondary">
+              <Mail className="w-4 h-4 text-primary" strokeWidth={1.5} />
+              <span className="font-manrope text-sm">{contact.email}</span>
+            </li>
+            <li className="flex items-center justify-center gap-3 text-text-secondary">
+              <Phone className="w-4 h-4 text-primary" strokeWidth={1.5} />
+              <span className="font-manrope text-sm">{contact.phone}</span>
+            </li>
+            <li className="flex items-center justify-center gap-3 text-text-secondary">
+              <MapPin className="w-4 h-4 text-primary flex-shrink-0" strokeWidth={1.5} />
+              <span className="font-manrope text-sm">{contact.address}</span>
+            </li>
+          </ul>
+          {/* Social */}
+          <div className="flex items-center justify-center gap-4 mt-6">
+            {social.facebook && (
+              <a href={social.facebook} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors">
+                <Facebook className="w-5 h-5 text-text-secondary hover:text-primary" strokeWidth={1.5} />
+              </a>
+            )}
+            {social.instagram && (
+              <a href={social.instagram} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors">
+                <Instagram className="w-5 h-5 text-text-secondary hover:text-primary" strokeWidth={1.5} />
+              </a>
+            )}
+            {social.youtube && (
+              <a href={social.youtube} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors">
+                <Youtube className="w-5 h-5 text-text-secondary hover:text-primary" strokeWidth={1.5} />
+              </a>
+            )}
+            {social.linkedin && (
+              <a href={social.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors">
+                <Linkedin className="w-5 h-5 text-text-secondary hover:text-primary" strokeWidth={1.5} />
+              </a>
+            )}
+            {social.twitter && (
+              <a href={social.twitter} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors">
+                <Twitter className="w-5 h-5 text-text-secondary hover:text-primary" strokeWidth={1.5} />
+              </a>
+            )}
           </div>
         </div>
 

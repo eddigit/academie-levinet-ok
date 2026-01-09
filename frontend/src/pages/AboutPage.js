@@ -9,8 +9,8 @@ const AboutPage = () => {
 
   // Valeurs dynamiques avec fallbacks
   const aboutTitle = content?.about?.title || "L'Académie Jacques Levinet";
-  const aboutDescription = content?.about?.description || "Depuis plus de 25 ans, l'Académie est spécialisée dans la self-défense de rue et la formation professionnelle des forces de l'ordre. Une structure tripartite internationale regroupant Self-Pro Krav, Krav Maga, KAPAP et autres disciplines de combat.";
-  const aboutMission = content?.about?.mission || "Unifier les pratiquants de diverses disciplines — Self-Pro Krav, Krav Maga, KAPAP, Canne Défense, Self Féminine et autres méthodes de self-défense — sous une bannière commune d'excellence et d'efficacité.";
+  const aboutDescription = content?.about?.description || "Depuis plus de 25 ans, l'Académie est spécialisée dans la self-défense de rue et la formation professionnelle des forces de l'ordre. Une structure tripartite internationale regroupant Self Pro Krav, Krav Maga, KAPAP et autres disciplines de combat.";
+  const aboutMission = content?.about?.mission || "Unifier les pratiquants de diverses disciplines — Self Pro Krav, Krav Maga, KAPAP, Canne Défense, Self Féminine et autres méthodes de self-défense — sous une bannière commune d'excellence et d'efficacité.";
   const aboutImage = content?.about?.image || 'https://images.unsplash.com/photo-1595554919503-b806f0f8f106?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwyfHxkaXZlcnNlJTIwZ3JvdXAlMjBtYXJ0aWFsJTIwYXJ0cyUyMGNsYXNzJTIwbW9kZXJuJTIwZ3ltfGVufDB8fHx8MTc2NTgwMzcwMnww&ixlib=rb-4.1.0&q=85';
 
   const pillars = [
@@ -24,7 +24,7 @@ const AboutPage = () => {
     {
       acronym: 'WKMO',
       name: 'World Krav Maga Organization',
-      description: 'Branche civile rassemblant les pratiquants de self-défense du monde entier. Krav Maga, KAPAP, et Self-Pro Krav pour tous.',
+      description: 'Branche civile rassemblant les pratiquants de self-défense du monde entier. Krav Maga, KAPAP, et Self Pro Krav pour tous.',
       color: 'primary',
       icon: Users,
     },
@@ -42,7 +42,7 @@ const AboutPage = () => {
     'Éthique et responsabilité',
     'Accessibilité pour tous les publics',
     'Innovation continue',
-    'Respect des traditions martiales',
+    'Respect de la légitime défense',
     'Communauté mondiale solidaire',
   ];
 

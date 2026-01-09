@@ -1,34 +1,34 @@
 import React from 'react';
 import PublicLayout from '../components/PublicLayout';
 import { Link } from 'react-router-dom';
-import { Shield, Target, Users, Award, CheckCircle, ChevronRight, Loader2 } from 'lucide-react';
+import { Shield, Target, Award, Users, CheckCircle, ChevronRight, Loader2 } from 'lucide-react';
 import { useSiteContent } from '../context/SiteContentContext';
 
-const DisciplineCannePage = () => {
+const DisciplineBatonPage = () => {
   const { content, loading } = useSiteContent();
 
   // Valeurs dynamiques avec fallbacks
-  const discTitle = content?.disciplines?.canne?.title || 'Canne Défense';
-  const discSubtitle = content?.disciplines?.canne?.subtitle || 'Méthode Novatrice';
-  const discDescription = content?.disciplines?.canne?.description || "Une méthode nouvelle française adaptée aux agressions de la rue. La canne devient un instrument de protection efficace et légal.";
-  const discImage = content?.disciplines?.canne?.image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/0wepvzfx_Canne%20defense.jpg';
+  const discTitle = content?.disciplines?.baton?.title || 'Bâton Défense';
+  const discSubtitle = content?.disciplines?.baton?.subtitle || 'Méthode Jacques Levinet';
+  const discDescription = content?.disciplines?.baton?.description || "Le Bâton Défense Jacques Levinet (BDJL) est une méthode moderne de self-défense conçue à partir de la Canne Défense JL, adaptée cette fois à l'usage d'un bâton court à moyen, sans crosse.";
+  const discImage = content?.disciplines?.baton?.image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/gvwn5c24_Baton%20Defense.jpg';
 
   const benefits = [
-    { icon: Shield, title: 'Protection Efficace', description: 'La canne offre une distance de sécurité et une protection contre les agressions.' },
-    { icon: Target, title: 'Précision Technique', description: 'Techniques précises et contrôlées pour une défense proportionnée.' },
-    { icon: Users, title: 'Accessible à Tous', description: 'Particulièrement adapté aux seniors et personnes avec handicap.' },
-    { icon: Award, title: 'Méthode Française', description: 'Une innovation française créée par le Capitaine Jacques Levinet pour se défendre dans la rue.' },
+    { icon: Shield, title: 'Protection Adaptée', description: 'Réponses concrètes et proportionnées face aux agressions ou menaces.' },
+    { icon: Target, title: 'Simplicité & Réalisme', description: 'Gestes rapides, maîtrisés et accessibles à tous.' },
+    { icon: Users, title: 'Grand Public & Pros', description: 'S\'adresse autant au grand public qu\'aux professionnels de la sécurité.' },
+    { icon: Award, title: 'Approche Opérationnelle', description: 'Inspiré d\'arts martiaux et de techniques opérationnelles.' },
   ];
 
   const modules = [
     'Postures et déplacements',
-    'Parades et blocages',
+    'Techniques de parade',
     'Ripostes contrôlées',
+    'Défense contre armes',
     'Techniques de désarmement',
-    'Défense contre plusieurs adversaires',
-    'Gestion de l\'espace',
-    'Utilisation légale de la canne',
+    'Protection minimale des risques',
     'Scénarios réalistes',
+    'Usage légal du bâton',
   ];
 
   if (loading) {
@@ -53,7 +53,7 @@ const DisciplineCannePage = () => {
         
         <div className="container mx-auto max-w-4xl text-center relative z-10">
           <div className="inline-block px-4 py-2 bg-accent/10 border border-accent/30 rounded-sm mb-6">
-            <span className="text-accent font-oswald text-sm uppercase tracking-wider">Discipline Traditionnelle</span>
+            <span className="text-accent font-oswald text-sm uppercase tracking-wider">Méthode Moderne</span>
           </div>
           
           <h1 className="font-oswald text-5xl md:text-7xl font-bold text-text-primary uppercase mb-6 tracking-tight">
@@ -71,7 +71,7 @@ const DisciplineCannePage = () => {
             to="/onboarding"
             className="inline-flex items-center gap-2 px-8 py-4 bg-accent hover:bg-accent/80 text-white font-oswald uppercase leading-none tracking-wider rounded-sm transition-all shadow-[0_0_20px_rgba(249,115,22,0.4)]"
           >
-            Découvrir la Canne Défense
+            Découvrir le BDJL
             <ChevronRight className="w-5 h-5" strokeWidth={2} />
           </Link>
         </div>
@@ -81,7 +81,7 @@ const DisciplineCannePage = () => {
       <section className="py-20 px-6 bg-paper">
         <div className="container mx-auto max-w-6xl">
           <h2 className="font-oswald text-4xl font-bold text-center text-text-primary uppercase mb-12 tracking-tight">
-            Pourquoi la <span className="text-accent">Canne Défense</span> ?
+            Pourquoi le <span className="text-accent">Bâton Défense</span> ?
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -104,21 +104,27 @@ const DisciplineCannePage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="font-oswald text-4xl font-bold text-text-primary uppercase mb-6 tracking-tight">
-                Une Méthode <span className="text-accent">Déposée</span>
+                Une Méthode <span className="text-accent">Moderne</span>
               </h2>
               <p className="text-text-secondary font-manrope text-lg leading-relaxed mb-6">
-                La Canne Défense Jacques Levinet est une méthode moderne de self-défense utilisant 
-                la canne comme instrument de protection. Créée par le Capitaine Jacques Levinet, 
-                elle répond aux besoins actuels de sécurité personnelle face aux agressions de rue.
+                Le Bâton Défense Jacques Levinet (BDJL) est une méthode moderne de self-défense 
+                conçue à partir de la Canne Défense JL, adaptée cette fois à l'usage d'un bâton 
+                court à moyen, sans crosse.
               </p>
               <p className="text-text-secondary font-manrope text-lg leading-relaxed mb-6">
-                Particulièrement adaptée aux seniors et aux personnes ayant besoin d'un appui, 
-                la canne devient un outil de confiance et de sécurité au quotidien.
+                Alliant simplicité, réalisme et efficacité, le BDJL s'adresse autant au grand public 
+                qu'aux professionnels de la sécurité. Inspiré d'arts martiaux, de techniques de bâton 
+                et d'approches opérationnelles, il propose des réponses concrètes et proportionnées 
+                face aux agressions ou menaces.
+              </p>
+              <p className="text-text-secondary font-manrope text-lg leading-relaxed mb-6">
+                Son enseignement repose sur des gestes rapides, maîtrisés et accessibles à tous, 
+                afin d'offrir une protection optimale avec un minimum de risque.
               </p>
               <div className="bg-accent/10 border border-accent/30 rounded-lg p-6">
                 <p className="text-accent font-oswald uppercase leading-none tracking-wide mb-2">Notre Engagement</p>
                 <p className="text-text-secondary font-manrope">
-                  "Transformer un objet du quotidien en instrument adapté de protection efficace et légal."
+                  "Des techniques efficaces, accessibles et adaptées à tous."
                 </p>
               </div>
             </div>
@@ -126,8 +132,8 @@ const DisciplineCannePage = () => {
             <div className="relative">
               <div className="aspect-[4/3] rounded-lg overflow-hidden border border-white/10 shadow-xl">
                 <img 
-                  src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/0wepvzfx_Canne%20defense.jpg"
-                  alt="Canne Défense Jacques Levinet - Entraînement"
+                  src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/gvwn5c24_Baton%20Defense.jpg"
+                  alt="Bâton Défense Jacques Levinet - Entraînement"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -167,7 +173,7 @@ const DisciplineCannePage = () => {
             Prêt à Commencer ?
           </h2>
           <p className="text-text-secondary font-manrope text-lg mb-8">
-            Découvrez la Canne Défense dans un club près de chez vous.
+            Découvrez le Bâton Défense Jacques Levinet dans un club près de chez vous.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -191,4 +197,4 @@ const DisciplineCannePage = () => {
   );
 };
 
-export default DisciplineCannePage;
+export default DisciplineBatonPage;

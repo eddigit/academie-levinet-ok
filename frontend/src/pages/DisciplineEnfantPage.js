@@ -104,27 +104,26 @@ const DisciplineEnfantPage = () => {
         </div>
       </section>
 
-      {/* Age Groups Section */}
+      {/* SPKE Description Section */}
       <section className="py-20 px-6 bg-background">
         <div className="container mx-auto max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="font-oswald text-4xl font-bold text-text-primary uppercase mb-6 tracking-tight">
-                Programmes par <span className="text-secondary">Âge</span>
+                Self Pro Krav <span className="text-secondary">Enfant</span>
               </h2>
-              <p className="text-text-secondary font-manrope text-lg leading-relaxed mb-8">
-                Nos programmes sont adaptés à chaque tranche d'âge pour un apprentissage optimal 
-                dans un environnement sécurisé et bienveillant.
+              <p className="text-text-secondary font-manrope text-lg leading-relaxed mb-6">
+                Le Self Pro Krav Enfant (SPKE) est une méthode de self-défense dédiée aux plus jeunes, 
+                dérivée du Self Pro Krav et adaptée à leur morphologie, à leur âge et à leur réalité 
+                quotidienne. Destiné aux enfants dès 10 ans, le SPKE vise à leur offrir des outils 
+                concrets pour se protéger face au harcèlement, aux pressions ou aux agressions, tout 
+                en développant confiance en soi, maîtrise émotionnelle et sens du respect.
               </p>
-              
-              <div className="space-y-4">
-                {ageGroups.map((group, idx) => (
-                  <div key={idx} className="bg-white/5 border border-white/10 rounded-lg p-5">
-                    <h4 className="font-oswald text-lg text-secondary uppercase mb-2">{group.title}</h4>
-                    <p className="text-text-muted font-manrope text-sm">{group.description}</p>
-                  </div>
-                ))}
-              </div>
+              <p className="text-text-secondary font-manrope text-lg leading-relaxed mb-6">
+                Plus qu'un apprentissage technique, c'est une approche éducative et préventive qui aide 
+                les enfants à réagir efficacement, sans violence inutile, et à évoluer avec assurance 
+                dans leur environnement.
+              </p>
             </div>
             
             <div className="relative">

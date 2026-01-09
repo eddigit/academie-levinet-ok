@@ -68,7 +68,7 @@ const DisciplineSPKPage = () => {
             {discDescription}
           </p>
           <p className="text-lg text-text-muted font-manrope mb-8 leading-relaxed max-w-3xl mx-auto">
-            Notre méthode <strong className="text-accent">Self-Pro-Krav</strong> est adaptée aux lois françaises, éthique et accessible à tous.
+            Notre méthode <strong className="text-accent">Self Pro Krav</strong> est adaptée aux lois françaises, éthique et accessible à tous.
           </p>
           
           <Link
@@ -94,7 +94,7 @@ const DisciplineSPKPage = () => {
                 <strong className="text-white"> Vous avez juste besoin de vouloir vous protéger.</strong>
               </p>
               <p className="text-text-secondary font-manrope text-lg leading-relaxed mb-6">
-                Notre méthode, le <strong className="text-accent">Self-Pro Krav</strong>, est basée sur vos réflexes naturels.
+                Notre méthode, le <strong className="text-accent">Self Pro Krav</strong>, est basée sur vos réflexes naturels.
                 Vous apprenez des gestes simples, efficaces, et surtout <strong className="text-white">légaux</strong> — 
                 conformes aux lois françaises sur la légitime défense.
               </p>
@@ -111,18 +111,12 @@ const DisciplineSPKPage = () => {
             </div>
             
             <div className="relative">
-              <div className="aspect-video rounded-lg overflow-hidden border border-white/10">
-                <div 
-                  className="w-full h-full bg-cover bg-center bg-gray-800"
-                  style={{ backgroundImage: `url(${content?.disciplines?.spk?.training_image || ''})` }}
-                  data-placeholder="spk-training-session"
-                >
-                  {!content?.disciplines?.spk?.training_image && (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-accent/20 to-secondary/20">
-                      <span className="text-text-muted font-manrope text-sm text-center px-4">Photo Self-Pro-Krav à ajouter</span>
-                    </div>
-                  )}
-                </div>
+              <div className="aspect-[4/3] rounded-lg overflow-hidden border border-white/10 shadow-xl">
+                <img 
+                  src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/s9uuhyb4_Self%20pro%20krav.jpg"
+                  alt="Self Pro Krav - Technique de défense réaliste"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
           </div>
@@ -150,8 +144,43 @@ const DisciplineSPKPage = () => {
         </div>
       </section>
 
-      {/* Program Content Section */}
+      {/* Tout Public Section - Photo de Groupe */}
       <section className="py-20 px-6 bg-paper">
+        <div className="container mx-auto max-w-6xl">
+          <h2 className="font-oswald text-4xl font-bold text-center text-text-primary uppercase mb-6 tracking-tight">
+            Une Formation <span className="text-accent">Pour Tous</span>
+          </h2>
+          <p className="text-center text-text-secondary font-manrope text-lg mb-12 max-w-3xl mx-auto">
+            Hommes, femmes, enfants, tous âges et tous niveaux. Le Self Pro Krav s'adapte à chacun.
+          </p>
+          
+          <div className="rounded-lg overflow-hidden border border-white/10">
+            <img 
+              src={discSecondaryImage}
+              alt="Groupe Self Pro Krav - Tout Public"
+              className="w-full h-auto object-cover"
+            />
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+            <div className="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
+              <h3 className="font-oswald text-xl font-bold text-accent uppercase mb-2">Adultes</h3>
+              <p className="text-text-muted font-manrope text-sm">Formation complète pour hommes et femmes de tous âges</p>
+            </div>
+            <div className="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
+              <h3 className="font-oswald text-xl font-bold text-accent uppercase mb-2">Enfants</h3>
+              <p className="text-text-muted font-manrope text-sm">Programme adapté dès 10 ans avec Self Pro Krav Enfant</p>
+            </div>
+            <div className="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
+              <h3 className="font-oswald text-xl font-bold text-accent uppercase mb-2">Familles</h3>
+              <p className="text-text-muted font-manrope text-sm">Entraînez-vous ensemble dans une ambiance conviviale</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Program Content Section */}
+      <section className="py-20 px-6 bg-background">
         <div className="container mx-auto max-w-4xl">
           <h2 className="font-oswald text-4xl font-bold text-center text-text-primary uppercase mb-12 tracking-tight">
             Programme de <span className="text-accent">Formation</span>
@@ -181,7 +210,7 @@ const DisciplineSPKPage = () => {
             Prêt à Commencer ?
           </h2>
           <p className="text-text-secondary font-manrope text-lg mb-8">
-            Rejoignez les milliers de pratiquants qui ont choisi le Self-Pro Krav.
+            Rejoignez les milliers de pratiquants qui ont choisi le Self Pro Krav.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
