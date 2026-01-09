@@ -133,9 +133,9 @@ const MemberMessages = () => {
     <div className="flex min-h-screen bg-background">
       <MemberSidebar />
       
-      <div className="flex-1 ml-64 flex">
+      <div className="flex-1 lg:ml-64 flex flex-col lg:flex-row pb-24 lg:pb-0">
         {/* Conversations List */}
-        <div className="w-80 border-r border-white/5 flex flex-col">
+        <div className={`w-full lg:w-80 border-r border-white/5 flex flex-col ${selectedConversation ? 'hidden lg:flex' : 'flex'}`}>
           <div className="p-4 border-b border-white/5">
             <div className="flex items-center justify-between mb-4">
               <h1 className="font-oswald text-xl text-text-primary uppercase tracking-wide flex items-center gap-2">
@@ -211,10 +211,17 @@ const MemberMessages = () => {
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 flex flex-col">
+        <div className={`flex-1 flex flex-col ${selectedConversation ? 'flex' : 'hidden lg:flex'}`}>
           {selectedConversation ? (
             <>
               <div className="p-4 border-b border-white/5 flex items-center gap-3">
+                {/* Back button for mobile */}
+                <button
+                  onClick={() => setSelectedConversation(null)}
+                  className="lg:hidden p-2 hover:bg-white/10 rounded-lg transition-colors mr-2"
+                >
+                  <X className="w-5 h-5 text-text-secondary" />
+                </button>
                 <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
                   <User className="w-5 h-5 text-primary" strokeWidth={1.5} />
                 </div>

@@ -92,7 +92,7 @@ const MemberCommunity = () => {
     <div className="flex min-h-screen bg-background">
       <MemberSidebar />
       
-      <div className="flex-1 ml-64 p-6">
+      <div className="flex-1 lg:ml-64 p-4 lg:p-6 pb-24 lg:pb-6">
         {/* Header */}
         <div className="mb-8">
           <h1 className="font-oswald text-3xl font-bold text-text-primary uppercase tracking-wide flex items-center gap-3">

@@ -64,7 +64,7 @@ const MemberDashboard = () => {
     <div className="flex min-h-screen bg-background">
       <MemberSidebar />
       
-      <div className="flex-1 ml-64 p-6">
+      <div className="flex-1 lg:ml-64 p-4 lg:p-6 pb-24 lg:pb-6">
         {/* Header avec Message du Fondateur */}
         <div className="mb-6 flex items-start gap-8">
           {/* Bienvenue */}

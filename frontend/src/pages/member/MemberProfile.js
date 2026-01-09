@@ -233,7 +233,7 @@ const MemberProfile = () => {
     return (
       <div className="flex min-h-screen bg-background">
         <MemberSidebar />
-        <div className="flex-1 ml-64 p-6 flex items-center justify-center">
+        <div className="flex-1 lg:ml-64 p-4 lg:p-6 pb-24 lg:pb-6 flex items-center justify-center">
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
         </div>
       </div>
@@ -247,7 +247,7 @@ const MemberProfile = () => {
     <div className="flex min-h-screen bg-background">
       <MemberSidebar />
       
-      <div className="flex-1 ml-64 p-6">
+      <div className="flex-1 lg:ml-64 p-4 lg:p-6 pb-24 lg:pb-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <h1 className="font-oswald text-3xl font-bold text-text-primary uppercase tracking-wide">
