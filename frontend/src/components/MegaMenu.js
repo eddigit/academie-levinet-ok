@@ -53,6 +53,13 @@ const MegaMenu = () => {
       ]
     },
     {
+      title: 'Publications',
+      items: [
+        { name: 'Krav Mag AJL', href: '/kravmag', icon: BookOpen, description: 'Magazine international multilingue' },
+        { name: 'Éditions AJL', href: '/editions', icon: BookOpen, description: 'Livres et ouvrages officiels' },
+      ]
+    },
+    {
       title: 'Rejoindre',
       items: [
         { name: "Je Veux Apprendre", href: '/onboarding', icon: UserPlus, description: 'Commencez maintenant' },

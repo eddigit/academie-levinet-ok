@@ -8,10 +8,11 @@ const EditionsAJLPage = () => {
   const { content, loading } = useSiteContent();
 
   // Valeurs dynamiques avec fallbacks
-  const pageTitle = content?.editions?.title || 'Éditions AJL';
-  const pageSubtitle = content?.editions?.subtitle || 'Plateforme Ouverte de Diffusion de Travaux';
-  const pageDescription = content?.editions?.description || "Les Éditions AJL sont une plateforme ouverte dédiée à la diffusion de travaux de recherche, d'études techniques et de réflexions sur les arts martiaux et la self-défense.";
-  const pageImage = content?.editions?.image || '';
+  const pageTitle = content?.pages?.editions?.title || content?.editions?.title || 'Éditions AJL';
+  const pageSubtitle = content?.pages?.editions?.subtitle || content?.editions?.subtitle || 'Plateforme Ouverte de Diffusion de Travaux';
+  const pageDescription = content?.pages?.editions?.description || content?.editions?.description || "Les Éditions AJL sont une plateforme ouverte dédiée à la diffusion de travaux de recherche, d'études techniques et de réflexions sur les arts martiaux et la self-défense.";
+  const heroImage = content?.pages?.editions?.hero_image || content?.editions?.image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/z8k1mvfy_EDITIONS%20AJL.png';
+  const featuredBookImage = content?.pages?.editions?.featured_book_image || '';
 
   const features = [
     { icon: BookOpen, title: 'Publications Ouvertes', description: 'Espace de libre diffusion de travaux académiques et techniques.' },
@@ -46,7 +47,7 @@ const EditionsAJLPage = () => {
       <section className="pt-24 pb-0 px-0 relative overflow-hidden">
         <div className="relative h-[500px] md:h-[600px]">
           <img 
-            src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/z8k1mvfy_EDITIONS%20AJL.png"
+            src={heroImage}
             alt="Éditions AJL - Publiez votre ouvrage avec nous"
             className="w-full h-full object-cover object-center"
           />
