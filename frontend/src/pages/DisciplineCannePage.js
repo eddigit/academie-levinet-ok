@@ -11,7 +11,8 @@ const DisciplineCannePage = () => {
   const discTitle = content?.disciplines?.canne?.title || 'Canne Défense';
   const discSubtitle = content?.disciplines?.canne?.subtitle || 'Méthode Novatrice';
   const discDescription = content?.disciplines?.canne?.description || "Une méthode nouvelle française adaptée aux agressions de la rue. La canne devient un instrument de protection efficace et légal.";
-  const discImage = content?.disciplines?.canne?.image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/0wepvzfx_Canne%20defense.jpg';
+  const discImage = content?.disciplines?.canne?.hero_image || content?.disciplines?.canne?.image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/0wepvzfx_Canne%20defense.jpg';
+  const discLogoImage = content?.disciplines?.canne?.logo_image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/0wepvzfx_Canne%20defense.jpg';
 
   const benefits = [
     { icon: Shield, title: 'Protection Efficace', description: 'La canne offre une distance de sécurité et une protection contre les agressions.' },
@@ -126,7 +127,7 @@ const DisciplineCannePage = () => {
             <div className="relative">
               <div className="aspect-[4/3] rounded-lg overflow-hidden border border-white/10 shadow-xl">
                 <img 
-                  src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/0wepvzfx_Canne%20defense.jpg"
+                  src={discLogoImage}
                   alt="Canne Défense Jacques Levinet - Entraînement"
                   className="w-full h-full object-cover"
                 />

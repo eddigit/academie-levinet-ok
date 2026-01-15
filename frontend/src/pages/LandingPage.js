@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, Users, Award, Globe, Video, CheckCircle, Target, Sparkles, Loader2 } from 'lucide-react';
 import PublicLayout from '../components/PublicLayout';
@@ -6,15 +6,22 @@ import { useSiteContent } from '../context/SiteContentContext';
 
 const LandingPage = () => {
   const { content, loading } = useSiteContent();
+  const [showMap, setShowMap] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
+  const heroRef = useRef(null);
+
+  // Lazy load de la vidéo YouTube après le rendu initial
+  useEffect(() => {
+    const timer = setTimeout(() => setShowVideo(true), 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Valeurs dynamiques avec fallbacks
   const heroTitle = content?.hero?.title || "La Self-Défense Efficace, Réaliste et Sécurisée";
   const heroSubtitle = content?.hero?.subtitle || "Validée par l'Expérience d'Élite du Capitaine Jacques Levinet";
   const heroDescription = content?.hero?.description || "Méthode brevetée par l'ex-capitaine de police et champion de France de karaté.";
-  const heroImage = content?.hero?.background_image || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1920&q=80';
+  const heroImage = content?.hero?.background_image || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1920&q=80&fm=webp';
 
-  // Vidéo YouTube - utiliser l'URL du CMS hero.video_url ou la vidéo par défaut
-  // L'URL doit être au format embed avec les paramètres autoplay
   const getVideoUrl = () => {
     const cmsUrl = content?.hero?.video_url;
     const defaultVideoId = 'mX3cGUHUgKo';
@@ -23,7 +30,6 @@ const LandingPage = () => {
       return `https://www.youtube.com/embed/${defaultVideoId}?autoplay=1&mute=1&loop=1&playlist=${defaultVideoId}&controls=0&showinfo=0&modestbranding=1&rel=0&enablejsapi=1&playsinline=1`;
     }
     
-    // Extraire l'ID vidéo de l'URL du CMS
     let videoId = defaultVideoId;
     if (cmsUrl.includes('youtube.com/embed/')) {
       videoId = cmsUrl.split('youtube.com/embed/')[1]?.split('?')[0] || defaultVideoId;
@@ -36,16 +42,13 @@ const LandingPage = () => {
     return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&modestbranding=1&rel=0&enablejsapi=1&playsinline=1`;
   };
   const heroVideoUrl = getVideoUrl();
-
-  if (loading) {
-    return (
-      <PublicLayout>
-        <div className="min-h-screen flex items-center justify-center">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
-        </div>
-      </PublicLayout>
-    );
-  }
+  
+  const getVideoId = () => {
+    const url = heroVideoUrl;
+    const match = url.match(/embed\/([^?]+)/);
+    return match ? match[1] : 'mX3cGUHUgKo';
+  };
+  const videoId = getVideoId();
 
   return (
     <PublicLayout>
@@ -56,28 +59,32 @@ const LandingPage = () => {
         data-testid="hero-section"
       >
         {/* Background with Video and Fallback Image */}
-        <div className="absolute inset-0 w-full h-full overflow-hidden">
-          {/* Fallback background image (shows if video doesn't load) */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden" ref={heroRef}>
+          {/* Fallback background image - optimized with thumbnail */}
           <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000"
             style={{
-              backgroundImage: `url(${heroImage})`,
-              filter: 'brightness(0.4)'
+              backgroundImage: `url(https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg)`,
+              filter: 'brightness(0.4)',
+              opacity: showVideo ? 0 : 1
             }}
           />
-          {/* YouTube Video Background */}
-          <iframe
-            className="absolute top-1/2 left-1/2 w-[300vw] md:w-[100vw] h-[300vw] md:h-[56.25vw] min-h-[100vh] min-w-[177.77vh] z-10"
-            style={{
-              transform: 'translate(-50%, -50%)',
-              pointerEvents: 'none',
-            }}
-            src={heroVideoUrl}
-            title="Académie Jacques Levinet Video"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+          {/* YouTube Video Background - lazy loaded for performance */}
+          {showVideo && (
+            <iframe
+              className="absolute top-1/2 left-1/2 w-[300vw] md:w-[100vw] h-[300vw] md:h-[56.25vw] min-h-[100vh] min-w-[177.77vh] z-10 transition-opacity duration-1000"
+              style={{
+                transform: 'translate(-50%, -50%)',
+                pointerEvents: 'none',
+              }}
+              src={heroVideoUrl}
+              title="Académie Jacques Levinet Video"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              loading="lazy"
+            />
+          )}
           {/* Dark overlay for text readability */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80 z-20"></div>
         </div>
@@ -272,15 +279,26 @@ const LandingPage = () => {
           </p>
           <div className="max-w-6xl mx-auto">
             <div className="relative w-full rounded-lg border border-white/10 overflow-hidden" style={{ paddingBottom: '75%' }}>
-              <iframe
-                src="https://www.google.com/maps/d/u/0/embed?mid=1RdKNrRv4jEPjQTr7BDBCpXuuYAs&ehbc=2E312F"
-                className="absolute inset-0 w-full h-full"
-                style={{ border: 0 }}
-                allowFullScreen=""
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Carte mondiale des clubs de l'Académie Jacques Levinet"
-              />
+              {!showMap ? (
+                <div 
+                  onClick={() => setShowMap(true)}
+                  className="absolute inset-0 w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex flex-col items-center justify-center cursor-pointer group hover:from-gray-700 hover:to-gray-800 transition-all"
+                >
+                  <Globe className="w-16 h-16 md:w-24 md:h-24 text-primary mb-4 group-hover:scale-110 transition-transform" strokeWidth={1} />
+                  <p className="text-text-primary font-oswald text-lg md:text-xl uppercase mb-2">Voir la carte mondiale</p>
+                  <p className="text-text-secondary font-manrope text-sm">Cliquez pour charger la carte</p>
+                </div>
+              ) : (
+                <iframe
+                  src="https://www.google.com/maps/d/u/0/embed?mid=1RdKNrRv4jEPjQTr7BDBCpXuuYAs&ehbc=2E312F"
+                  className="absolute inset-0 w-full h-full"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Carte mondiale des clubs de l'Académie Jacques Levinet"
+                />
+              )}
             </div>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mt-8 md:mt-12 max-w-4xl mx-auto">

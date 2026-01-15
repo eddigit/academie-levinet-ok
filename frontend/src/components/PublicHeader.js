@@ -6,13 +6,12 @@ import { useSiteContent } from '../context/SiteContentContext';
 
 const PublicHeader = () => {
   const { user } = useAuth();
-  const { content, loading } = useSiteContent();
+  const { content } = useSiteContent();
 
-  // Default values in case content is not loaded
-  const branding = content?.branding || {
-    logo_url: "https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg",
-    name: "Académie Jacques Levinet",
-    tagline: "École Internationale de Self-Défense"
+  const branding = {
+    logo_url: content?.branding?.logo_url || "https://customer-assets.emergentagent.com/job_spk-academy/artifacts/rz31ua12_WhatsApp%20Image%202025-12-18%20at%2013.59.58.jpeg",
+    name: content?.branding?.name || "Académie Jacques Levinet",
+    tagline: content?.branding?.tagline || "École Internationale de Self-Défense"
   };
 
   return (

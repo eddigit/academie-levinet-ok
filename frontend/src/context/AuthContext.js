@@ -15,21 +15,22 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
-      axios.get(`${API}/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      .then(response => {
-        setUser(response.data);
-        setLoading(false);
-      })
-      .catch(() => {
-        localStorage.removeItem('token');
-        setLoading(false);
-      });
-    } else {
+    if (!token) {
       setLoading(false);
+      return;
     }
+
+    axios.get(`${API}/auth/me`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(response => {
+      setUser(response.data);
+      setLoading(false);
+    })
+    .catch(() => {
+      localStorage.removeItem('token');
+      setLoading(false);
+    });
   }, []);
 
   const login = async (email, password) => {

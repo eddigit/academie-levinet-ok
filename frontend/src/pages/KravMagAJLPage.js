@@ -8,10 +8,10 @@ const KravMagAJLPage = () => {
   const { content, loading } = useSiteContent();
 
   // Valeurs dynamiques avec fallbacks
-  const pageTitle = content?.kravmag?.title || 'Krav Mag AJL';
-  const pageSubtitle = content?.kravmag?.subtitle || 'Magazine International Multilingue';
-  const pageDescription = content?.kravmag?.description || "KRAV MAG AJL est un magazine international, multilingue, disponible en ligne et sur papier, dédié aux arts martiaux et à la self-défense.";
-  const pageImage = content?.kravmag?.image || '';
+  const pageTitle = content?.pages?.kravmag?.title || content?.kravmag?.title || 'Krav Mag AJL';
+  const pageSubtitle = content?.pages?.kravmag?.subtitle || content?.kravmag?.subtitle || 'Magazine International Multilingue';
+  const pageDescription = content?.pages?.kravmag?.description || content?.kravmag?.description || "KRAV MAG AJL est un magazine international, multilingue, disponible en ligne et sur papier, dédié aux arts martiaux et à la self-défense.";
+  const magazineCover = content?.pages?.kravmag?.hero_image || content?.kravmag?.image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/h5wnb8ya_KRAV%20MAG%20AJL.png';
 
   const features = [
     { icon: Globe, title: 'International & Multilingue', description: 'Accessible dans le monde entier dans plusieurs langues.' },
@@ -36,8 +36,8 @@ const KravMagAJLPage = () => {
       <section className="pt-24 pb-0 px-0 relative overflow-hidden">
         <div className="relative h-[500px] md:h-[650px]">
           <img 
-            src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/h5wnb8ya_KRAV%20MAG%20AJL.png"
-            alt="Krav Mag AJL - Magazine Hiver 2025"
+            src={magazineCover}
+            alt="Krav Mag AJL - Magazine"
             className="w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />

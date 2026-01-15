@@ -4,31 +4,35 @@ const SiteContentContext = createContext();
 
 export const SiteContentProvider = ({ children }) => {
   const [content, setContent] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [fetched, setFetched] = useState(false);
+
+  const fetchSiteContent = async () => {
+    if (fetched) return;
+    setLoading(true);
+    try {
+      const response = await fetch('/api/site-content');
+      if (!response.ok) {
+        throw new Error('Failed to fetch site content');
+      }
+      const data = await response.json();
+      setContent(data);
+      setFetched(true);
+    } catch (err) {
+      console.error('Error loading site content:', err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchSiteContent = async () => {
-      try {
-        const response = await fetch('/api/site-content');
-        if (!response.ok) {
-          throw new Error('Failed to fetch site content');
-        }
-        const data = await response.json();
-        setContent(data);
-      } catch (err) {
-        console.error('Error loading site content:', err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchSiteContent();
   }, []);
 
   return (
-    <SiteContentContext.Provider value={{ content, loading, error, setContent }}>
+    <SiteContentContext.Provider value={{ content, loading, error, setContent, fetchSiteContent }}>
       {children}
     </SiteContentContext.Provider>
   );

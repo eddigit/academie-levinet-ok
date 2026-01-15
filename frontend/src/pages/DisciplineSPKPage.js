@@ -11,8 +11,9 @@ const DisciplineSPKPage = () => {
   const discTitle = content?.disciplines?.spk?.title || 'Krav Maga Self-Défense';
   const discSubtitle = content?.disciplines?.spk?.subtitle || 'Apprenez à Vous Défendre';
   const discDescription = content?.disciplines?.spk?.description || 'Apprenez à vous protéger avec des gestes simples et efficaces.';
-  const discImage = content?.disciplines?.spk?.image || 'https://images.unsplash.com/photo-1655558846882-fa55132d6c20?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwxfHx0YWN0aWNhbCUyMHNlbGYlMjBkZWZlbnNlJTIwdHJhaW5pbmclMjBhY3Rpb258ZW58MHx8fHwxNzY1ODAzNzAwfDA&ixlib=rb-4.1.0&q=85';
+  const discImage = content?.disciplines?.spk?.hero_image || content?.disciplines?.spk?.image || 'https://images.unsplash.com/photo-1655558846882-fa55132d6c20?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwxfHx0YWN0aWNhbCUyMHNlbGYlMjBkZWZlbnNlJTIwdHJhaW5pbmclMjBhY3Rpb258ZW58MHx8fHwxNzY1ODAzNzAwfDA&ixlib=rb-4.1.0&q=85';
   const discSecondaryImage = content?.disciplines?.spk?.secondary_image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/m50t9hgn_Grand%20Public%20Card.jpeg';
+  const discLogoImage = content?.disciplines?.spk?.logo_image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/s9uuhyb4_Self%20pro%20krav.jpg';
 
   const principles = [
     { icon: Target, title: 'Simple & Efficace', description: 'Des techniques basées sur vos réflexes naturels. Pas besoin d\'être sportif.' },
@@ -113,7 +114,7 @@ const DisciplineSPKPage = () => {
             <div className="relative">
               <div className="aspect-[4/3] rounded-lg overflow-hidden border border-white/10 shadow-xl">
                 <img 
-                  src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/s9uuhyb4_Self%20pro%20krav.jpg"
+                  src={discLogoImage}
                   alt="Self Pro Krav - Technique de défense réaliste"
                   className="w-full h-full object-cover"
                 />

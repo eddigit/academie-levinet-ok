@@ -15,6 +15,16 @@ const FounderPage = () => {
   const founderQuote = content?.founder?.quote || "J'ai parcouru le monde pour analyser les meilleures techniques de self-défense et d'entraînement policier. Mon objectif : créer des méthodes efficaces, réalistes et adaptées à la législation française.";
   const founderPhoto = content?.founder?.photo || 'https://images.unsplash.com/photo-1616005639387-9d59e4b1bdb9?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwxfHxtYXJ0aWFsJTIwYXJ0cyUyMGdyYW5kbWFzdGVyJTIwcG9ydHJhaXQlMjBzZXJpb3VzfGVufDB8fHxibGFja19hbmRfd2hpdGV8MTc2NTgwMzY5N3ww&ixlib=rb-4.1.0&q=85';
 
+  // Images de la timeline depuis le CMS avec fallbacks
+  const timelineImages = {
+    1: content?.founder?.timeline_image_1 || null,
+    2: content?.founder?.timeline_image_2 || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/xjxsyj4v_LE%20FONDATEUR%204.jpg',
+    3: content?.founder?.timeline_image_3 || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/qr9mjvp4_LE%20FONDATEUR%203.jpg',
+    4: content?.founder?.timeline_image_4 || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/mjvdg2m5_LE%20FONDATEUR%205.jpg',
+    5: content?.founder?.timeline_image_5 || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/uykyfr27_LE%20FONDATEUR%202.jpg',
+    6: content?.founder?.timeline_image_6 || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/yuwqhkg5_LE%20FONDATEUR.png',
+  };
+
   const achievements = [
     { icon: Award, title: '10ème Dan', description: 'Plus haut grade en Self Pro Krav' },
     { icon: Star, title: 'Champion de France', description: 'Karaté - Compétition nationale' },
@@ -122,48 +132,11 @@ const FounderPage = () => {
               <div key={idx} className={`flex flex-col ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 items-center`}>
                 {/* Image */}
                 <div className="w-full md:w-1/2">
-                  {idx === 1 ? (
-                    // Photo historique pour "Champion de Karaté"
-                    <div className="aspect-video rounded-lg overflow-hidden border border-white/10 shadow-xl">
+                  {timelineImages[idx + 1] ? (
+                    <div className={`${idx === 0 || idx === 5 ? 'aspect-video' : idx === 3 ? 'aspect-[2/3]' : 'aspect-square'} rounded-lg overflow-hidden border border-white/10 shadow-xl`}>
                       <img 
-                        src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/xjxsyj4v_LE%20FONDATEUR%204.jpg"
-                        alt="Jacques Levinet champion de karaté"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ) : idx === 2 ? (
-                    // Logo AJL pour "Création de l'Académie"
-                    <div className="aspect-square rounded-lg overflow-hidden border border-white/10 shadow-xl">
-                      <img 
-                        src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/qr9mjvp4_LE%20FONDATEUR%203.jpg"
-                        alt="Création de l'Académie Jacques Levinet"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ) : idx === 3 ? (
-                    // Photo en uniforme pour "Carrière Policière"
-                    <div className="aspect-[2/3] rounded-lg overflow-hidden border border-white/10 shadow-xl">
-                      <img 
-                        src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/mjvdg2m5_LE%20FONDATEUR%205.jpg"
-                        alt="Jacques Levinet carrière policière"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ) : idx === 4 ? (
-                    // Globe AJL WKMO IPC pour "Expansion Mondiale"
-                    <div className="aspect-square rounded-lg overflow-hidden border border-white/10 shadow-xl">
-                      <img 
-                        src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/uykyfr27_LE%20FONDATEUR%202.jpg"
-                        alt="Expansion mondiale AJL-WKMO-IPC"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ) : idx === 5 ? (
-                    // Carte mondiale pour "Héritage vivant"
-                    <div className="aspect-video rounded-lg overflow-hidden border border-white/10 shadow-xl">
-                      <img 
-                        src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/yuwqhkg5_LE%20FONDATEUR.png"
-                        alt="Présence mondiale AJL-WKMO-IPC"
+                        src={timelineImages[idx + 1]}
+                        alt={item.title}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -173,7 +146,7 @@ const FounderPage = () => {
                       data-placeholder={`founder-timeline-${idx + 1}`}
                     >
                       <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20">
-                        <span className="text-text-muted font-manrope text-sm">Photo à ajouter</span>
+                        <span className="text-text-muted font-manrope text-sm">Photo à ajouter dans Gestion du site</span>
                       </div>
                     </div>
                   )}

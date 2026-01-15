@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, HTMLResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
+from starlette.middleware.gzip import GZipMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
@@ -4031,28 +4032,113 @@ DEFAULT_SITE_CONTENT = {
             "subtitle": "Pour Toute la Famille",
             "description": "Méthode pour tous les âges",
             "image": "",
-            "secondary_image": ""
+            "secondary_image": "",
+            "hero_image": ""
         },
         "spk": {
             "title": "Krav Maga Self-Défense",
             "subtitle": "Apprenez à Vous Défendre",
             "description": "Techniques de self-défense efficaces",
             "image": "",
-            "secondary_image": ""
+            "secondary_image": "",
+            "hero_image": ""
         },
         "sfjl": {
             "title": "Self-Défense Féminine Jacques Levinet",
             "subtitle": "Spécifiquement pour les Femmes",
             "description": "Techniques adaptées pour la défense féminine",
             "image": "",
-            "secondary_image": ""
+            "secondary_image": "",
+            "hero_image": ""
         },
         "ipc": {
             "title": "IPC / ROS",
             "subtitle": "Pour les Professionnels",
             "description": "Formation pour forces de l'ordre et sécurité",
             "image": "",
+            "secondary_image": "",
+            "hero_image": ""
+        },
+        "canne": {
+            "title": "Canne Défense",
+            "subtitle": "L'Art de la Canne de Défense",
+            "description": "Méthode de défense avec canne",
+            "image": "",
+            "secondary_image": "",
+            "hero_image": ""
+        },
+        "enfant": {
+            "title": "Self-Défense Enfants",
+            "subtitle": "Pour les Jeunes Pratiquants",
+            "description": "Méthode adaptée aux enfants",
+            "image": "",
+            "secondary_image": "",
+            "hero_image": ""
+        },
+        "baton": {
+            "title": "Bâton Défense",
+            "subtitle": "Techniques de Bâton",
+            "description": "Maîtrise du bâton de défense",
+            "image": "",
+            "secondary_image": "",
+            "hero_image": ""
+        }
+    },
+    "pages": {
+        "pedagogy": {
+            "title": "Pédagogie",
+            "subtitle": "Notre Méthode d'Enseignement",
+            "description": "Une approche pédagogique unique",
+            "hero_image": "",
+            "content_image": "",
             "secondary_image": ""
+        },
+        "international": {
+            "title": "International",
+            "subtitle": "Présence Mondiale",
+            "description": "L'Académie Jacques Levinet dans le monde",
+            "hero_image": "",
+            "map_background": "",
+            "gallery_images": []
+        },
+        "kravmag": {
+            "title": "Krav Maga AJL",
+            "subtitle": "La Méthode Jacques Levinet",
+            "description": "Krav Maga authentique et efficace",
+            "hero_image": "",
+            "content_image": "",
+            "secondary_image": ""
+        },
+        "editions": {
+            "title": "Éditions AJL",
+            "subtitle": "Publications et Ouvrages",
+            "description": "Livres et supports pédagogiques",
+            "hero_image": "",
+            "books_cover": [],
+            "featured_book_image": ""
+        },
+        "join": {
+            "title": "Nous Rejoindre",
+            "subtitle": "Devenez Membre",
+            "description": "Rejoignez notre communauté internationale",
+            "hero_image": "",
+            "benefits_image": "",
+            "cta_background": ""
+        },
+        "find_club": {
+            "title": "Trouver un Club",
+            "subtitle": "Clubs Partenaires",
+            "description": "Trouvez un club près de chez vous",
+            "hero_image": "",
+            "map_marker_image": ""
+        },
+        "shop": {
+            "title": "Boutique",
+            "subtitle": "Équipements et Produits",
+            "description": "Équipez-vous avec nos produits officiels",
+            "hero_image": "",
+            "banner_image": "",
+            "category_images": {}
         }
     },
     "features": [
@@ -4159,13 +4245,37 @@ async def update_site_section(section: str, data: dict, current_user: dict = Dep
 
 @api_router.get("/site-content")
 async def get_public_site_content():
-    """Public: Get site content for display"""
+    """Public: Get site content for display - optimized for performance"""
     content = await db.settings.find_one({"id": "site_content"}, {"_id": 0})
     if not content:
         return DEFAULT_SITE_CONTENT
     
     merged = {**DEFAULT_SITE_CONTENT, **content}
-    return merged
+    
+    essential_content = {
+        "branding": merged.get("branding", DEFAULT_SITE_CONTENT["branding"]),
+        "hero": {
+            "title": merged.get("hero", {}).get("title", DEFAULT_SITE_CONTENT["hero"]["title"]),
+            "subtitle": merged.get("hero", {}).get("subtitle", DEFAULT_SITE_CONTENT["hero"]["subtitle"]),
+            "description": merged.get("hero", {}).get("description", DEFAULT_SITE_CONTENT["hero"]["description"]),
+            "cta_text": merged.get("hero", {}).get("cta_text", DEFAULT_SITE_CONTENT["hero"]["cta_text"]),
+            "cta_link": merged.get("hero", {}).get("cta_link", DEFAULT_SITE_CONTENT["hero"]["cta_link"]),
+            "background_image": merged.get("hero", {}).get("background_image", ""),
+            "video_url": merged.get("hero", {}).get("video_url", ""),
+            "cta_background_image": merged.get("hero", {}).get("cta_background_image", ""),
+            "audience_cards": merged.get("hero", {}).get("audience_cards", {})
+        },
+        "login": merged.get("login", DEFAULT_SITE_CONTENT["login"]),
+        "founder": merged.get("founder", DEFAULT_SITE_CONTENT["founder"]),
+        "about": merged.get("about", DEFAULT_SITE_CONTENT["about"]),
+        "disciplines": merged.get("disciplines", DEFAULT_SITE_CONTENT["disciplines"]),
+        "pages": merged.get("pages", DEFAULT_SITE_CONTENT["pages"]),
+        "contact": merged.get("contact", DEFAULT_SITE_CONTENT["contact"]),
+        "social_links": merged.get("social_links", DEFAULT_SITE_CONTENT["social_links"]),
+        "footer": merged.get("footer", DEFAULT_SITE_CONTENT["footer"])
+    }
+    
+    return essential_content
 
 # ==================== PENDING MEMBERS (EXISTING MEMBERS) ENDPOINTS ====================
 
@@ -6183,6 +6293,8 @@ async def get_sponsors_stats(current_user: dict = Depends(get_current_user)):
 # ========== FIN SPONSORS ENDPOINTS ==========
 
 app.include_router(api_router)
+
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 app.add_middleware(
     CORSMiddleware,

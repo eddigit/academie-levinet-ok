@@ -11,8 +11,9 @@ const DisciplineIPCPage = () => {
   const discTitle = content?.disciplines?.ipc?.title || 'IPC / ROS';
   const discSubtitle = content?.disciplines?.ipc?.subtitle || 'International Police Confederation';
   const discDescription = content?.disciplines?.ipc?.description || "Formation professionnelle des forces de l'ordre et des agents de sécurité. Certification ROS (Real Operational System).";
-  const discImage = content?.disciplines?.ipc?.image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/vjnvljgu_Professionnels%20Card.jpeg';
+  const discImage = content?.disciplines?.ipc?.hero_image || content?.disciplines?.ipc?.image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/vjnvljgu_Professionnels%20Card.jpeg';
   const discSecondaryImage = content?.disciplines?.ipc?.secondary_image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/vjnvljgu_Professionnels%20Card.jpeg';
+  const discLogoImage = content?.disciplines?.ipc?.logo_image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/3gj4k19i_IPC.jpg';
 
   const features = [
     { icon: Target, title: 'Efficacité Opérationnelle', description: 'Techniques validées sur le terrain par des unités d\'élite.' },
@@ -145,7 +146,7 @@ const DisciplineIPCPage = () => {
             <div className="relative">
               <div className="aspect-[16/9] rounded-lg overflow-hidden border border-white/10 shadow-xl">
                 <img 
-                  src="https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/3gj4k19i_IPC.jpg"
+                  src={discLogoImage}
                   alt="IPC - Formation avec unités d'élite internationales"
                   className="w-full h-full object-cover"
                 />

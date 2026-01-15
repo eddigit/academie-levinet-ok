@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Globe, Save, Loader2, Image, Type, Mail, Upload, X,
-  Facebook, Instagram, Youtube, Linkedin, Twitter, Home, User, BookOpen, MapPin, Phone
+  Facebook, Instagram, Youtube, Linkedin, Twitter, Home, User, BookOpen, MapPin, Phone,
+  GraduationCap, Map, Shield, Package, UserPlus, Search, ShoppingBag, Book
 } from 'lucide-react';
 import DashboardLayout from '../components/DashboardLayout';
 import { Button } from '../components/ui/button';
@@ -193,7 +194,13 @@ const SiteContentPage = () => {
     { id: 'founder', label: 'Fondateur', icon: User },
     { id: 'about', label: 'À Propos', icon: BookOpen },
     { id: 'disciplines', label: 'Disciplines', icon: BookOpen },
-    { id: 'international', label: 'International', icon: MapPin },
+    { id: 'pedagogy', label: 'Pédagogie', icon: GraduationCap },
+    { id: 'international', label: 'International', icon: Map },
+    { id: 'kravmag', label: 'Krav Maga AJL', icon: Shield },
+    { id: 'editions', label: 'Éditions AJL', icon: Book },
+    { id: 'join', label: 'Nous Rejoindre', icon: UserPlus },
+    { id: 'find_club', label: 'Trouver un Club', icon: Search },
+    { id: 'shop', label: 'Boutique', icon: ShoppingBag },
     { id: 'contact', label: 'Contact', icon: Mail },
     { id: 'social', label: 'Réseaux Sociaux', icon: Facebook },
     { id: 'images', label: 'Logos & Branding', icon: Image },
@@ -657,6 +664,72 @@ const SiteContentPage = () => {
                 </div>
               </div>
             </div>
+
+            {/* Timeline Images Section */}
+            <div className="border-t border-white/10 pt-6 mt-6">
+              <h3 className="font-oswald text-lg text-primary uppercase mb-4">
+                📸 Images de la Timeline (Parcours)
+              </h3>
+              <p className="text-text-muted text-sm mb-4">
+                Ces images illustrent les différentes étapes du parcours du fondateur sur la page /founder
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="space-y-2">
+                  <ImageUploader
+                    label="1. Carrière Policière (Années 70-80)"
+                    value={content.founder?.timeline_image_1 || ''}
+                    onChange={(url) => updateField('founder', 'timeline_image_1', url)}
+                    placeholder="Photo de la période policière"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <ImageUploader
+                    label="2. Champion de Karaté (Années 70-90)"
+                    value={content.founder?.timeline_image_2 || ''}
+                    onChange={(url) => updateField('founder', 'timeline_image_2', url)}
+                    placeholder="Photo champion de karaté"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <ImageUploader
+                    label="3. Recherche Internationale (Années 90)"
+                    value={content.founder?.timeline_image_3 || ''}
+                    onChange={(url) => updateField('founder', 'timeline_image_3', url)}
+                    placeholder="Photo recherche internationale"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <ImageUploader
+                    label="4. Création de l'Académie (1998)"
+                    value={content.founder?.timeline_image_4 || ''}
+                    onChange={(url) => updateField('founder', 'timeline_image_4', url)}
+                    placeholder="Logo ou photo de création"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <ImageUploader
+                    label="5. Expansion Mondiale (2000s)"
+                    value={content.founder?.timeline_image_5 || ''}
+                    onChange={(url) => updateField('founder', 'timeline_image_5', url)}
+                    placeholder="Globe AJL-WKMO-IPC"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <ImageUploader
+                    label="6. Héritage Vivant (Aujourd'hui)"
+                    value={content.founder?.timeline_image_6 || ''}
+                    onChange={(url) => updateField('founder', 'timeline_image_6', url)}
+                    placeholder="Carte mondiale présence"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
@@ -753,7 +826,7 @@ const SiteContentPage = () => {
               Pages Disciplines
             </h2>
             
-            {['wkmo', 'ipc', 'spk', 'sfjl'].map((disc) => (
+            {['wkmo', 'ipc', 'spk', 'sfjl', 'canne', 'enfant', 'baton'].map((disc) => (
               <div key={disc} className="border border-white/10 rounded-lg p-4 space-y-4">
                 <h3 className="font-oswald text-lg text-primary uppercase">{disc.toUpperCase()}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -786,9 +859,15 @@ const SiteContentPage = () => {
                   </div>
                   <div className="space-y-4">
                     <ImageUploader
+                      label={`Logo ${disc.toUpperCase()}`}
+                      value={content.disciplines?.[disc]?.logo_image || ''}
+                      onChange={(url) => updateNestedField('disciplines', disc, 'logo_image', url)}
+                      placeholder="Logo officiel de la discipline"
+                    />
+                    <ImageUploader
                       label={`Image Hero ${disc.toUpperCase()}`}
-                      value={content.disciplines?.[disc]?.image || ''}
-                      onChange={(url) => updateNestedField('disciplines', disc, 'image', url)}
+                      value={content.disciplines?.[disc]?.hero_image || content.disciplines?.[disc]?.image || ''}
+                      onChange={(url) => updateNestedField('disciplines', disc, 'hero_image', url)}
                       placeholder="Image principale de la page"
                     />
                     <ImageUploader
@@ -853,6 +932,334 @@ const SiteContentPage = () => {
                 value={content.international?.map_image || ''}
                 onChange={(url) => updateField('international', 'map_image', url)}
               />
+            </div>
+          </div>
+        )}
+
+        {/* PEDAGOGY PAGE */}
+        {activeSection === 'pedagogy' && (
+          <div className="bg-paper rounded-xl border border-white/10 p-6 space-y-6">
+            <h2 className="font-oswald text-xl text-text-primary uppercase border-b border-white/10 pb-3">
+              Page Pédagogie
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-text-secondary">Titre</Label>
+                  <Input
+                    value={content.pages?.pedagogy?.title || ''}
+                    onChange={(e) => updateNestedField('pages', 'pedagogy', 'title', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    placeholder="Pédagogie"
+                  />
+                </div>
+                <div>
+                  <Label className="text-text-secondary">Sous-titre</Label>
+                  <Input
+                    value={content.pages?.pedagogy?.subtitle || ''}
+                    onChange={(e) => updateNestedField('pages', 'pedagogy', 'subtitle', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    placeholder="Notre Méthode d'Enseignement"
+                  />
+                </div>
+                <div>
+                  <Label className="text-text-secondary">Description</Label>
+                  <Textarea
+                    value={content.pages?.pedagogy?.description || ''}
+                    onChange={(e) => updateNestedField('pages', 'pedagogy', 'description', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    rows={4}
+                  />
+                </div>
+              </div>
+              <div className="space-y-4">
+                <ImageUploader
+                  label="Image Hero"
+                  value={content.pages?.pedagogy?.hero_image || ''}
+                  onChange={(url) => updateNestedField('pages', 'pedagogy', 'hero_image', url)}
+                />
+                <ImageUploader
+                  label="Image Contenu"
+                  value={content.pages?.pedagogy?.content_image || ''}
+                  onChange={(url) => updateNestedField('pages', 'pedagogy', 'content_image', url)}
+                />
+                <ImageUploader
+                  label="Image Secondaire"
+                  value={content.pages?.pedagogy?.secondary_image || ''}
+                  onChange={(url) => updateNestedField('pages', 'pedagogy', 'secondary_image', url)}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* KRAV MAG AJL PAGE */}
+        {activeSection === 'kravmag' && (
+          <div className="bg-paper rounded-xl border border-white/10 p-6 space-y-6">
+            <h2 className="font-oswald text-xl text-text-primary uppercase border-b border-white/10 pb-3">
+              Page Krav Maga AJL
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-text-secondary">Titre</Label>
+                  <Input
+                    value={content.pages?.kravmag?.title || ''}
+                    onChange={(e) => updateNestedField('pages', 'kravmag', 'title', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    placeholder="Krav Maga AJL"
+                  />
+                </div>
+                <div>
+                  <Label className="text-text-secondary">Sous-titre</Label>
+                  <Input
+                    value={content.pages?.kravmag?.subtitle || ''}
+                    onChange={(e) => updateNestedField('pages', 'kravmag', 'subtitle', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    placeholder="La Méthode Jacques Levinet"
+                  />
+                </div>
+                <div>
+                  <Label className="text-text-secondary">Description</Label>
+                  <Textarea
+                    value={content.pages?.kravmag?.description || ''}
+                    onChange={(e) => updateNestedField('pages', 'kravmag', 'description', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    rows={4}
+                  />
+                </div>
+              </div>
+              <div className="space-y-4">
+                <ImageUploader
+                  label="Image Hero"
+                  value={content.pages?.kravmag?.hero_image || ''}
+                  onChange={(url) => updateNestedField('pages', 'kravmag', 'hero_image', url)}
+                />
+                <ImageUploader
+                  label="Image Contenu"
+                  value={content.pages?.kravmag?.content_image || ''}
+                  onChange={(url) => updateNestedField('pages', 'kravmag', 'content_image', url)}
+                />
+                <ImageUploader
+                  label="Image Secondaire"
+                  value={content.pages?.kravmag?.secondary_image || ''}
+                  onChange={(url) => updateNestedField('pages', 'kravmag', 'secondary_image', url)}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* EDITIONS AJL PAGE */}
+        {activeSection === 'editions' && (
+          <div className="bg-paper rounded-xl border border-white/10 p-6 space-y-6">
+            <h2 className="font-oswald text-xl text-text-primary uppercase border-b border-white/10 pb-3">
+              Page Éditions AJL
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-text-secondary">Titre</Label>
+                  <Input
+                    value={content.pages?.editions?.title || ''}
+                    onChange={(e) => updateNestedField('pages', 'editions', 'title', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    placeholder="Éditions AJL"
+                  />
+                </div>
+                <div>
+                  <Label className="text-text-secondary">Sous-titre</Label>
+                  <Input
+                    value={content.pages?.editions?.subtitle || ''}
+                    onChange={(e) => updateNestedField('pages', 'editions', 'subtitle', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    placeholder="Publications et Ouvrages"
+                  />
+                </div>
+                <div>
+                  <Label className="text-text-secondary">Description</Label>
+                  <Textarea
+                    value={content.pages?.editions?.description || ''}
+                    onChange={(e) => updateNestedField('pages', 'editions', 'description', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    rows={4}
+                  />
+                </div>
+              </div>
+              <div className="space-y-4">
+                <ImageUploader
+                  label="Image Hero"
+                  value={content.pages?.editions?.hero_image || ''}
+                  onChange={(url) => updateNestedField('pages', 'editions', 'hero_image', url)}
+                />
+                <ImageUploader
+                  label="Couverture Livre Principal"
+                  value={content.pages?.editions?.featured_book_image || ''}
+                  onChange={(url) => updateNestedField('pages', 'editions', 'featured_book_image', url)}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* JOIN PAGE */}
+        {activeSection === 'join' && (
+          <div className="bg-paper rounded-xl border border-white/10 p-6 space-y-6">
+            <h2 className="font-oswald text-xl text-text-primary uppercase border-b border-white/10 pb-3">
+              Page Nous Rejoindre
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-text-secondary">Titre</Label>
+                  <Input
+                    value={content.pages?.join?.title || ''}
+                    onChange={(e) => updateNestedField('pages', 'join', 'title', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    placeholder="Nous Rejoindre"
+                  />
+                </div>
+                <div>
+                  <Label className="text-text-secondary">Sous-titre</Label>
+                  <Input
+                    value={content.pages?.join?.subtitle || ''}
+                    onChange={(e) => updateNestedField('pages', 'join', 'subtitle', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    placeholder="Devenez Membre"
+                  />
+                </div>
+                <div>
+                  <Label className="text-text-secondary">Description</Label>
+                  <Textarea
+                    value={content.pages?.join?.description || ''}
+                    onChange={(e) => updateNestedField('pages', 'join', 'description', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    rows={4}
+                  />
+                </div>
+              </div>
+              <div className="space-y-4">
+                <ImageUploader
+                  label="Image Hero"
+                  value={content.pages?.join?.hero_image || ''}
+                  onChange={(url) => updateNestedField('pages', 'join', 'hero_image', url)}
+                />
+                <ImageUploader
+                  label="Image Avantages"
+                  value={content.pages?.join?.benefits_image || ''}
+                  onChange={(url) => updateNestedField('pages', 'join', 'benefits_image', url)}
+                />
+                <ImageUploader
+                  label="Background CTA"
+                  value={content.pages?.join?.cta_background || ''}
+                  onChange={(url) => updateNestedField('pages', 'join', 'cta_background', url)}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* FIND CLUB PAGE */}
+        {activeSection === 'find_club' && (
+          <div className="bg-paper rounded-xl border border-white/10 p-6 space-y-6">
+            <h2 className="font-oswald text-xl text-text-primary uppercase border-b border-white/10 pb-3">
+              Page Trouver un Club
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-text-secondary">Titre</Label>
+                  <Input
+                    value={content.pages?.find_club?.title || ''}
+                    onChange={(e) => updateNestedField('pages', 'find_club', 'title', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    placeholder="Trouver un Club"
+                  />
+                </div>
+                <div>
+                  <Label className="text-text-secondary">Sous-titre</Label>
+                  <Input
+                    value={content.pages?.find_club?.subtitle || ''}
+                    onChange={(e) => updateNestedField('pages', 'find_club', 'subtitle', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    placeholder="Clubs Partenaires"
+                  />
+                </div>
+                <div>
+                  <Label className="text-text-secondary">Description</Label>
+                  <Textarea
+                    value={content.pages?.find_club?.description || ''}
+                    onChange={(e) => updateNestedField('pages', 'find_club', 'description', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    rows={4}
+                  />
+                </div>
+              </div>
+              <div className="space-y-4">
+                <ImageUploader
+                  label="Image Hero"
+                  value={content.pages?.find_club?.hero_image || ''}
+                  onChange={(url) => updateNestedField('pages', 'find_club', 'hero_image', url)}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* SHOP PAGE */}
+        {activeSection === 'shop' && (
+          <div className="bg-paper rounded-xl border border-white/10 p-6 space-y-6">
+            <h2 className="font-oswald text-xl text-text-primary uppercase border-b border-white/10 pb-3">
+              Page Boutique
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-text-secondary">Titre</Label>
+                  <Input
+                    value={content.pages?.shop?.title || ''}
+                    onChange={(e) => updateNestedField('pages', 'shop', 'title', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    placeholder="Boutique"
+                  />
+                </div>
+                <div>
+                  <Label className="text-text-secondary">Sous-titre</Label>
+                  <Input
+                    value={content.pages?.shop?.subtitle || ''}
+                    onChange={(e) => updateNestedField('pages', 'shop', 'subtitle', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    placeholder="Équipements et Produits"
+                  />
+                </div>
+                <div>
+                  <Label className="text-text-secondary">Description</Label>
+                  <Textarea
+                    value={content.pages?.shop?.description || ''}
+                    onChange={(e) => updateNestedField('pages', 'shop', 'description', e.target.value)}
+                    className="mt-1 bg-background border-white/10"
+                    rows={4}
+                  />
+                </div>
+              </div>
+              <div className="space-y-4">
+                <ImageUploader
+                  label="Image Hero"
+                  value={content.pages?.shop?.hero_image || ''}
+                  onChange={(url) => updateNestedField('pages', 'shop', 'hero_image', url)}
+                />
+                <ImageUploader
+                  label="Bannière Promotionnelle"
+                  value={content.pages?.shop?.banner_image || ''}
+                  onChange={(url) => updateNestedField('pages', 'shop', 'banner_image', url)}
+                />
+              </div>
             </div>
           </div>
         )}
@@ -981,6 +1388,54 @@ const SiteContentPage = () => {
                 value={content.images?.og_image || ''}
                 onChange={(url) => updateField('images', 'og_image', url)}
               />
+            </div>
+
+            {/* Logos des organisations */}
+            <div className="border-t border-white/10 pt-6 mt-6">
+              <h3 className="font-oswald text-lg text-primary uppercase mb-4">
+                🏛️ Logos des Organisations
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <ImageUploader
+                  label="Logo WKMO"
+                  value={content.images?.logo_wkmo || ''}
+                  onChange={(url) => updateField('images', 'logo_wkmo', url)}
+                  placeholder="World Krav Maga Organization"
+                />
+                <ImageUploader
+                  label="Logo IPC"
+                  value={content.images?.logo_ipc || ''}
+                  onChange={(url) => updateField('images', 'logo_ipc', url)}
+                  placeholder="International Police Confederation"
+                />
+                <ImageUploader
+                  label="Logo SPK"
+                  value={content.images?.logo_spk || ''}
+                  onChange={(url) => updateField('images', 'logo_spk', url)}
+                  placeholder="Self Pro Krav"
+                />
+              </div>
+            </div>
+
+            {/* Images International */}
+            <div className="border-t border-white/10 pt-6 mt-6">
+              <h3 className="font-oswald text-lg text-primary uppercase mb-4">
+                🌍 Images Internationales
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <ImageUploader
+                  label="Globe AJL-WKMO-IPC"
+                  value={content.images?.globe_international || ''}
+                  onChange={(url) => updateField('images', 'globe_international', url)}
+                  placeholder="Globe avec logos AJL WKMO IPC"
+                />
+                <ImageUploader
+                  label="Carte Mondiale"
+                  value={content.images?.world_map || ''}
+                  onChange={(url) => updateField('images', 'world_map', url)}
+                  placeholder="Carte AJL-WKMO-IPC Worldwide"
+                />
+              </div>
             </div>
           </div>
         )}
