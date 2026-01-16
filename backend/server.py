@@ -73,6 +73,11 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
+
+# Cloudinary pour le stockage d'images
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 from reportlab.lib.units import cm
 import io
 import base64
@@ -96,6 +101,22 @@ client = AsyncIOMotorClient(
 )
 db = client[os.environ['DB_NAME']]
 print(f"📦 Base de données: {os.environ['DB_NAME']}")
+
+# Configuration Cloudinary pour le stockage d'images
+CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUDINARY_CLOUD_NAME', '')
+CLOUDINARY_API_KEY = os.environ.get('CLOUDINARY_API_KEY', '')
+CLOUDINARY_API_SECRET = os.environ.get('CLOUDINARY_API_SECRET', '')
+
+if CLOUDINARY_CLOUD_NAME and CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET:
+    cloudinary.config(
+        cloud_name=CLOUDINARY_CLOUD_NAME,
+        api_key=CLOUDINARY_API_KEY,
+        api_secret=CLOUDINARY_API_SECRET,
+        secure=True
+    )
+    print("☁️ Cloudinary configuré")
+else:
+    print("⚠️ Cloudinary non configuré (variables d'environnement manquantes)")
 
 JWT_SECRET = os.environ.get('JWT_SECRET', 'your-secret-key-change-in-production')
 JWT_ALGORITHM = "HS256"
@@ -1157,25 +1178,94 @@ class ImageUploadRequest(BaseModel):
 
 @api_router.post("/upload/image")
 async def upload_image(data: ImageUploadRequest, current_user: dict = Depends(get_current_user)):
-    """Upload an image for site content (CMS) and return the URL"""
+    """Upload an image to Cloudinary, return the secure URL"""
     try:
         # Validate data URL
         if not data.image_data:
             raise HTTPException(status_code=400, detail="Image data required")
         
-        # If it's already a data URL, just return it
-        if data.image_data.startswith('data:image/'):
-            return {"url": data.image_data, "message": "Image uploadée avec succès"}
-        
-        # If it's a regular URL, validate and return
+        # If it's already a Cloudinary URL or external URL, just return it
         if data.image_data.startswith('http://') or data.image_data.startswith('https://'):
             return {"url": data.image_data, "message": "URL d'image enregistrée"}
+        
+        # If it's a data URL, upload to Cloudinary
+        if data.image_data.startswith('data:image/'):
+            # Check if Cloudinary is configured
+            if not CLOUDINARY_CLOUD_NAME or not CLOUDINARY_API_KEY or not CLOUDINARY_API_SECRET:
+                raise HTTPException(
+                    status_code=500, 
+                    detail="Cloudinary non configuré. Contactez l'administrateur."
+                )
+            
+            try:
+                # Upload to Cloudinary
+                import uuid
+                public_id = f"academie-levinet/{uuid.uuid4()}"
+                
+                # Cloudinary accepts data URLs directly
+                result = cloudinary.uploader.upload(
+                    data.image_data,
+                    public_id=public_id,
+                    folder="academie-levinet",
+                    resource_type="image",
+                    overwrite=True,
+                    # Optimize images automatically
+                    transformation=[
+                        {"quality": "auto:good", "fetch_format": "auto"}
+                    ]
+                )
+                
+                # Get the secure URL from Cloudinary
+                cloudinary_url = result.get('secure_url')
+                
+                logger.info(f"✅ Image uploadée sur Cloudinary: {cloudinary_url}")
+                
+                return {
+                    "url": cloudinary_url, 
+                    "message": "Image uploadée avec succès sur Cloudinary",
+                    "public_id": result.get('public_id'),
+                    "format": result.get('format'),
+                    "size": result.get('bytes')
+                }
+                
+            except Exception as cloudinary_error:
+                logger.error(f"❌ Erreur Cloudinary: {str(cloudinary_error)}")
+                raise HTTPException(
+                    status_code=500, 
+                    detail=f"Erreur lors de l'upload Cloudinary: {str(cloudinary_error)}"
+                )
         
         raise HTTPException(status_code=400, detail="Format d'image invalide. Utilisez une URL ou un fichier image.")
     except HTTPException:
         raise
     except Exception as e:
+        logger.error(f"❌ Erreur upload image: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Erreur lors de l'upload: {str(e)}")
+
+@api_router.get("/images/{image_id}")
+async def get_image(image_id: str):
+    """Retrieve an image by its ID and return as data URL or redirect"""
+    image = await db.images.find_one({"id": image_id})
+    if not image:
+        raise HTTPException(status_code=404, detail="Image non trouvée")
+    
+    # Return the image data directly
+    from fastapi.responses import Response
+    import base64
+    
+    data_url = image.get("data", "")
+    if data_url.startswith("data:"):
+        # Parse data URL
+        try:
+            header, encoded = data_url.split(",", 1)
+            mime_type = header.split(":")[1].split(";")[0]
+            image_bytes = base64.b64decode(encoded)
+            return Response(content=image_bytes, media_type=mime_type)
+        except Exception:
+            pass
+    
+    # Fallback: return as JSON
+    return {"data": data_url}
 
 @api_router.post("/upload/photo")
 async def upload_photo(data: PhotoUploadRequest, current_user: dict = Depends(get_current_user)):

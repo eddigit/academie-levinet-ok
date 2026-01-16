@@ -41,4 +41,11 @@ services:
         sync: false
       - key: OPENAI_API_KEY
         sync: false
+      # Cloudinary - Stockage d'images
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
 
