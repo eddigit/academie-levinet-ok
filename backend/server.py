@@ -6316,13 +6316,14 @@ logger = logging.getLogger(__name__)
 
 # Path to the frontend build directory
 FRONTEND_BUILD_DIR = ROOT_DIR.parent / "frontend" / "build"
+FRONTEND_STATIC_DIR = FRONTEND_BUILD_DIR / "static"
 
 # Check if frontend build exists (for unified deployment)
-if FRONTEND_BUILD_DIR.exists():
+if FRONTEND_BUILD_DIR.exists() and FRONTEND_STATIC_DIR.exists():
     logger.info(f"Frontend build found at {FRONTEND_BUILD_DIR}, serving static files")
     
     # Mount static assets (JS, CSS, images)
-    app.mount("/static", StaticFiles(directory=FRONTEND_BUILD_DIR / "static"), name="static")
+    app.mount("/static", StaticFiles(directory=FRONTEND_STATIC_DIR), name="static")
     
     # Serve other static files (manifest.json, sw.js, etc.)
     @app.get("/manifest.json")

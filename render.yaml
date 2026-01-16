@@ -6,12 +6,17 @@
 services:
   - type: web
     name: academie-levinet
-    env: docker
-    dockerfilePath: ./Dockerfile
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "cd backend && uvicorn server:app --host 0.0.0.0 --port $PORT"
     region: frankfurt  # Proche de la France
     plan: starter
     healthCheckPath: /api/health
     envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.4"
+      - key: NODE_VERSION
+        value: "20"
       - key: MONGO_URL
         sync: false  # Définir manuellement dans le dashboard
       - key: DB_NAME
