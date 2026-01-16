@@ -196,7 +196,7 @@ const SiteContentPage = () => {
     { id: 'disciplines', label: 'Disciplines', icon: BookOpen },
     { id: 'pedagogy', label: 'Pédagogie', icon: GraduationCap },
     { id: 'international', label: 'International', icon: Map },
-    { id: 'kravmag', label: 'Krav Maga AJL', icon: Shield },
+    { id: 'kravmag', label: 'Krav Mag AJL', icon: Shield },
     { id: 'editions', label: 'Éditions AJL', icon: Book },
     { id: 'join', label: 'Nous Rejoindre', icon: UserPlus },
     { id: 'find_club', label: 'Trouver un Club', icon: Search },
@@ -998,7 +998,7 @@ const SiteContentPage = () => {
         {activeSection === 'kravmag' && (
           <div className="bg-paper rounded-xl border border-white/10 p-6 space-y-6">
             <h2 className="font-oswald text-xl text-text-primary uppercase border-b border-white/10 pb-3">
-              Page Krav Maga AJL
+              Page Krav Mag AJL
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1009,7 +1009,7 @@ const SiteContentPage = () => {
                     value={content.pages?.kravmag?.title || ''}
                     onChange={(e) => updateNestedField('pages', 'kravmag', 'title', e.target.value)}
                     className="mt-1 bg-background border-white/10"
-                    placeholder="Krav Maga AJL"
+                    placeholder="Krav Mag AJL"
                   />
                 </div>
                 <div>

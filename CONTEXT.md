@@ -89,4 +89,15 @@ cd ..
 
 ---
 
-Dernière mise à jour : 28/12/2025 16:35
+## 📋 Historique des corrections
+
+### 16/01/2026 - Résolution bugs remontés par Jacques Levinet
+- ✅ **BUG CRITIQUE** : Upload d'images défaillant → Amélioration des logs et gestion d'erreur
+- ✅ Correction titre "KRAV MAGA AJL" → "KRAV MAG AJL"
+- ✅ Vérification grades jusqu'au 10e Dan (déjà présents)
+- ✅ Vérification gestion utilisateurs (opérationnelle)
+- 📄 Détails : [RESOLUTION_BUGS_16_JAN_2026.md](RESOLUTION_BUGS_16_JAN_2026.md)
+
+---
+
+Dernière mise à jour : 16/01/2026 10:10
