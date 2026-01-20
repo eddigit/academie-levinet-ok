@@ -136,8 +136,8 @@ const EditionsAJLPage = () => {
             <div className="relative">
               <div className="aspect-[4/5] rounded-lg overflow-hidden border border-white/10">
                 <img 
-                  src="https://res.cloudinary.com/dool0ngfx/image/upload/v1768917189/WhatsApp_Image_2026-01-20_at_14.51.29_awg8gi.jpg"
-                  alt="Bibliothèque des publications AJL"
+                  src="https://res.cloudinary.com/dool0ngfx/image/upload/v1768919745/LIVRE_EDITIONS_AJL_giaiek.jpg"
+                  alt="Dernier livre Éditions AJL"
                   className="w-full h-full object-cover"
                 />
               </div>
