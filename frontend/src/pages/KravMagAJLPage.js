@@ -12,6 +12,8 @@ const KravMagAJLPage = () => {
   const pageSubtitle = content?.pages?.kravmag?.subtitle || content?.kravmag?.subtitle || 'Magazine International Multilingue';
   const pageDescription = content?.pages?.kravmag?.description || content?.kravmag?.description || "KRAV MAG AJL est un magazine international, multilingue, disponible en ligne et sur papier, dédié aux arts martiaux et à la self-défense.";
   const magazineCover = content?.pages?.kravmag?.hero_image || content?.kravmag?.image || 'https://customer-assets.emergentagent.com/job_defense-academy-3/artifacts/h5wnb8ya_KRAV%20MAG%20AJL.png';
+  const contentImage = content?.pages?.kravmag?.content_image || '';
+  const secondaryImage = content?.pages?.kravmag?.secondary_image || '';
 
   const features = [
     { icon: Globe, title: 'International & Multilingue', description: 'Accessible dans le monde entier dans plusieurs langues.' },
