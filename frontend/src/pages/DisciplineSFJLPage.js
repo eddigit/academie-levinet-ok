@@ -7,7 +7,7 @@ import { useSiteContent } from '../context/SiteContentContext';
 const DisciplineSFJLPage = () => {
   const { content, loading } = useSiteContent();
 
-  // Valeurs dynamiques avec fallbacks
+  // Valeurs dynamiques avec fallbacks - supporte hero_image ET image pour compatibilité
   const discTitle = content?.disciplines?.sfjl?.title || 'Self-Défense Féminine';
   const discSubtitle = content?.disciplines?.sfjl?.subtitle || 'Apprenez à Vous Protéger';
   const discDescription = content?.disciplines?.sfjl?.description || 'Vous avez le droit de vous sentir en sécurité. Nous sommes là pour vous apprendre des gestes simples et efficaces, dans un cadre bienveillant et rassurant.';
