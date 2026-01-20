@@ -135,14 +135,11 @@ const EditionsAJLPage = () => {
             
             <div className="relative">
               <div className="aspect-[4/5] rounded-lg overflow-hidden border border-white/10">
-                <div 
-                  className="w-full h-full bg-cover bg-center bg-gray-800"
-                  data-placeholder="editions-library"
-                >
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-accent/20">
-                    <span className="text-text-muted font-manrope text-sm text-center px-4">Photo bibliothèque/publications à ajouter</span>
-                  </div>
-                </div>
+                <img 
+                  src="https://res.cloudinary.com/dool0ngfx/image/upload/v1768917189/WhatsApp_Image_2026-01-20_at_14.51.29_awg8gi.jpg"
+                  alt="Bibliothèque des publications AJL"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
           </div>

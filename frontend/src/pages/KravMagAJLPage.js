@@ -160,14 +160,11 @@ const KravMagAJLPage = () => {
             
             <div className="relative">
               <div className="aspect-[3/4] rounded-lg overflow-hidden border border-white/10">
-                <div 
-                  className="w-full h-full bg-cover bg-center bg-gray-800"
-                  data-placeholder="kravmag-cover"
-                >
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20">
-                    <span className="text-text-muted font-manrope text-sm text-center px-4">Photo dernière édition magazine à ajouter</span>
-                  </div>
-                </div>
+                <img 
+                  src="https://res.cloudinary.com/dool0ngfx/image/upload/v1768917504/image-page-kravmaga-ajl_g66vpu.jpg"
+                  alt="Krav Mag AJL - Dernière édition"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
           </div>

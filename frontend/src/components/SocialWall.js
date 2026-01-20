@@ -333,6 +333,7 @@ const SocialWall = ({ variant = 'full' }) => {
   const [stats, setStats] = useState(null);
   const [leftSponsors, setLeftSponsors] = useState([]);
   const [rightSponsors, setRightSponsors] = useState([]);
+  const [nextEvent, setNextEvent] = useState(null);
 
   const fetchPosts = useCallback(async () => {
     try {
@@ -374,16 +375,45 @@ const SocialWall = ({ variant = 'full' }) => {
     }
   }, []);
 
+  const fetchNextEvent = useCallback(async () => {
+    try {
+      const response = await api.get('/events');
+      const events = response.data || [];
+      
+      // Obtenir la date du jour à minuit pour une comparaison correcte
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      // Filtrer uniquement les événements dont la date de début est >= aujourd'hui
+      const upcomingEvents = events
+        .filter(e => {
+          const eventDate = new Date(e.start_date);
+          eventDate.setHours(0, 0, 0, 0);
+          return eventDate >= today;
+        })
+        .sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
+      
+      if (upcomingEvents.length > 0) {
+        setNextEvent(upcomingEvents[0]);
+      } else {
+        setNextEvent(null);
+      }
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  }, []);
+
   useEffect(() => {
     fetchPosts();
     fetchOnlineUsers();
     fetchStats();
     fetchSponsors();
+    fetchNextEvent();
 
     // Refresh online users every 30 seconds
     const interval = setInterval(fetchOnlineUsers, 30000);
     return () => clearInterval(interval);
-  }, [fetchPosts, fetchOnlineUsers, fetchStats, fetchSponsors]);
+  }, [fetchPosts, fetchOnlineUsers, fetchStats, fetchSponsors, fetchNextEvent]);
 
   const handlePostCreated = (newPost) => {
     setPosts([newPost, ...posts]);
@@ -564,23 +594,41 @@ const SocialWall = ({ variant = 'full' }) => {
         </div>
 
         {/* Upcoming Events Preview */}
-        <div className="bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl border border-white/10 p-4">
-          <h3 className="font-oswald text-sm font-bold text-text-primary uppercase mb-3">Prochain Événement</h3>
-          <div className="text-center py-3">
-            <p className="font-oswald text-xl font-bold text-primary mb-1">Stage Kravmaga SPK</p>
-            <p className="font-oswald text-lg text-secondary">Self Pro Krav</p>
-            <div className="my-3 py-2 border-y border-white/10">
-              <p className="text-3xl font-black text-white">18</p>
-              <p className="text-sm font-semibold text-primary uppercase">Janvier 2026</p>
-            </div>
-            <p className="text-sm text-text-secondary mb-2">Salle Omnisports</p>
-            <p className="text-xs text-text-muted">83200 - Le Revest les Eaux</p>
-            <div className="mt-3 pt-3 border-t border-white/10">
-              <p className="text-xs text-text-muted">Capitaine Jacques Levinet</p>
-              <p className="text-xs text-primary">Fondateur AJL WKMO IPC</p>
+        {nextEvent && (
+          <div className="bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl border border-white/10 overflow-hidden">
+            {nextEvent.image_url && (
+              <div className="aspect-video w-full overflow-hidden">
+                <img 
+                  src={nextEvent.image_url} 
+                  alt={nextEvent.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+            <div className="p-4">
+              <h3 className="font-oswald text-sm font-bold text-text-primary uppercase mb-3">Prochain Événement</h3>
+              <div className="text-center py-3">
+                <p className="font-oswald text-xl font-bold text-primary mb-1">{nextEvent.title}</p>
+                <p className="font-oswald text-lg text-secondary">{nextEvent.event_type}</p>
+                <div className="my-3 py-2 border-y border-white/10">
+                  <p className="text-3xl font-black text-white">
+                    {new Date(nextEvent.start_date).getDate()}
+                  </p>
+                  <p className="text-sm font-semibold text-primary uppercase">
+                    {new Date(nextEvent.start_date).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}
+                  </p>
+                </div>
+                <p className="text-sm text-text-secondary mb-2">{nextEvent.location}</p>
+                <p className="text-xs text-text-muted">{nextEvent.city}{nextEvent.country ? ` - ${nextEvent.country}` : ''}</p>
+                {nextEvent.instructor && (
+                  <div className="mt-3 pt-3 border-t border-white/10">
+                    <p className="text-xs text-text-muted">{nextEvent.instructor}</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Sponsors - Colonne Droite */}
         {rightSponsors.length > 0 && (
