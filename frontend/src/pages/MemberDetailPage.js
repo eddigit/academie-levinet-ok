@@ -73,8 +73,8 @@ const MemberDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [startingConversation, setStartingConversation] = useState(false);
 
-  // Vérifier si l'utilisateur courant est admin
-  const isAdmin = currentUser?.role === 'admin';
+  // Vérifier si l'utilisateur courant est admin (tous les rôles admin)
+  const isAdmin = ['admin', 'fondateur', 'directeur_national'].includes(currentUser?.role);
 
   // Listes pour les affectations
   const [clubs, setClubs] = useState([]);

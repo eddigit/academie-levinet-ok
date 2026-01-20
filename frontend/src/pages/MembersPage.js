@@ -15,7 +15,7 @@ import { useAuth } from '../context/AuthContext';
 const MembersPage = () => {
   const navigate = useNavigate();
   const { user: currentUser } = useAuth();
-  const isAdmin = currentUser?.role === 'admin';
+  const isAdmin = ['admin', 'fondateur', 'directeur_national'].includes(currentUser?.role);
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({ country: '', city: '', technical_director_id: '', status: '' });
