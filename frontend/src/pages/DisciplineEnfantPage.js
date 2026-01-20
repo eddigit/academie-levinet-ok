@@ -11,7 +11,9 @@ const DisciplineEnfantPage = () => {
   const discTitle = content?.disciplines?.enfant?.title || 'Self-Défense Enfant';
   const discSubtitle = content?.disciplines?.enfant?.subtitle || 'Grandir en Confiance';
   const discDescription = content?.disciplines?.enfant?.description || "Programme spécialement conçu pour les enfants : développer la confiance en soi, apprendre à se protéger et s'épanouir dans un cadre bienveillant.";
-  const discImage = content?.disciplines?.enfant?.image || '';
+  const logoImage = content?.disciplines?.enfant?.logo_image || '';
+  const heroImage = content?.disciplines?.enfant?.hero_image || '';
+  const secondaryImage = content?.disciplines?.enfant?.secondary_image || '';
 
   const benefits = [
     { icon: Shield, title: 'Sécurité', description: 'Apprendre à reconnaître les dangers et à réagir de manière appropriée.' },
@@ -51,9 +53,9 @@ const DisciplineEnfantPage = () => {
     <PublicLayout>
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6 relative overflow-hidden">
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: discImage ? `url(${discImage})` : 'none' }}
+          style={{ backgroundImage: heroImage ? `url(${heroImage})` : 'none' }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background" />
         
@@ -128,14 +130,17 @@ const DisciplineEnfantPage = () => {
             
             <div className="relative">
               <div className="aspect-square rounded-lg overflow-hidden border border-white/10">
-                <div 
-                  className="w-full h-full bg-cover bg-center bg-gray-800"
-                  data-placeholder="enfant-self-defense"
-                >
+                {secondaryImage ? (
+                  <img
+                    src={secondaryImage}
+                    alt="Self-Défense Enfant"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
                   <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-secondary/20 to-accent/20">
                     <span className="text-text-muted font-manrope text-sm text-center px-4">Photo Self-Défense Enfant à ajouter</span>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
