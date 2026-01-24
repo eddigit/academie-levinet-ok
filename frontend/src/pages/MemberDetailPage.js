@@ -174,6 +174,8 @@ const MemberDetailPage = () => {
       country: member.country || 'France',
       date_of_birth: member.date_of_birth || '',
       belt_grade: member.belt_grade || 'Ceinture Blanche',
+      grade_context_type: '',  // Contexte d'obtention du grade (stage/club/online)
+      grade_context_name: '',  // Nom du stage ou club
       membership_type: member.membership_type || 'Standard',
       membership_status: member.membership_status || 'Actif',
       membership_start_date: member.membership_start_date || '',
@@ -942,6 +944,36 @@ const MemberDetailPage = () => {
                       </SelectContent>
                     </Select>
                   </div>
+                  <div className="space-y-2">
+                    <Label className="text-text-secondary">Contexte d'obtention</Label>
+                    <Select
+                      value={editForm.grade_context_type || ''}
+                      onValueChange={(value) => setEditForm({ ...editForm, grade_context_type: value })}
+                    >
+                      <SelectTrigger className="bg-white/5 border-white/10">
+                        <SelectValue placeholder="Sélectionner le contexte..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">Non spécifié</SelectItem>
+                        <SelectItem value="stage">Stage</SelectItem>
+                        <SelectItem value="club">Club</SelectItem>
+                        <SelectItem value="online">En ligne</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  {editForm.grade_context_type && editForm.grade_context_type !== 'online' && (
+                    <div className="space-y-2 md:col-span-2">
+                      <Label className="text-text-secondary">
+                        {editForm.grade_context_type === 'stage' ? 'Nom du stage' : 'Nom du club'}
+                      </Label>
+                      <Input
+                        value={editForm.grade_context_name || ''}
+                        onChange={(e) => setEditForm({ ...editForm, grade_context_name: e.target.value })}
+                        placeholder={editForm.grade_context_type === 'stage' ? 'Ex: Stage de Montpellier 2025' : 'Ex: Club de Paris'}
+                        className="bg-white/5 border-white/10"
+                      />
+                    </div>
+                  )}
                   <div className="space-y-2">
                     <Label className="text-text-secondary">Type d'adhésion</Label>
                     <Select

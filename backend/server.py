@@ -169,7 +169,7 @@ class PendingMemberStatus(str, Enum):
 
 class LeadPersonType(str, Enum):
     WOMAN = "Femme"
-    MAN = "Homme"
+    ADULT = "Adulte"  # Remplace "Homme" pour être plus inclusif
     CHILD = "Enfant"
     PROFESSIONAL = "Professionnel"
 
@@ -206,7 +206,7 @@ class ReactionType(str, Enum):
     STRONG = "strong"
 
 class ProductCategory(str, Enum):
-    MITTENS = "Mittens"
+    MITAINES = "Mitaines"
     GANTS = "Gants de Combat"
     CASQUES = "Casques"
     PROTECTIONS = "Protections"
@@ -317,6 +317,9 @@ class AdminUserUpdate(BaseModel):
     date_of_birth: Optional[str] = None
     belt_grade: Optional[str] = None
     dan_grade: Optional[str] = None
+    # Contexte d'obtention du grade (stage/club/online)
+    grade_context_type: Optional[str] = None  # "stage", "club", "online"
+    grade_context_name: Optional[str] = None  # Nom du stage ou club
     club_id: Optional[str] = None
     club_name: Optional[str] = None
     club_ids: Optional[List[str]] = None
@@ -609,6 +612,8 @@ class TokenTransaction(BaseModel):
     action_type: str               # Type d'action (TokenActionType)
     description: Optional[str] = None  # Description lisible
     reference_id: Optional[str] = None  # ID du post, événement, etc.
+    context_type: Optional[str] = None  # "stage", "club", "online" - contexte d'obtention du grade
+    context_name: Optional[str] = None  # Nom du stage ou club
     balance_after: int = 0         # Solde après transaction
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
@@ -964,6 +969,7 @@ class Club(BaseModel):
     name: str
     address: Optional[str] = None
     city: str
+    postal_code: Optional[str] = None
     country: str = "France"
     country_code: str = "FR"  # ISO country code for flag display
     phone: Optional[str] = None
@@ -982,6 +988,7 @@ class ClubCreate(BaseModel):
     name: str
     address: Optional[str] = None
     city: str
+    postal_code: Optional[str] = None
     country: str = "France"
     country_code: str = "FR"
     phone: Optional[str] = None
@@ -997,6 +1004,7 @@ class ClubUpdate(BaseModel):
     name: Optional[str] = None
     address: Optional[str] = None
     city: Optional[str] = None
+    postal_code: Optional[str] = None
     country: Optional[str] = None
     country_code: Optional[str] = None
     phone: Optional[str] = None
@@ -1590,6 +1598,10 @@ async def update_user(user_id: str, data: AdminUserUpdate, current_user: dict = 
 
     # Get only non-None fields for partial update
     update_data = {k: v for k, v in data.model_dump().items() if v is not None}
+    
+    # Extraire les champs de contexte de grade (ne pas les sauvegarder dans l'utilisateur)
+    grade_context_type = update_data.pop('grade_context_type', None)
+    grade_context_name = update_data.pop('grade_context_name', None)
 
     if not update_data:
         raise HTTPException(status_code=400, detail="Aucune donnée à mettre à jour")
@@ -1620,6 +1632,11 @@ async def update_user(user_id: str, data: AdminUserUpdate, current_user: dict = 
                 {"id": club_id},
                 {"$addToSet": {"technical_director_ids": user_id}}
             )
+    
+    # Détecter changement de grade pour attribuer des tokens
+    old_belt_grade = current_user_data.get('belt_grade')
+    new_belt_grade = update_data.get('belt_grade')
+    grade_changed = new_belt_grade and new_belt_grade != old_belt_grade
 
     result = await db.users.update_one(
         {"id": user_id},
@@ -1628,6 +1645,22 @@ async def update_user(user_id: str, data: AdminUserUpdate, current_user: dict = 
     
     if result.matched_count == 0:
         raise HTTPException(status_code=404, detail="Utilisateur non trouvé")
+    
+    # Attribuer des tokens pour le passage de grade
+    if grade_changed:
+        context_desc = ""
+        if grade_context_type and grade_context_name:
+            context_desc = f" ({grade_context_type}: {grade_context_name})"
+        elif grade_context_type:
+            context_desc = f" ({grade_context_type})"
+            
+        await award_tokens(
+            user_id=user_id,
+            action_type=TokenActionType.GRADE_PASSED.value,
+            description=f"Passage de grade: {new_belt_grade}{context_desc}",
+            context_type=grade_context_type,
+            context_name=grade_context_name
+        )
     
     updated_user = await db.users.find_one({"id": user_id}, {"_id": 0, "password_hash": 0})
     return {"message": "Utilisateur mis à jour", "user": updated_user}
@@ -2425,6 +2458,17 @@ async def register_for_event(event_id: str, current_user: dict = Depends(get_cur
     if not event:
         raise HTTPException(status_code=404, detail="Event not found")
     
+    # Vérifier que l'événement n'est pas passé
+    from datetime import date
+    event_end_date = event.get('end_date')
+    if event_end_date:
+        try:
+            end_date = datetime.strptime(event_end_date, '%Y-%m-%d').date()
+            if end_date < date.today():
+                raise HTTPException(status_code=400, detail="Impossible de s'inscrire \u00e0 un \u00e9v\u00e9nement pass\u00e9")
+        except ValueError:
+            pass  # Si le format de date est invalide, on continue
+    
     # Check if already registered
     existing = await db.event_registrations.find_one({
         "event_id": event_id,
@@ -2497,10 +2541,11 @@ async def search_users(q: str = "", current_user: dict = Depends(get_current_use
     # Search in users (admins), members, and technical directors
     results = []
     
-    # Search users
+    # Search users - exclure les adresses système (academie-levinet, academielevinet)
     users = await db.users.find({
         "$and": [
             {"id": {"$ne": current_user['id']}},
+            {"email": {"$not": {"$regex": "academie-?levinet", "$options": "i"}}},
             {"$or": [
                 {"full_name": {"$regex": q, "$options": "i"}},
                 {"email": {"$regex": q, "$options": "i"}}
@@ -2682,6 +2727,10 @@ async def get_messages(conversation_id: str, current_user: dict = Depends(get_cu
 @api_router.post("/conversations/{conversation_id}/messages")
 async def send_message(conversation_id: str, data: MessageCreate, current_user: dict = Depends(get_current_user)):
     """Send a message in a conversation"""
+    # Valider que le message n'est pas vide
+    if not data.content or not data.content.strip():
+        raise HTTPException(status_code=400, detail="Le message ne peut pas être vide")
+    
     # Verify user is participant
     conversation = await db.conversations.find_one({
         "id": conversation_id,
@@ -5832,8 +5881,14 @@ async def check_daily_limit(user_id: str, action_type: str) -> bool:
     return current_total < max_daily
 
 async def award_tokens(user_id: str, action_type: str, amount: Optional[int] = None, 
-                       description: Optional[str] = None, reference_id: Optional[str] = None) -> Optional[dict]:
-    """Attribue des tokens à un utilisateur pour une action"""
+                       description: Optional[str] = None, reference_id: Optional[str] = None,
+                       context_type: Optional[str] = None, context_name: Optional[str] = None) -> Optional[dict]:
+    """Attribue des tokens à un utilisateur pour une action
+    
+    Args:
+        context_type: Type de contexte d'obtention ("stage", "club", "online")
+        context_name: Nom du stage ou club où le grade a été obtenu
+    """
     # Vérifier limite quotidienne
     if not await check_daily_limit(user_id, action_type):
         return None
@@ -5871,7 +5926,7 @@ async def award_tokens(user_id: str, action_type: str, amount: Optional[int] = N
         }}
     )
     
-    # Créer la transaction
+    # Créer la transaction avec contexte optionnel
     transaction = {
         "id": str(uuid.uuid4()),
         "user_id": user_id,
@@ -5879,6 +5934,8 @@ async def award_tokens(user_id: str, action_type: str, amount: Optional[int] = N
         "action_type": action_type,
         "description": description or f"Récompense: {action_type}",
         "reference_id": reference_id,
+        "context_type": context_type,
+        "context_name": context_name,
         "balance_after": new_balance,
         "created_at": datetime.now(timezone.utc).isoformat()
     }

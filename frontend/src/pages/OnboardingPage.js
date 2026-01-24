@@ -91,7 +91,7 @@ const OnboardingPage = () => {
 
   const personTypes = [
     { value: 'Femme', label: 'Femme', icon: User, description: 'Self-défense féminine' },
-    { value: 'Homme', label: 'Homme', icon: UserCircle, description: 'Autodéfense efficace' },
+    { value: 'Adulte', label: 'Adulte', icon: UserCircle, description: 'Autodéfense efficace' },
     { value: 'Enfant/Parent', label: 'Enfant/Parent', icon: Users, description: 'Formation famille' },
     { value: 'Professionnel', label: 'Professionnel', icon: Shield, description: 'Formation Forces de l\'ordre / Sécurité' }
   ];

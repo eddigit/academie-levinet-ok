@@ -276,6 +276,11 @@ const WalletPage = () => {
                       </div>
                       <div>
                         <p className="font-medium">{tx.description || tx.action_type}</p>
+                        {tx.context_type && tx.context_name && (
+                          <p className="text-xs text-blue-600 dark:text-blue-400">
+                            📍 {tx.context_type === 'stage' ? 'Stage' : tx.context_type === 'club' ? 'Club' : tx.context_type}: {tx.context_name}
+                          </p>
+                        )}
                         <p className="text-sm text-gray-500">{formatDate(tx.created_at)}</p>
                       </div>
                     </div>

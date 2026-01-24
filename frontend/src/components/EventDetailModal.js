@@ -39,8 +39,15 @@ const EventDetailModal = ({ event, isOpen, onClose, currentUser, onUpdate }) => 
     }
   };
 
-  const handleRegister = async () => {
-    setRegistering(true);
+  const handleRegister = async () => {    // Vérifier si l'événement est passé
+    const eventEndDate = new Date(event.end_date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (eventEndDate < today) {
+      toast.error('Impossible de s\'inscrire \u00e0 un \u00e9v\u00e9nement pass\u00e9');
+      return;
+    }
+        setRegistering(true);
     try {
       await api.post(`/events/${event.id}/register`);
       toast.success('Inscription confirmée !');

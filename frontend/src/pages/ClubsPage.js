@@ -6,6 +6,7 @@ import {
 import DashboardLayout from '../components/DashboardLayout';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import { PhoneInput } from '../components/ui/phone-input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
@@ -34,7 +35,7 @@ const ClubsPage = () => {
   const [updatingRole, setUpdatingRole] = useState(null);
 
   const [formData, setFormData] = useState({
-    name: '', address: '', city: '', country: 'France', country_code: 'FR',
+    name: '', address: '', city: '', postal_code: '', country: 'France', country_code: 'FR',
     phone: '', email: '', logo_url: '', technical_director_ids: [],
     national_director_ids: [], instructor_ids: [], disciplines: [], schedule: ''
   });
@@ -154,7 +155,7 @@ const ClubsPage = () => {
 
   const resetForm = () => {
     setFormData({
-      name: '', address: '', city: '', country: 'France', country_code: 'FR',
+      name: '', address: '', city: '', postal_code: '', country: 'France', country_code: 'FR',
       phone: '', email: '', logo_url: '', technical_director_ids: [],
       national_director_ids: [], instructor_ids: [], disciplines: [], schedule: ''
     });
@@ -169,6 +170,7 @@ const ClubsPage = () => {
       name: club.name || '',
       address: club.address || '',
       city: club.city || '',
+      postal_code: club.postal_code || '',
       country: club.country || 'France',
       country_code: club.country_code || 'FR',
       phone: club.phone || '',
@@ -317,7 +319,7 @@ const ClubsPage = () => {
                       <span className="text-xl">{getFlag(club.country_code)}</span>
                     </div>
                     <p className="text-text-muted text-sm flex items-center gap-1 mt-1">
-                      <MapPin className="w-3 h-3" />{club.city}, {club.country}
+                      <MapPin className="w-3 h-3" />{club.postal_code && `${club.postal_code} `}{club.city}, {club.country}
                     </p>
                   </div>
                 </div>
@@ -422,10 +424,14 @@ const ClubsPage = () => {
                 <Label className="text-text-secondary">Adresse</Label>
                 <Input value={formData.address} onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))} className="mt-1 bg-background border-white/10" />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <Label className="text-text-secondary">Ville *</Label>
                   <Input value={formData.city} onChange={(e) => setFormData(prev => ({ ...prev, city: e.target.value }))} required className="mt-1 bg-background border-white/10" />
+                </div>
+                <div>
+                  <Label className="text-text-secondary">Code Postal</Label>
+                  <Input value={formData.postal_code} onChange={(e) => setFormData(prev => ({ ...prev, postal_code: e.target.value }))} placeholder="Ex: 34430" className="mt-1 bg-background border-white/10" />
                 </div>
                 <div>
                   <Label className="text-text-secondary">Pays</Label>
@@ -440,7 +446,12 @@ const ClubsPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label className="text-text-secondary">Téléphone</Label>
-                  <Input value={formData.phone} onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))} className="mt-1 bg-background border-white/10" />
+                  <PhoneInput 
+                    value={formData.phone} 
+                    onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))} 
+                    countryCode={formData.country_code}
+                    className="mt-1 bg-background border-white/10" 
+                  />
                 </div>
                 <div>
                   <Label className="text-text-secondary">Email</Label>

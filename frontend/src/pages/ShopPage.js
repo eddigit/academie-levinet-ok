@@ -7,7 +7,7 @@ import { ShoppingBag, Filter, Search, Star, ChevronRight, Check } from 'lucide-r
 
 const CATEGORIES = [
   { id: 'all', name: 'Tous les produits' },
-  { id: 'Mittens', name: 'Mittens' },
+  { id: 'Mitaines', name: 'Mitaines' },
   { id: 'Gants de Combat', name: 'Gants de Combat' },
   { id: 'Casques', name: 'Casques' },
   { id: 'Protections', name: 'Protections' },
@@ -18,8 +18,15 @@ const CATEGORIES = [
 const ProductCard = ({ product, onAddToCart }) => {
   const [selectedSize, setSelectedSize] = useState(product.sizes?.[0] || '');
   const [added, setAdded] = useState(false);
+  const [sizeError, setSizeError] = useState(false);
 
   const handleAddToCart = () => {
+    // Vérifier si le produit a des tailles et qu'une est sélectionnée
+    if (product.sizes?.length > 0 && !selectedSize) {
+      setSizeError(true);
+      setTimeout(() => setSizeError(false), 2000);
+      return;
+    }
     onAddToCart(product, 1, selectedSize);
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
@@ -61,16 +68,20 @@ const ProductCard = ({ product, onAddToCart }) => {
         {/* Sizes */}
         {product.sizes && product.sizes.length > 0 && (
           <div className="mb-4">
-            <p className="text-xs text-text-muted mb-2">Taille</p>
+            <p className={`text-xs mb-2 ${sizeError ? 'text-red-500 font-semibold' : 'text-text-muted'}`}>
+              {sizeError ? 'Veuillez sélectionner une taille' : 'Taille'}
+            </p>
             <div className="flex flex-wrap gap-1">
               {product.sizes.slice(0, 4).map((size) => (
                 <button
                   key={size}
-                  onClick={() => setSelectedSize(size)}
+                  onClick={() => { setSelectedSize(size); setSizeError(false); }}
                   className={`px-2 py-1 text-xs rounded border transition-colors ${
                     selectedSize === size
                       ? 'bg-primary text-white border-primary'
-                      : 'border-white/10 text-text-secondary hover:border-primary/50'
+                      : sizeError 
+                        ? 'border-red-500/50 text-text-secondary hover:border-primary/50'
+                        : 'border-white/10 text-text-secondary hover:border-primary/50'
                   }`}
                 >
                   {size}
@@ -117,26 +128,36 @@ const ProductCard = ({ product, onAddToCart }) => {
 
 const ShopPage = () => {
   const { addItem, getItemCount, openCart } = useCart();
-  const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const cartCount = getItemCount();
 
   useEffect(() => {
-    fetchProducts();
-  }, [selectedCategory]);
+    fetchAllProducts();
+  }, []);
 
-  const fetchProducts = async () => {
+  const fetchAllProducts = async () => {
     setLoading(true);
     try {
-      const params = selectedCategory !== 'all' ? `?category=${encodeURIComponent(selectedCategory)}` : '';
-      const response = await api.get(`/products${params}`);
-      setProducts(response.data.products || []);
+      const response = await api.get('/products');
+      setAllProducts(response.data.products || []);
     } catch (error) {
       console.error('Error fetching products:', error);
     }
     setLoading(false);
+  };
+
+  // Filtrer les produits par catégorie sélectionnée
+  const products = selectedCategory === 'all' 
+    ? allProducts 
+    : allProducts.filter(p => p.category === selectedCategory);
+
+  // Filtrer les catégories pour n'afficher que celles ayant des produits
+  const categoriesWithProducts = CATEGORIES.filter(cat => 
+    cat.id === 'all' || allProducts.some(p => p.category === cat.id)
+  );
   };
 
   const filteredProducts = products.filter(p =>
@@ -200,7 +221,7 @@ const ShopPage = () => {
                     Catégories
                   </h3>
                   <div className="space-y-1">
-                    {CATEGORIES.map((cat) => (
+                    {categoriesWithProducts.map((cat) => (
                       <button
                         key={cat.id}
                         onClick={() => setSelectedCategory(cat.id)}

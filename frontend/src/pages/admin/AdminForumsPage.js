@@ -237,6 +237,13 @@ const AdminForumsPage = () => {
               Gérez les forums, sujets et participants
             </p>
           </div>
+          <Button
+            onClick={() => { setEditingForum(null); setShowForumModal(true); }}
+            className="bg-primary hover:bg-primary-dark w-full sm:w-auto"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Nouveau Forum
+          </Button>
         </div>
 
         {/* Stats Cards */}
@@ -291,23 +298,15 @@ const AdminForumsPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Forums List */}
           <div className="lg:col-span-1 space-y-4">
-            <div className="flex items-center justify-between gap-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-muted" />
-                <Input
-                  type="text"
-                  placeholder="Rechercher un forum..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 bg-paper border-white/10"
-                />
-              </div>
-              <Button
-                onClick={() => { setEditingForum(null); setShowForumModal(true); }}
-                className="bg-primary hover:bg-primary-dark"
-              >
-                <Plus className="w-4 h-4" />
-              </Button>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-muted" />
+              <Input
+                type="text"
+                placeholder="Rechercher un forum..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 bg-paper border-white/10"
+              />
             </div>
 
             <div className="space-y-2">

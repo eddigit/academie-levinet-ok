@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import { PhoneInput } from '../components/ui/phone-input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
@@ -99,8 +100,15 @@ const ProfilePage = () => {
   const handleSave = async () => {
     setSaving(true);
     try {
+      // Construire full_name à partir de first_name et last_name si disponibles
+      const firstName = editForm.first_name || editForm.full_name?.split(' ')[0] || '';
+      const lastName = editForm.last_name || editForm.full_name?.split(' ').slice(1).join(' ') || '';
+      const fullName = `${firstName} ${lastName}`.trim();
+      
       const response = await api.put('/profile', {
-        full_name: editForm.full_name,
+        full_name: fullName,
+        first_name: firstName,
+        last_name: lastName.toUpperCase(),
         phone: editForm.phone,
         city: editForm.city,
         country: editForm.country,
@@ -345,16 +353,41 @@ const ProfilePage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <Label className="text-text-muted flex items-center gap-2 mb-2">
-                    <User className="w-4 h-4" /> Nom complet
+                    <User className="w-4 h-4" /> Prénom
                   </Label>
                   {isEditing ? (
                     <Input
-                      value={editForm.full_name || ''}
-                      onChange={(e) => setEditForm({ ...editForm, full_name: e.target.value })}
+                      value={editForm.first_name || (editForm.full_name?.split(' ')[0] || '')}
+                      onChange={(e) => {
+                        // Majuscule automatique sur la première lettre du prénom
+                        const value = e.target.value;
+                        const formatted = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+                        setEditForm({ ...editForm, first_name: formatted });
+                      }}
                       className="bg-background border-white/10"
+                      placeholder="Prénom"
                     />
                   ) : (
-                    <p className="text-text-primary">{profile?.full_name || '-'}</p>
+                    <p className="text-text-primary">{profile?.first_name || profile?.full_name?.split(' ')[0] || '-'}</p>
+                  )}
+                </div>
+
+                <div>
+                  <Label className="text-text-muted flex items-center gap-2 mb-2">
+                    <User className="w-4 h-4" /> Nom
+                  </Label>
+                  {isEditing ? (
+                    <Input
+                      value={editForm.last_name || (editForm.full_name?.split(' ').slice(1).join(' ').toUpperCase() || '')}
+                      onChange={(e) => {
+                        // Nom entièrement en majuscules
+                        setEditForm({ ...editForm, last_name: e.target.value.toUpperCase() });
+                      }}
+                      className="bg-background border-white/10"
+                      placeholder="NOM"
+                    />
+                  ) : (
+                    <p className="text-text-primary">{profile?.last_name?.toUpperCase() || profile?.full_name?.split(' ').slice(1).join(' ').toUpperCase() || '-'}</p>
                   )}
                 </div>
 
@@ -370,11 +403,11 @@ const ProfilePage = () => {
                     <Phone className="w-4 h-4" /> Téléphone
                   </Label>
                   {isEditing ? (
-                    <Input
+                    <PhoneInput
                       value={editForm.phone || ''}
                       onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
                       className="bg-background border-white/10"
-                      placeholder="+33 6 00 00 00 00"
+                      countryCode="FR"
                     />
                   ) : (
                     <p className="text-text-primary">{profile?.phone || '-'}</p>
