@@ -72,8 +72,8 @@ const Header = () => {
           </Link>
         )}
 
-        {/* Nouvelle Tâche button for admins */}
-        {user?.role === 'admin' && (
+        {/* Nouvelle Tâche button for admins and testers */}
+        {(user?.role === 'admin' || user?.is_tester === true) && (
           <button
             onClick={() => setShowTaskModal(true)}
             className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-lg transition-all font-medium text-sm"

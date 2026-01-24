@@ -165,6 +165,16 @@ const Sidebar = () => {
             ))}
           </>
         )}
+
+        {/* Section Tâches pour les testeurs (non-admin) */}
+        {user?.is_tester === true && user?.role !== 'admin' && (
+          <>
+            <div className="pt-4 mt-4 border-t border-white/5">
+              <p className="px-4 text-xs font-oswald text-text-muted uppercase tracking-wider mb-2">Testeur</p>
+            </div>
+            <NavLink item={{ path: '/tasks', icon: CheckSquare, label: 'Tâches', testId: 'nav-tasks-tester' }} />
+          </>
+        )}
       </nav>
     </aside>
   );
@@ -284,6 +294,19 @@ const Sidebar = () => {
               {adminItems.map((item) => (
                 <NavLink key={item.path} item={item} onClick={() => setIsMobileMenuOpen(false)} />
               ))}
+            </>
+          )}
+
+          {/* Section Tâches pour les testeurs (non-admin) */}
+          {user?.is_tester === true && user?.role !== 'admin' && (
+            <>
+              <div className="pt-4 mt-4 border-t border-white/10">
+                <p className="px-4 text-xs font-oswald text-text-muted uppercase tracking-wider mb-2">Testeur</p>
+              </div>
+              <NavLink 
+                item={{ path: '/tasks', icon: CheckSquare, label: 'Tâches', testId: 'nav-tasks-tester' }} 
+                onClick={() => setIsMobileMenuOpen(false)} 
+              />
             </>
           )}
         </nav>
