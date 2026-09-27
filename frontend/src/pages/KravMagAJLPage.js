@@ -57,7 +57,7 @@ const KravMagAJLPage = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="https://www.calameo.com/books/00804450798efd0bdcc1b"
+                  href="https://www.calameo.com/books/008044507a4a135f1e12a"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-8 py-4 bg-primary hover:bg-primary-dark text-white font-oswald uppercase leading-none tracking-wider rounded-sm transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)]"
@@ -178,18 +178,18 @@ const KravMagAJLPage = () => {
             Lire le <span className="text-primary">Magazine en Ligne</span>
           </h2>
           <p className="text-text-secondary font-manrope text-lg mb-8">
-            Accédez gratuitement à la dernière édition de Krav Mag AJL (Été 2026)
+            Accédez gratuitement à la dernière édition de Krav Mag AJL (Automne 2026)
           </p>
           
           <div className="bg-white/5 border border-white/10 rounded-lg p-4 mb-8">
             <div className="aspect-[16/10] rounded-lg overflow-hidden border border-white/10">
               <iframe 
-                src="https://v.calameo.com/?bkcode=00804450798efd0bdcc1b&mode=mini"
+                src="https://v.calameo.com/?bkcode=008044507a4a135f1e12a&mode=mini"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen
-                title="KRAV MAG AJL ETE 2026"
+                title="KRAV MAG AJL AUTOMNE 2026"
                 className="w-full h-full"
               />
             </div>
@@ -197,7 +197,7 @@ const KravMagAJLPage = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://www.calameo.com/books/00804450798efd0bdcc1b"
+              href="https://www.calameo.com/books/008044507a4a135f1e12a"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-dark text-white font-oswald uppercase leading-none tracking-wider rounded-sm transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)]"
