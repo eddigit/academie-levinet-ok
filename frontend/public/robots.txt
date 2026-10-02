@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /member/
+Disallow: /dashboard
+Disallow: /members
+Disallow: /leads
+Disallow: /tasks
+Disallow: /messages
+Disallow: /profile
+Disallow: /subscriptions
+Disallow: /online-students
+Disallow: /login
+Disallow: /onboarding
+Disallow: /payment/
+
+Sitemap: https://www.academielevinet.com/sitemap.xml
