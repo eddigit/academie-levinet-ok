@@ -32,6 +32,41 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
+        <!-- SEO : URL canonique = https://academielevinet.com (sans www), injectée pour chaque page de l'appli -->
+        <script>
+            (function () {
+                var BASE = "https://academielevinet.com";
+                function setCanonical() {
+                    var p = window.location.pathname.replace(/\/+$/, "") || "/";
+                    var url = BASE + p;
+                    if (p === "/") url = BASE + "/";
+                    var link = document.querySelector('link[rel="canonical"]');
+                    if (!link) {
+                        link = document.createElement("link");
+                        link.setAttribute("rel", "canonical");
+                        document.head.appendChild(link);
+                    }
+                    link.setAttribute("href", url);
+                    var og = document.querySelector('meta[property="og:url"]');
+                    if (!og) {
+                        og = document.createElement("meta");
+                        og.setAttribute("property", "og:url");
+                        document.head.appendChild(og);
+                    }
+                    og.setAttribute("content", url);
+                }
+                ["pushState", "replaceState"].forEach(function (m) {
+                    var orig = history[m];
+                    history[m] = function () {
+                        var r = orig.apply(this, arguments);
+                        setCanonical();
+                        return r;
+                    };
+                });
+                window.addEventListener("popstate", setCanonical);
+                setCanonical();
+            })();
+        </script>
         <title>Académie Jacques Levinet | École Internationale de Self-Défense</title>
         <link rel="icon" type="image/jpeg" href="%PUBLIC_URL%/images/logo-levinet.jpeg" />
         <link rel="apple-touch-icon" href="%PUBLIC_URL%/images/logo-levinet.jpeg" />

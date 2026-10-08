@@ -14,4 +14,4 @@ Disallow: /login
 Disallow: /onboarding
 Disallow: /payment/
 
-Sitemap: https://www.academielevinet.com/sitemap.xml
+Sitemap: https://academielevinet.com/sitemap.xml
