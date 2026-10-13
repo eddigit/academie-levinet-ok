@@ -8,16 +8,90 @@
       "destination": "https://api-academielevinet.mybotia.com/api/:path*"
     },
     {
+      "source": "/trouver-club",
+      "destination": "/trouver-club.html"
+    },
+    {
+      "source": "/kravmag",
+      "destination": "/kravmag.html"
+    },
+    {
+      "source": "/disciplines/spk",
+      "destination": "/disciplines/spk.html"
+    },
+    {
+      "source": "/disciplines/sfjl",
+      "destination": "/disciplines/sfjl.html"
+    },
+    {
+      "source": "/disciplines/ipc",
+      "destination": "/disciplines/ipc.html"
+    },
+    {
+      "source": "/disciplines/wkmo",
+      "destination": "/disciplines/wkmo.html"
+    },
+    {
+      "source": "/disciplines/canne",
+      "destination": "/disciplines/canne.html"
+    },
+    {
+      "source": "/disciplines/baton",
+      "destination": "/disciplines/baton.html"
+    },
+    {
+      "source": "/disciplines/enfant",
+      "destination": "/disciplines/enfant.html"
+    },
+    {
+      "source": "/evenements",
+      "destination": "/evenements.html"
+    },
+    {
+      "source": "/join",
+      "destination": "/join.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/about.html"
+    },
+    {
+      "source": "/founder",
+      "destination": "/founder.html"
+    },
+    {
+      "source": "/pedagogy",
+      "destination": "/pedagogy.html"
+    },
+    {
+      "source": "/international",
+      "destination": "/international.html"
+    },
+    {
+      "source": "/boutique",
+      "destination": "/boutique.html"
+    },
+    {
+      "source": "/editions",
+      "destination": "/editions.html"
+    },
+    {
       "source": "/((?!static|favicon|manifest|logo|robots).*)",
-      "destination": "/index.html"
+      "destination": "/200.html"
     }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" }
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
       ]
     }
   ]

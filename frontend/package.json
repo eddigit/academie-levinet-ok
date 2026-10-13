@@ -58,7 +58,7 @@
   },
   "scripts": {
     "start": "node generate-build-info.js && craco start",
-    "build": "node generate-build-info.js && craco build",
+    "build": "node generate-build-info.js && craco build && node scripts/seo-pages.js",
     "test": "craco test"
   },
   "browserslist": {
